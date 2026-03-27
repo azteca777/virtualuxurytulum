@@ -4,7 +4,6 @@ import React, { useState, Suspense } from 'react';
 import * as THREE from 'three';
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls, Html, useVideoTexture } from '@react-three/drei';
-// 📦 IMPORTAMOS EL MOTOR DE VERCEL BLOB PARA PRODUCCIÓN
 
 // === COMPONENTE: LA ESFERA GIGANTE 360 ===
 function Entorno360({ urlVideo, audioActivado }: { urlVideo: string, audioActivado: boolean }) {
@@ -29,10 +28,10 @@ export default function Home() {
   const [audioActivado, setAudioActivado] = useState(false);
 
   // ESTADOS DEL ESPEJO MÁGICO
-  const [fotoUsuarioUrl, setFotoUsuarioUrl] = useState<string | null>(null); // Guardará la URL pública de Vercel Blob
+  const [fotoUsuarioUrl, setFotoUsuarioUrl] = useState<string | null>(null); 
   const [prendaSeleccionadaUrl, setPrendaSeleccionadaUrl] = useState<string | null>(null);
   const [estaProcesando, setEstaProcesando] = useState(false);
-  const [estaSubiendoFoto, setEstaSubiendoFoto] = useState(false); // Estado para la subida a Blob
+  const [estaSubiendoFoto, setEstaSubiendoFoto] = useState(false); 
   const [resultadoTryOnUrl, setResultadoTryOnUrl] = useState<string | null>(null);
   const [errorTryOn, setErrorTryOn] = useState<string | null>(null);
 
@@ -44,9 +43,8 @@ export default function Home() {
     setTimeout(() => setIntroTerminada(true), 1000);
   };
 
-  // --- 👇 MOTOR DE CONEXIÓN A VIOS CODE (Cerebro Central) 👇 ---
+  // --- 👇 MOTOR DE CONEXIÓN A VIOS CODE (POLLING PARA EL TICKET) 👇 ---
   const ejecutarPruebaVirtual = async () => {
-    // Necesitamos tener la URL pública de la selfie del usuario
     if (!fotoUsuarioUrl || !prendaSeleccionadaUrl) {
       setErrorTryOn('¡Falta tu foto o la prenda! Súbela de nuevo.');
       return;
@@ -57,33 +55,52 @@ export default function Home() {
     setResultadoTryOnUrl(null);
 
     try {
-      // 🌐 APUNTAMOS AL DOMINIO OFICIAL DE PRODUCCIÓN DE VIOS CODE
-      // Cambia esto:
-      // const URL_API_VIOS_CODE = 'https://vioscode.io/api/youcam-tryon'; 
+      const URL_API_VIOS_CODE = 'https://vios-code.vercel.app/api/youcam-tryon'; 
 
-      // Por la ruta directa anti-bloqueos:
-      const URL_API_VIOS_CODE = 'https://vios-code.vercel.app/api/youcam-tryon';
-
+      // 1. Mandamos la foto y pedimos el ticket
       const response = await fetch(URL_API_VIOS_CODE, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          src_file_url: fotoUsuarioUrl,       // La URL pública de Vercel Blob de la selfie
-          ref_file_url: prendaSeleccionadaUrl, // La foto del traje de baño amarillo
-          tipoPrenda: 'cloth'               // Es ropa
+          src_file_url: fotoUsuarioUrl,       
+          ref_file_url: prendaSeleccionadaUrl, 
+          tipoPrenda: 'cloth'               
         }),
       });
 
       const data = await response.json();
+      if (!response.ok) throw new Error(data.error || 'Error de conexión con la Matrix ViOs Code.');
 
-      if (!response.ok) {
-        throw new Error(data.error || 'Error de conexión con la Matrix ViOs Code.');
+      const taskId = data.data?.task_id;
+      if (!taskId) throw new Error('YouCam no nos dio un ticket de procesamiento.');
+
+      console.log("🎟️ Ticket recibido:", taskId, "Esperando procesamiento...");
+
+      // 2. Esperamos en la ventanilla hasta que la foto esté lista (Polling)
+      let terminado = false;
+      let intentos = 0;
+
+      while (!terminado && intentos < 20) { // Intentará por unos 40 segundos máximo
+        await new Promise(res => setTimeout(res, 2000)); // Espera 2 segundos
+
+        // Consulta el ticket
+        const pollRes = await fetch(`${URL_API_VIOS_CODE}?taskId=${taskId}`);
+        const pollData = await pollRes.json();
+        
+        console.log("🔍 Estado de la foto:", pollData);
+
+        if (pollData.data?.status === 'done' || pollData.data?.status === 'success') {
+          terminado = true;
+          setResultadoTryOnUrl(pollData.data?.result_file_url || pollData.data?.result_url);
+          break;
+        } else if (pollData.data?.status === 'failed') {
+          throw new Error('La IA de YouCam no pudo procesar esta foto. Intenta con otra pose.');
+        }
+
+        intentos++;
       }
 
-      // YouCam devuelve la URL del resultado mágico aquí
-      setResultadoTryOnUrl(data.results?.url || data.url);
+      if (!terminado) throw new Error('Tiempo de espera agotado. La IA está muy ocupada.');
 
     } catch (err: any) {
       setErrorTryOn(err.message);
@@ -92,7 +109,7 @@ export default function Home() {
     }
   };
 
-  // --- 👇 NUEVO MOTOR: Usa el puente local para hablar con Blob 👇 ---
+  // --- 👇 MOTOR DE SUBIDA DE SELFIES A VERCEL BLOB 👇 ---
   const manejarSubidaFoto = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
@@ -101,7 +118,6 @@ export default function Home() {
       setFotoUsuarioUrl(null); 
 
       try {
-        // 🌉 Cruzamos el puente hacia nuestro propio servidor
         const response = await fetch(`/api/upload?filename=${file.name}`, {
           method: 'POST',
           body: file,
@@ -111,7 +127,6 @@ export default function Home() {
 
         if (!response.ok) throw new Error('Error en el puente Blob');
 
-        // ✅ ¡FOTO LOCAL CONVERTIDA A URL PÚBLICA!
         console.log("Selfie subida con éxito a Blob Matrix:", blob.url);
         setFotoUsuarioUrl(blob.url); 
 
@@ -127,7 +142,7 @@ export default function Home() {
   return (
     <main className="relative flex min-h-screen flex-col items-center justify-center bg-black overflow-hidden font-inter selection:bg-yellow-500/30">
       
-      {/* 🎬 1. INTRODUCCIÓN (Sin cambios) */}
+      {/* 🎬 1. INTRODUCCIÓN */}
       {!introTerminada && (
         <div className={`absolute inset-0 z-50 bg-black transition-opacity duration-1000 ease-in-out ${desvanecerIntro ? 'opacity-0' : 'opacity-100'}`}>
           <video src={URL_INTRO} autoPlay playsInline muted className="w-full h-full object-cover" onEnded={finalizarIntro}/>
@@ -135,7 +150,7 @@ export default function Home() {
         </div>
       )}
 
-      {/* 🌍 2. EL METAVERSO 360 (Sin cambios) */}
+      {/* 🌍 2. EL METAVERSO 360 */}
       <div className="absolute inset-0 z-0 bg-black">
         <Canvas camera={{ position: [0, 0, 0.1], fov: 75 }}>
           <OrbitControls enableZoom={false} enablePan={false} rotateSpeed={-0.4} />
@@ -149,7 +164,6 @@ export default function Home() {
       {introTerminada && (
          <div className="absolute inset-0 pointer-events-none flex flex-col justify-between z-10">
            
-           {/* Header superior (Sin cambios) */}
            <header className="w-full p-6 md:p-10 flex justify-between items-start">
              <button onClick={() => setAudioActivado(!audioActivado)} className={`pointer-events-auto px-5 py-2.5 rounded-full text-[10px] md:text-xs tracking-[0.2em] uppercase transition-all backdrop-blur-md border ${audioActivado ? 'bg-yellow-500/80 text-black border-yellow-400' : 'bg-black/40 text-white border-white/20 hover:bg-white/20'}`}>
                {audioActivado ? '🔊 SILENCIAR AMBIENTE' : '🔇 ACTIVAR SONIDO'}
@@ -160,7 +174,7 @@ export default function Home() {
              </div>
            </header>
 
-           {/* --- 👇 PANEL DEL ESPEJO MÁGICO ACTUALIZADO 👇 --- */}
+           {/* PANEL DEL ESPEJO MÁGICO */}
            {prendaSeleccionadaUrl && !resultadoTryOnUrl && (
              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[90%] md:w-[400px] pointer-events-auto bg-black/80 backdrop-blur-xl p-8 rounded-3xl border border-white/10 shadow-2xl text-white z-20">
                <h2 className="font-montserrat text-xl font-bold tracking-tight mb-1">PROBADOR VIRTUAL DE LUJO</h2>
@@ -182,7 +196,6 @@ export default function Home() {
 
                <button 
                  onClick={ejecutarPruebaVirtual}
-                 // 🔒 BLOQUEO INTELIGENTE: Desactivado hasta que la foto esté subida a Blob y tenga URL
                  disabled={estaProcesando || estaSubiendoFoto || !fotoUsuarioUrl}
                  className={`w-full py-4 rounded-xl text-[11px] font-bold tracking-[0.3em] uppercase transition-all flex items-center justify-center ${estaProcesando ? 'bg-yellow-500/30 text-white/50 cursor-not-allowed' : 'bg-yellow-500 hover:bg-yellow-400 text-black shadow-[0_0_15px_rgba(234,179,8,0.3)]'}`}
                >
@@ -201,7 +214,7 @@ export default function Home() {
              </div>
            )}
 
-           {/* --- RESULTADO FINAL (Sin cambios) --- */}
+           {/* --- RESULTADO FINAL --- */}
            {resultadoTryOnUrl && (
              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-auto bg-black/90 backdrop-blur-3xl p-4 rounded-2xl border border-yellow-500/30 z-30 flex flex-col items-center shadow-[0_0_30px_rgba(234,179,8,0.1)]">
                <img src={resultadoTryOnUrl} alt="Tu resultado mágico" className="max-w-[85vw] max-h-[70vh] rounded-xl object-contain mb-4"/>
@@ -212,11 +225,10 @@ export default function Home() {
              </div>
            )}
 
-           {/* --- BOTÓN DE PRUEBA (Sin cambios, ya usa tu dominio de Vercel) --- */}
+           {/* --- BOTÓN DE PRUEBA --- */}
            {!prendaSeleccionadaUrl && !resultadoTryOnUrl && (
              <div className="absolute top-[20%] right-6 md:right-10 pointer-events-auto">
                <button 
-                 // 🌐 LA URL EXACTA DE TU TRAJE DE BAÑO EN PRODUCCIÓN
                  onClick={() => setPrendaSeleccionadaUrl('https://virtualuxurytulum.com/traje_bano.jpeg')} 
                  className="px-6 py-3 bg-black/60 text-white rounded-full border border-yellow-500/50 hover:border-yellow-500 text-[10px] tracking-widest uppercase backdrop-blur-md transition-all shadow-[0_0_10px_rgba(234,179,8,0.2)]"
                >
@@ -225,7 +237,6 @@ export default function Home() {
              </div>
            )}
 
-           {/* Instrucciones inferiores (Sin cambios) */}
            <div className="w-full p-6 flex justify-center pb-10">
              <div className="bg-black/40 backdrop-blur-md border border-white/10 px-6 py-2 rounded-full shadow-2xl">
                <p className="text-white/80 text-[10px] md:text-xs font-medium tracking-wide">🖱️ Arrastra la pantalla para explorar 360°</p>
