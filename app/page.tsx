@@ -5,7 +5,6 @@ import * as THREE from 'three';
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls, Html, useVideoTexture } from '@react-three/drei';
 // 📦 IMPORTAMOS EL MOTOR DE VERCEL BLOB PARA PRODUCCIÓN
-import { put } from '@vercel/blob';
 
 // === COMPONENTE: LA ESFERA GIGANTE 360 ===
 function Entorno360({ urlVideo, audioActivado }: { urlVideo: string, audioActivado: boolean }) {
@@ -89,32 +88,34 @@ export default function Home() {
     }
   };
 
-  // --- 👇 NUEVO MOTOR DE VERCEL BLOB PARA TELÉFONOS REALES 👇 ---
+  // --- 👇 NUEVO MOTOR: Usa el puente local para hablar con Blob 👇 ---
   const manejarSubidaFoto = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
       setErrorTryOn(null);
-      setEstaSubiendoFoto(true); // Iniciamos animación de carga de selfie
-      setFotoUsuarioUrl(null); // Limpiamos URL anterior
+      setEstaSubiendoFoto(true); 
+      setFotoUsuarioUrl(null); 
 
       try {
-        // 🔒 OPERACIÓN SERVERLESS: Subimos la selfie local a Vercel Blob
-        // 'put' creará un nombre único para la foto y nos devolverá la URL pública.
-        // Tarda milisegundos.
-        const blob = await put(`selfies_tulum/${file.name}`, file, {
-          access: 'public',
-          // 💡 TIP: Vercel lee automáticamente el token secreto de tus Environment Variables que configuramos en la Fase 2
+        // 🌉 Cruzamos el puente hacia nuestro propio servidor
+        const response = await fetch(`/api/upload?filename=${file.name}`, {
+          method: 'POST',
+          body: file,
         });
+
+        const blob = await response.json();
+
+        if (!response.ok) throw new Error('Error en el puente Blob');
 
         // ✅ ¡FOTO LOCAL CONVERTIDA A URL PÚBLICA!
         console.log("Selfie subida con éxito a Blob Matrix:", blob.url);
-        setFotoUsuarioUrl(blob.url); // Guardamos la URL pública en el estado
+        setFotoUsuarioUrl(blob.url); 
 
       } catch (err: any) {
-        console.error("Error subiendo selfie a Blob:", err);
+        console.error("Error subiendo selfie:", err);
         setErrorTryOn('Error interdimensional al subir tu selfie. Intenta de nuevo.');
       } finally {
-        setEstaSubiendoFoto(false); // Terminamos animación de carga
+        setEstaSubiendoFoto(false); 
       }
     }
   };
