@@ -7,9 +7,8 @@ import { OrbitControls, Html, useVideoTexture } from '@react-three/drei';
 
 // === COMPONENTE: LA ESFERA GIGANTE DE VIDEO 360 ===
 function Entorno360({ urlVideo, audioActivado }: { urlVideo: string, audioActivado: boolean }) {
-  // useVideoTexture convierte tu video de Insta360 en el mundo virtual
   const texture = useVideoTexture(urlVideo, { 
-    muted: !audioActivado, // Depende del botón de la interfaz
+    muted: !audioActivado, 
     loop: true, 
     start: true,
     crossOrigin: "Anonymous"
@@ -17,9 +16,7 @@ function Entorno360({ urlVideo, audioActivado }: { urlVideo: string, audioActiva
 
   return (
     <mesh>
-      {/* Esfera gigante. El usuario estará en el centro [0,0,0] */}
       <sphereGeometry args={[500, 60, 40]} />
-      {/* Pintamos el video por ADENTRO de la esfera */}
       <meshBasicMaterial map={texture} side={THREE.BackSide} toneMapped={false} />
     </mesh>
   );
@@ -27,30 +24,87 @@ function Entorno360({ urlVideo, audioActivado }: { urlVideo: string, audioActiva
 
 // === VISTA PRINCIPAL ===
 export default function Home() {
-  // Estados para controlar la transición del intro
+  // --- Estados Originales ---
   const [introTerminada, setIntroTerminada] = useState(false);
   const [desvanecerIntro, setDesvanecerIntro] = useState(false);
-  
-  // Estado para el audio del metaverso
   const [audioActivado, setAudioActivado] = useState(false);
 
-  // 👇 AQUÍ ESTÁN TUS ARCHIVOS DE LA CARPETA PUBLIC 👇
+  // --- 👇 NUEVOS ESTADOS PARA EL ESPEJO MÁGICO 👇 ---
+  const [prendaSeleccionadaUrl, setPrendaSeleccionadaUrl] = useState<string | null>(null);
+  const [fotoUsuarioBase64, setFotoUsuarioBase64] = useState<string | null>(null);
+  const [estaProcesando, setEstaProcesando] = useState(false);
+  const [resultadoTryOnUrl, setResultadoTryOnUrl] = useState<string | null>(null);
+  const [errorTryOn, setErrorTryOn] = useState<string | null>(null);
+
   const URL_INTRO = "/aldea_zama_camino_intro.mp4"; 
   const URL_METAVERSO_360 = "/1er_meta_rest_zama.mp4"; 
 
-  // Función que hace la magia de transición
   const finalizarIntro = () => {
-    setDesvanecerIntro(true); // CSS: opacity a 0
+    setDesvanecerIntro(true); 
     setTimeout(() => {
-      setIntroTerminada(true); // Quita el video por completo después de 1 segundo
+      setIntroTerminada(true); 
     }, 1000);
+  };
+
+  // --- 👇 FUNCIÓN PARA EJECUTAR LA PRUEBA EN LA MATRIZ DE VIOS CODE 👇 ---
+  const ejecutarPruebaVirtual = async () => {
+    if (!prendaSeleccionadaUrl || !fotoUsuarioBase64) {
+      setErrorTryOn('Selecciona una prenda y sube tu foto.');
+      return;
+    }
+
+    setEstaProcesando(true);
+    setErrorTryOn(null);
+    setResultadoTryOnUrl(null);
+
+    try {
+      // 🌐 AQUÍ APUNTAMOS A TU DOMINIO CENTRAL
+      // Nota: Si estás probando todo localmente en tu compu, podrías cambiar esto 
+      // temporalmente a 'http://localhost:PORT/api/youcam-tryon' (el puerto de vios code)
+      const URL_API_VIOS_CODE = 'https://vioscode.io/api/youcam-tryon'; 
+
+      const response = await fetch(URL_API_VIOS_CODE, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          referenceImageUrl: prendaSeleccionadaUrl,
+          userPhotoBase64: fotoUsuarioBase64,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Error de conexión con la Matrix ViOs Code.');
+      }
+
+      setResultadoTryOnUrl(data.results.url);
+
+    } catch (err: any) {
+      setErrorTryOn(err.message);
+    } finally {
+      setEstaProcesando(false);
+    }
+  };
+
+  // Función para convertir la foto del usuario
+  const manejarCambioFoto = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setFotoUsuarioBase64(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
   };
 
   return (
     <main className="relative flex min-h-screen flex-col items-center justify-center bg-black overflow-hidden font-inter selection:bg-yellow-500/30">
       
-      {/* 🎬 1. CAPA DE INTRODUCCIÓN LIMPIA (Z-50) 🎬 */}
-      {/* Sin capas oscuras, sin letras grandes, puro video cinematográfico */}
+      {/* 🎬 1. CAPA DE INTRODUCCIÓN */}
       {!introTerminada && (
         <div className={`absolute inset-0 z-50 bg-black transition-opacity duration-1000 ease-in-out ${desvanecerIntro ? 'opacity-0' : 'opacity-100'}`}>
           <video 
@@ -59,10 +113,8 @@ export default function Home() {
             playsInline
             muted 
             className="w-full h-full object-cover"
-            onEnded={finalizarIntro} // Cuando el video de 13 seg termina, inicia transición
+            onEnded={finalizarIntro}
           />
-          
-          {/* Botón Skip por si el usuario tiene prisa */}
           <button 
             onClick={finalizarIntro}
             className="absolute bottom-10 right-10 text-white/50 hover:text-white text-[10px] tracking-[0.3em] uppercase transition-colors z-50"
@@ -72,29 +124,21 @@ export default function Home() {
         </div>
       )}
 
-      {/* 🌍 2. EL METAVERSO 360 (Z-0) 🌍 */}
-      {/* Se carga silenciosamente en el fondo mientras el usuario ve la intro */}
+      {/* 🌍 2. EL METAVERSO 360 */}
       <div className="absolute inset-0 z-0 bg-black">
         <Canvas camera={{ position: [0, 0, 0.1], fov: 75 }}>
-          <OrbitControls 
-            enableZoom={false} // Desactivamos el zoom para no romper la esfera
-            enablePan={false}
-            rotateSpeed={-0.4} // Giro natural con el mouse/dedo
-          />
-          
+          <OrbitControls enableZoom={false} enablePan={false} rotateSpeed={-0.4} />
           <Suspense fallback={<Html center><div className="text-yellow-500 text-xs tracking-[0.3em] animate-pulse">CARGANDO MATRIZ...</div></Html>}>
              <Entorno360 urlVideo={URL_METAVERSO_360} audioActivado={audioActivado} />
           </Suspense>
         </Canvas>
       </div>
 
-      {/* 🎛️ 3. INTERFAZ DE LUJO (Z-10) - Aparece SOLO cuando termina la intro 🎛️ */}
+      {/* 🎛️ 3. INTERFAZ DE LUJO Y ESPEJO MÁGICO */}
       {introTerminada && (
          <div className="absolute inset-0 pointer-events-none flex flex-col justify-between z-10">
            
-           {/* Header superior */}
            <header className="w-full p-6 md:p-10 flex justify-between items-start">
-             {/* Botón de Sonido (Pointer events auto para que sea clickeable) */}
              <button 
                onClick={() => setAudioActivado(!audioActivado)}
                className={`pointer-events-auto px-5 py-2.5 rounded-full text-[10px] md:text-xs tracking-[0.2em] uppercase transition-all backdrop-blur-md border ${audioActivado ? 'bg-yellow-500/80 text-black border-yellow-400' : 'bg-black/40 text-white border-white/20 hover:bg-white/20'}`}
@@ -102,7 +146,6 @@ export default function Home() {
                {audioActivado ? '🔊 SILENCIAR AMBIENTE' : '🔇 ACTIVAR SONIDO'}
              </button>
 
-             {/* Título de la zona */}
              <div className="text-right">
                <h1 className="font-montserrat text-2xl md:text-4xl font-black tracking-tight text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">
                  ALDEA ZAMA
@@ -113,7 +156,66 @@ export default function Home() {
              </div>
            </header>
 
-           {/* Instrucciones inferiores */}
+           {/* --- 👇 PANEL DEL ESPEJO MÁGICO 👇 --- */}
+           {prendaSeleccionadaUrl && !resultadoTryOnUrl && (
+             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[90%] md:w-[400px] pointer-events-auto bg-black/80 backdrop-blur-xl p-8 rounded-3xl border border-white/10 shadow-2xl text-white z-20">
+               <h2 className="font-montserrat text-xl font-bold tracking-tight mb-1">ESPEJO MÁGICO</h2>
+               <p className="text-yellow-500 text-[10px] tracking-[0.2em] uppercase mb-6">Powered by ViOs Code</p>
+
+               <div className="mb-6 flex justify-center">
+                 <img src={prendaSeleccionadaUrl} alt="Prenda seleccionada" className="w-24 h-32 object-cover border border-white/10 rounded-lg p-1 bg-white/5"/>
+               </div>
+
+               <div className="mb-6">
+                 <label className="block text-[11px] text-white/60 tracking-wider uppercase mb-2">Sube tu foto</label>
+                 <input type="file" accept="image/*" onChange={manejarCambioFoto} className="w-full p-3 bg-black/40 border border-white/10 rounded-xl text-xs text-white/50 file:mr-4 file:py-1.5 file:px-4 file:rounded-full file:border-0 file:text-[10px] file:font-semibold file:bg-yellow-500 file:text-black hover:file:bg-yellow-400 cursor-pointer transition-colors"/>
+               </div>
+
+               <button 
+                 onClick={ejecutarPruebaVirtual}
+                 disabled={estaProcesando || !fotoUsuarioBase64}
+                 className={`w-full py-4 rounded-xl text-[11px] font-bold tracking-[0.3em] uppercase transition-all flex items-center justify-center ${estaProcesando ? 'bg-yellow-500/30 text-white/50 cursor-not-allowed' : 'bg-yellow-500 hover:bg-yellow-400 text-black shadow-[0_0_15px_rgba(234,179,8,0.3)]'}`}
+               >
+                 {estaProcesando ? (
+                   <>
+                     <div className="w-4 h-4 border-2 border-t-transparent border-current rounded-full animate-spin mr-3"/>
+                     PROCESANDO...
+                   </>
+                 ) : (
+                   'PROBAR PRENDA'
+                 )}
+               </button>
+
+               {errorTryOn && <p className="text-red-400 text-[10px] mt-4 text-center uppercase tracking-wider">{errorTryOn}</p>}
+               
+               <button onClick={() => setPrendaSeleccionadaUrl(null)} className="absolute top-5 right-5 text-white/30 hover:text-white transition-colors">✕</button>
+             </div>
+           )}
+
+           {/* --- 👇 RESULTADO FINAL 👇 --- */}
+           {resultadoTryOnUrl && (
+             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-auto bg-black/90 backdrop-blur-3xl p-4 rounded-2xl border border-yellow-500/30 z-30 flex flex-col items-center shadow-[0_0_30px_rgba(234,179,8,0.1)]">
+               <img src={resultadoTryOnUrl} alt="Tu resultado mágico" className="max-w-[85vw] max-h-[70vh] rounded-xl object-contain mb-4"/>
+               <div className="flex gap-4 w-full">
+                 <button onClick={() => setResultadoTryOnUrl(null)} className="flex-1 py-3 bg-white/10 hover:bg-white/20 text-white rounded-xl text-[10px] tracking-widest uppercase transition-colors">Cerrar</button>
+                 <a href={resultadoTryOnUrl} download="Mi_Prueba_Virtualuxury.jpg" target="_blank" rel="noreferrer" className="flex-1 py-3 bg-yellow-500 hover:bg-yellow-400 text-black text-center rounded-xl text-[10px] tracking-widest font-bold uppercase transition-colors">Descargar</a>
+               </div>
+             </div>
+           )}
+
+           {/* --- 👇 BOTÓN DE PRUEBA (Para simular que tocas un producto en 3D) 👇 --- */}
+           {!prendaSeleccionadaUrl && !resultadoTryOnUrl && (
+             <div className="absolute top-[20%] right-6 md:right-10 pointer-events-auto">
+               <button 
+                 // Reemplaza esta URL con la imagen de tu bikini o prenda real
+                 onClick={() => setPrendaSeleccionadaUrl('https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=400&q=80')} 
+                 className="px-6 py-3 bg-black/60 text-white rounded-full border border-yellow-500/50 hover:border-yellow-500 text-[10px] tracking-widest uppercase backdrop-blur-md transition-all shadow-[0_0_10px_rgba(234,179,8,0.2)]"
+               >
+                 ✨ ABRIR ESPEJO MÁGICO
+               </button>
+             </div>
+           )}
+
            <div className="w-full p-6 flex justify-center pb-10">
              <div className="bg-black/40 backdrop-blur-md border border-white/10 px-6 py-2 rounded-full shadow-2xl">
                <p className="text-white/80 text-[10px] md:text-xs font-medium tracking-wide">
