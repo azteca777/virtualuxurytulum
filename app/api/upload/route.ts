@@ -10,9 +10,9 @@ export async function POST(request: Request) {
   }
 
   try {
-    // 🔒 Aquí estamos en el servidor de Vercel, la llave SÍ existe aquí.
     const blob = await put(`selfies_tulum/${filename}`, request.body, {
       access: 'public',
+      allowOverwrite: true, // 🔓 ¡LA CURA PARA EL ERROR 500 DE VERCEL BLOB!
     });
 
     return NextResponse.json(blob);
