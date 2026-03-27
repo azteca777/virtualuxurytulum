@@ -54,8 +54,8 @@ export default function Home() {
     setResultadoTryOnUrl(null);
 
     try {
-      // 🌐 APUNTAMOS AL DOMINIO OFICIAL EN PRODUCCIÓN
-      const URL_API_VIOS_CODE = 'https://vioscode.io/api/youcam-tryon'; 
+      // Usa el dominio nativo de Vercel para saltarte las redirecciones
+      const URL_API_VIOS_CODE = 'https://vios-code.vercel.app/api/youcam-tryon';
 
       const response = await fetch(URL_API_VIOS_CODE, {
         method: 'POST',
