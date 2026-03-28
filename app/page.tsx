@@ -89,11 +89,13 @@ export default function Home() {
         
         console.log("🔍 Estado de la foto:", pollData);
 
-        if (pollData.data?.status === 'done' || pollData.data?.status === 'success') {
+       // 👇 AHORA LEEMOS LOS NOMBRES EXACTOS QUE YOUCAM NOS DEVUELVE 👇
+        if (pollData.data?.task_status === 'done' || pollData.data?.task_status === 'success') {
           terminado = true;
-          setResultadoTryOnUrl(pollData.data?.result_file_url || pollData.data?.result_url);
+          // ¡Aquí está la URL mágica de Amazon S3 que nos mandó YouCam!
+          setResultadoTryOnUrl(pollData.data?.results?.url);
           break;
-        } else if (pollData.data?.status === 'failed') {
+        } else if (pollData.data?.task_status === 'failed') {
           throw new Error('La IA de YouCam no pudo procesar esta foto. Intenta con otra pose.');
         }
 
