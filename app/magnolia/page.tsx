@@ -103,9 +103,24 @@ export default function MagnoliaBoutique() {
   return (
     <main className="min-h-screen bg-[#F9F8F6] text-[#333] font-serif selection:bg-[#E2D5C5]">
       
-      {/* HEADER MINIMALISTA */}
-      <header className="w-full py-10 px-8 flex flex-col items-center border-b border-[#E2D5C5]">
-        <h1 className="text-4xl md:text-5xl font-light tracking-[0.3em] uppercase mb-3">Magnolia</h1>
+      {/* HEADER MINIMALISTA Y LOGOTIPO */}
+      <header className="relative w-full py-10 px-8 flex flex-col items-center border-b border-[#E2D5C5]">
+        
+        {/* BOTÓN DE REGRESO A LA CALLE VIRTUAL */}
+        <button 
+          onClick={() => window.location.href = '/boutiques'}
+          className="absolute top-6 left-6 md:top-10 md:left-10 flex items-center gap-2 text-gray-400 hover:text-[#2A2A2A] text-[9px] md:text-[10px] font-bold tracking-[0.2em] uppercase transition-colors"
+        >
+          ← Volver a la Calle
+        </button>
+
+        {/* EL LOGOTIPO DE LA MARCA */}
+        <img 
+          src="/magnolia.jpeg" 
+          alt="Magnolia Swimwear Logo" 
+          className="h-16 md:h-20 object-contain mb-3 mix-blend-multiply" 
+        />
+        
         <p className="text-[10px] md:text-xs tracking-[0.3em] uppercase text-gray-400">Swimwear / Moda Atemporal</p>
       </header>
 
