@@ -144,7 +144,7 @@ export default function MagnoliaBoutique() {
     const urlFoto = encodeURIComponent(resultadoTryOnUrl);
     
     // REEMPLAZA EL NÚMERO AQUÍ
-    const numeroWhatsApp = "521XXXXXXXXXX"; 
+    const numeroWhatsApp = "5217774492296"; 
     
     let mensaje = t.waMensaje.replace('[PRENDA]', nombrePrenda).replace('[URL]', urlFoto);
     return `https://wa.me/${numeroWhatsApp}?text=${mensaje}`;
