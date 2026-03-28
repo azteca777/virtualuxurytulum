@@ -24,8 +24,8 @@ function Entorno360Boutiques({ urlVideo, audioActivado }: { urlVideo: string, au
 export default function BoutiquesHub() {
   const [audioActivado, setAudioActivado] = useState(false);
 
-  // ⚠️ AQUÍ PONDRÁS LA URL DE TU NUEVO VIDEO 360 PARA LA ZONA DE BOUTIQUES
-  const URL_ZONA_BOUTIQUES_360 = "/boutiques_360_aldea_zama.mp4";
+  // LA URL DE TU VIDEO 360 DE LA ZONA DE BOUTIQUES
+  const URL_ZONA_BOUTIQUES_360 = "/boutiques_360_aldea_zama.mp4"; 
 
   return (
     <main className="relative flex min-h-screen flex-col items-center justify-center bg-black overflow-hidden font-inter selection:bg-yellow-500/30">
@@ -37,15 +37,23 @@ export default function BoutiquesHub() {
           <Suspense fallback={<Html center><div className="text-yellow-500 text-xs tracking-[0.3em] animate-pulse">CARGANDO ZONA COMERCIAL...</div></Html>}>
              <Entorno360Boutiques urlVideo={URL_ZONA_BOUTIQUES_360} audioActivado={audioActivado} />
              
-             {/* 📍 PIN 3D HACIA MAGNOLIA BOUTIQUE */}
+             {/* 📍 PIN 3D HACIA MAGNOLIA BOUTIQUE CON EL LOGO OFICIAL */}
              <Html position={[10, -2, -20]} center>
                 <div className="flex flex-col items-center animate-bounce">
-                  <div className="bg-black/80 backdrop-blur-md border border-yellow-500/50 p-4 rounded-2xl shadow-[0_0_20px_rgba(234,179,8,0.3)] text-center cursor-pointer hover:bg-black transition-colors"
+                  {/* CAJA DEL PIN (Ahora clara para que el logo luzca perfecto) */}
+                  <div className="bg-[#F9F8F6]/95 backdrop-blur-md border border-[#E2D5C5] px-6 py-4 rounded-2xl shadow-2xl text-center cursor-pointer hover:scale-105 transition-all duration-300"
                        onClick={() => window.location.href = '/magnolia'}>
-                    <p className="text-white font-montserrat font-bold text-sm tracking-widest uppercase mb-1">Magnolia</p>
-                    <p className="text-yellow-500 text-[9px] tracking-[0.2em] uppercase">Entrar a Boutique ✨</p>
+                    
+                    {/* AQUÍ ESTÁ LA IMAGEN DEL LOGOTIPO REEMPLAZANDO EL TEXTO */}
+                    <img 
+                      src="/magnolia.jpeg" 
+                      alt="Magnolia Swimwear" 
+                      className="h-8 md:h-12 w-auto object-contain mb-2 mx-auto mix-blend-multiply" 
+                    />
+                    
+                    <p className="text-gray-500 text-[9px] tracking-[0.2em] uppercase font-bold">Entrar a Boutique ✨</p>
                   </div>
-                  <div className="w-1 h-8 bg-gradient-to-b from-yellow-500/80 to-transparent mt-2"></div>
+                  <div className="w-1 h-8 bg-gradient-to-b from-[#F9F8F6]/90 to-transparent mt-2"></div>
                 </div>
              </Html>
              
@@ -57,7 +65,7 @@ export default function BoutiquesHub() {
       <div className="absolute inset-0 pointer-events-none flex flex-col justify-between z-10">
         <header className="w-full p-6 md:p-10 flex justify-between items-start">
           <button 
-            onClick={() => window.location.href = 'https://viosvirtualmetra.com'} // O LA URL DE TU SPLAT AÉREO
+            onClick={() => window.location.href = 'https://viosvirtualmetra.com'} 
             className="pointer-events-auto px-5 py-2.5 rounded-full text-[10px] md:text-xs tracking-[0.2em] uppercase transition-all backdrop-blur-md border bg-black/60 text-white border-white/20 hover:bg-white/20 flex items-center gap-2"
           >
             ← Volver al Mapa Aéreo
@@ -70,7 +78,7 @@ export default function BoutiquesHub() {
         </header>
 
         <div className="w-full p-6 flex justify-center pb-10">
-          <div className="bg-black/40 backdrop-blur-md border border-white/10 px-6 py-2 rounded-full shadow-2xl">
+          <div className="bg-black/40 backdrop-blur-md border border-white/10 px-6 py-2 rounded-full shadow-2xl pointer-events-auto">
             <p className="text-white/80 text-[10px] md:text-xs font-medium tracking-wide">🖱️ Arrastra la pantalla para buscar boutiques</p>
           </div>
         </div>
