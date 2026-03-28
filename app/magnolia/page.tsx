@@ -206,20 +206,34 @@ export default function MagnoliaBoutique() {
               </>
             ) : (
               // VISTA 2: RESULTADO FINAL
-              <div className="flex flex-col items-center w-full animate-in zoom-in-95 duration-500">
-                <div className="relative w-full max-h-[50vh] flex justify-center bg-gray-50 rounded-2xl p-2 mb-6 border border-gray-100">
-                  <img src={resultadoTryOnUrl} alt="Resultado Magnolia" className="max-w-full max-h-[50vh] object-contain rounded-xl shadow-sm"/>
-                </div>
+            <div className="flex flex-col items-center w-full animate-in zoom-in-95 duration-500">
+              <div className="relative w-full max-h-[45vh] flex justify-center bg-gray-50 rounded-2xl p-2 mb-5 border border-gray-100">
+                <img src={resultadoTryOnUrl} alt="Resultado Magnolia" className="max-w-full max-h-[45vh] object-contain rounded-xl shadow-sm"/>
+              </div>
+              
+              <div className="flex flex-col gap-3 w-full">
+                {/* ✨ BOTÓN NUEVO: PEDIR INFORMACIÓN (WHATSAPP) ✨ */}
+                <a 
+                  // ⚠️ Cambia el 521XXXXXXXXXX por el número real de Magnolia
+                  href={`https://wa.me/5217774492296?text=Hola!%20Me%20probé%20el%20modelo%20*${prendaSeleccionada.nombre}*%20en%20tu%20probador%20virtual.%20%0A%0AMira%20cómo%20me%20queda:%20${encodeURIComponent(resultadoTryOnUrl || '')}%0A%0A¡Quiero%20más%20información!`} 
+                  target="_blank" 
+                  rel="noreferrer" 
+                  className="w-full py-4 bg-[#D4C5B3] text-black text-[10px] font-bold text-center uppercase tracking-[0.2em] rounded-2xl hover:bg-[#c4b39e] transition-colors shadow-md flex items-center justify-center gap-2"
+                >
+                  Pedir Información
+                </a>
                 
-                <div className="flex gap-4 w-full">
-                  <button onClick={() => setResultadoTryOnUrl(null)} className="flex-1 py-4 bg-[#F9F8F6] text-gray-600 text-[10px] font-bold uppercase tracking-[0.2em] rounded-2xl hover:bg-gray-200 transition-colors">
+                {/* BOTONES SECUNDARIOS */}
+                <div className="flex gap-3 w-full">
+                  <button onClick={() => setResultadoTryOnUrl(null)} className="flex-1 py-3 bg-[#F9F8F6] text-gray-600 text-[9px] font-bold uppercase tracking-[0.2em] rounded-2xl hover:bg-gray-200 transition-colors">
                     Reintentar
                   </button>
-                  <a href={resultadoTryOnUrl} download="Magnolia_TryOn.jpg" target="_blank" rel="noreferrer" className="flex-1 py-4 bg-[#2A2A2A] text-white text-[10px] font-bold text-center uppercase tracking-[0.2em] rounded-2xl hover:bg-black transition-colors shadow-lg">
+                  <a href={resultadoTryOnUrl} download="Magnolia_TryOn.jpg" target="_blank" rel="noreferrer" className="flex-1 py-3 bg-[#2A2A2A] text-white text-[9px] font-bold text-center uppercase tracking-[0.2em] rounded-2xl hover:bg-black transition-colors shadow-lg">
                     Descargar
                   </a>
                 </div>
               </div>
+            </div>
             )}
 
           </div>
