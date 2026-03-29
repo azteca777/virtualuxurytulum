@@ -63,7 +63,6 @@ function FlechaNavegacion({ posicion, angulo = 0, onClick, hoverText, emoji }: {
 }
 
 export default function BoutiquesHub() {
-  // El nodo inicial ahora es la conexión/intersección
   const [nodoActual, setNodoActual] = useState<'conexion' | 'distrito'>('conexion');
 
   // URLs de Video
@@ -84,27 +83,27 @@ export default function BoutiquesHub() {
                <group>
                  <Entorno360 urlVideo={URL_CONEXION} />
                  
-                 {/* Flecha a Restaurantes */}
+                 {/* Flecha a Restaurantes (Tu ubicación guardada) */}
                  <FlechaNavegacion 
-                    posicion={[-5, -4, -5]} 
+                    posicion={[5, -1.6, 7]} 
                     angulo={Math.PI / 4} 
                     emoji="🍷"
                     hoverText="Ir a Restaurantes"
                     onClick={() => window.location.href = 'https://virtualuxurytulum.com'}
                  />
 
-                 {/* Flecha a Mercado (Tianguis) */}
+                 {/* Flecha a Artesanías (Tu ubicación guardada + Nueva Ruta) */}
                  <FlechaNavegacion 
-                    posicion={[0, -4, 8]} 
+                    posicion={[10, -2.5, -6]} 
                     angulo={Math.PI} 
                     emoji="🤝🛒"
-                    hoverText="Volver al Mercado"
-                    onClick={() => window.location.href = 'https://tianguistulum.com'}
+                    hoverText="Ir a Artesanías"
+                    onClick={() => window.location.href = 'https://tianguistulum.com/artesanias'}
                  />
 
-                 {/* Flecha a Avanzar Distrito de Moda */}
+                 {/* Flecha a Avanzar Distrito de Moda (Tu ubicación guardada) */}
                  <FlechaNavegacion 
-                    posicion={[5, -4, -5]} 
+                    posicion={[10, -2, 2]} 
                     angulo={-Math.PI / 4} 
                     emoji="🛍️"
                     hoverText="Avanzar a Boutiques"
@@ -134,7 +133,6 @@ export default function BoutiquesHub() {
                     </div>
                  </Html>
 
-                 {/* Flecha para regresar a la conexión */}
                  <FlechaNavegacion 
                     posicion={[0, -4, 8]} 
                     angulo={Math.PI} 
@@ -171,7 +169,7 @@ export default function BoutiquesHub() {
 
         <div className="w-full p-6 flex justify-center pb-10">
           <div className="bg-black/40 backdrop-blur-md border border-white/10 px-6 py-2 rounded-full shadow-2xl pointer-events-auto">
-            <p className="text-white/80 text-[10px] md:text-xs font-medium tracking-wide uppercase font-mono">
+            <p className="text-white/80 text-[10px] md:text-xs font-medium tracking-wide uppercase font-mono text-center">
               {nodoActual === 'conexion' ? 'Selecciona una dirección para navegar' : 'Arrastra la pantalla para buscar boutiques'}
             </p>
           </div>
