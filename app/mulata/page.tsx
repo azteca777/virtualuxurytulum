@@ -35,68 +35,62 @@ function FadeIn({ children, delay = 0, className = "" }: { children: React.React
 }
 
 // === EL CATÁLOGO DE MULATA PARA EL TRY-ON ===
+// 🔥 CATÁLOGO ACTUALIZADO CON TUS IMÁGENES 🔥
 const CATALOGO = [
-  { id: 1, nombreEs: 'Mulata Clásico - Miel', nombreEn: 'Mulata Classic - Honey', url: '/im15.jpeg' },
-  { id: 2, nombreEs: 'Mulata Clásico - Oliva', nombreEn: 'Mulata Classic - Olive', url: '/im16.jpeg' },
-  { id: 3, nombreEs: 'Mulata Riviera - Negro', nombreEn: 'Mulata Riviera - Black', url: '/im17.jpeg' },
-  { id: 4, nombreEs: 'Mulata Riviera - Arena', nombreEn: 'Mulata Riviera - Sand', url: '/im18.jpeg' },
+  { id: 1, nombreEs: 'Mulata Clásico - Miel', nombreEn: 'Mulata Classic - Honey', url: '/im7.jpeg' },
+  { id: 2, nombreEs: 'Mulata Clásico - Oliva', nombreEn: 'Mulata Classic - Olive', url: '/im8.jpeg' },
+  { id: 3, nombreEs: 'Mulata Riviera - Negro', nombreEn: 'Mulata Riviera - Black', url: '/im9.jpeg' },
+  { id: 4, nombreEs: 'Mulata Riviera - Arena', nombreEn: 'Mulata Riviera - Sand', url: '/im14.jpeg' },
+  { id: 5, nombreEs: 'Edición Especial - Paja', nombreEn: 'Special Edition - Straw', url: '/im15.jpeg' },
+  { id: 6, nombreEs: 'Edición Especial - Carbón', nombreEn: 'Special Edition - Charcoal', url: '/im16.jpeg' },
+  { id: 7, nombreEs: 'Mulata Premium - Tabaco', nombreEn: 'Mulata Premium - Tobacco', url: '/im17.jpeg' },
+  { id: 8, nombreEs: 'Mulata Premium - Piedra', nombreEn: 'Mulata Premium - Stone', url: '/im18.jpeg' },
 ];
 
 export default function MulataBoutique() {
   const [idioma, setIdioma] = useState<'es' | 'en'>('es');
   
-  // --- ESTADOS DEL PROBADOR VIRTUAL ---
+  // Estados Try-On
   const [fotoUsuarioUrl, setFotoUsuarioUrl] = useState<string | null>(null); 
   const [prendaSeleccionada, setPrendaSeleccionada] = useState<any | null>(null);
   const [estaProcesando, setEstaProcesando] = useState(false);
   const [estaSubiendoFoto, setEstaSubiendoFoto] = useState(false); 
   const [resultadoTryOnUrl, setResultadoTryOnUrl] = useState<string | null>(null);
   const [errorTryOn, setErrorTryOn] = useState<string | null>(null);
-  const [generoUsuario, setGeneroUsuario] = useState('male'); // 👈 Estado para el género
 
-  // --- MOTOR DE CONEXIÓN A VIOS CODE (YOUCAM) ---
   const ejecutarPruebaVirtual = async () => {
     if (!fotoUsuarioUrl || !prendaSeleccionada) {
-      setErrorTryOn(idioma === 'es' ? 'Falta tu foto o la prenda.' : 'Missing photo or garment.'); return;
+      setErrorTryOn('Falta tu foto o la prenda.'); return;
     }
     setEstaProcesando(true); setErrorTryOn(null); setResultadoTryOnUrl(null);
     try {
       const URL_API_VIOS_CODE = 'https://vios-code.vercel.app/api/youcam-tryon'; 
-      // Construimos la URL pública completa de la imagen local del sombrero
-      const prendaPublicUrl = new URL(prendaSeleccionada.url, window.location.origin).href;
-
       const response = await fetch(URL_API_VIOS_CODE, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ 
-          src_file_url: fotoUsuarioUrl, 
-          ref_file_url: prendaPublicUrl, 
-          tipoPrenda: 'hat', // 🎩 PARÁMETRO CLAVE PARA SOMBREROS
-          gender: generoUsuario // 👈 ENVIAMOS EL GÉNERO
-        }),
+        body: JSON.stringify({ src_file_url: fotoUsuarioUrl, ref_file_url: prendaSeleccionada.url, tipoPrenda: 'cloth' }), // Mantengo 'cloth' según instrucciones previas
       });
       const data = await response.json();
       if (!response.ok) throw new Error(data.error || 'Error.');
       const taskId = data.data?.task_id;
-      if (!taskId) throw new Error('Error al generar ticket.');
+      if (!taskId) throw new Error('Error.');
 
       let terminado = false; let intentos = 0;
       while (!terminado && intentos < 20) { 
         await new Promise(res => setTimeout(res, 2000)); 
-        const pollRes = await fetch(`${URL_API_VIOS_CODE}?taskId=${taskId}&tipoPrenda=hat`);
+        const pollRes = await fetch(`${URL_API_VIOS_CODE}?taskId=${taskId}`);
         const pollData = await pollRes.json();
         if (pollData.data?.task_status === 'done' || pollData.data?.task_status === 'success') {
           terminado = true; setResultadoTryOnUrl(pollData.data?.results?.url); break;
         } else if (pollData.data?.task_status === 'failed') {
-          throw new Error(idioma === 'es' ? 'La IA no pudo procesar esta foto. Asegúrate de que tu rostro se vea bien.' : 'AI could not process this photo. Make sure your face is clearly visible.');
+          throw new Error('La IA no pudo procesar esta foto.');
         }
         intentos++;
       }
-      if (!terminado) throw new Error(idioma === 'es' ? 'Tiempo de espera agotado.' : 'Timeout reached.');
+      if (!terminado) throw new Error('Tiempo de espera agotado.');
     } catch (err: any) { setErrorTryOn(err.message); } finally { setEstaProcesando(false); }
   };
 
-  // --- MOTOR DE SUBIDA A BLOB ---
   const manejarSubidaFoto = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
@@ -106,15 +100,14 @@ export default function MulataBoutique() {
         const blob = await response.json();
         if (!response.ok) throw new Error('Error Blob');
         setFotoUsuarioUrl(blob.url); 
-      } catch (err: any) { setErrorTryOn(idioma === 'es' ? 'Error al subir foto.' : 'Error uploading photo.'); } finally { setEstaSubiendoFoto(false); }
+      } catch (err: any) { setErrorTryOn('Error al subir foto.'); } finally { setEstaSubiendoFoto(false); }
     }
   };
 
   const generarLinkWhatsApp = () => {
     if (!prendaSeleccionada || !resultadoTryOnUrl) return "#";
-    const nombrePrenda = idioma === 'es' ? prendaSeleccionada.nombreEs : prendaSeleccionada.nombreEn;
     const urlFoto = encodeURIComponent(resultadoTryOnUrl);
-    return `https://wa.me/5217774492296?text=¡Hola! Me probé el sombrero *${nombrePrenda}* en su boutique virtual. %0A%0AMira cómo me queda: ${urlFoto} %0A%0A¡Me interesa comprarlo!`;
+    return `https://wa.me/5219842537197?text=¡Hola! Me probé el sombrero ${prendaSeleccionada.nombreEs} en su boutique virtual. Mira cómo me queda: ${urlFoto} ¡Quiero más información!`;
   };
 
   return (
@@ -238,6 +231,7 @@ export default function MulataBoutique() {
             <h2 className="text-5xl md:text-7xl font-serif leading-tight mb-12 text-[#2C4132]">
               Mezcla de<br/>Culturas
             </h2>
+
             <p className="text-[#4A5D4E] text-lg leading-relaxed mb-6">
               Mulata nace de la convicción de que la belleza más auténtica surge cuando las culturas se encuentran, se mezclan y se transforman. Cada sombrero es el resultado de ese diálogo: técnicas artesanales heredadas de distintas tradiciones, materiales seleccionados con respeto por su origen, y un diseño que no pertenece a un solo lugar, sino a todos a la vez.
             </p>
@@ -379,11 +373,13 @@ export default function MulataBoutique() {
             <p className="text-[#4A5D4E] uppercase tracking-widest text-sm">Pruébate nuestra colección desde donde estés</p>
           </div>
           
+          {/* 🔥 CATÁLOGO CON LAS NUEVAS IMÁGENES 🔥 */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
             {CATALOGO.map((item) => (
               <div key={item.id} className="group cursor-pointer flex flex-col items-center" onClick={() => setPrendaSeleccionada(item)}>
                 <div className="w-full aspect-[3/4] overflow-hidden bg-[#F4EFE6] rounded-sm mb-6 relative border border-transparent group-hover:border-[#2C4132] transition-colors duration-500">
-                  <Image src={item.url} alt={item.nombreEs} fill className="object-cover group-hover:scale-105 transition-transform duration-1000 ease-out"/>
+                  {/* Se ajustó el object-fit para los sombreros */}
+                  <Image src={item.url} alt={item.nombreEs} fill className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000 ease-out"/>
                   
                   <div className="absolute inset-0 bg-[#2C4132]/10 backdrop-blur-sm flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-500">
                     <span className="bg-[#2C4132] text-white px-8 py-4 text-[10px] font-sans uppercase tracking-[0.2em] shadow-xl transform translate-y-4 group-hover:translate-y-0 transition-all duration-500">
@@ -419,22 +415,6 @@ export default function MulataBoutique() {
                 </div>
                 
                 <div className="w-full mb-8 font-sans">
-                  {/* Selector de Género adaptado al estilo Mulata */}
-                  <div className="w-full flex justify-center gap-4 mb-6">
-                    <button 
-                      onClick={() => setGeneroUsuario('male')}
-                      className={`px-5 py-2 text-[10px] rounded-full uppercase tracking-widest transition-all font-bold ${generoUsuario === 'male' ? 'bg-[#2C4132] text-white shadow-[0_0_10px_rgba(44,65,50,0.3)]' : 'bg-transparent border border-[#2C4132]/30 text-[#4A5D4E] hover:bg-[#F4EFE6]'}`}
-                    >
-                      👨 {idioma === 'es' ? 'Hombre' : 'Male'}
-                    </button>
-                    <button 
-                      onClick={() => setGeneroUsuario('female')}
-                      className={`px-5 py-2 text-[10px] rounded-full uppercase tracking-widest transition-all font-bold ${generoUsuario === 'female' ? 'bg-[#2C4132] text-white shadow-[0_0_10px_rgba(44,65,50,0.3)]' : 'bg-transparent border border-[#2C4132]/30 text-[#4A5D4E] hover:bg-[#F4EFE6]'}`}
-                    >
-                      👩 {idioma === 'es' ? 'Mujer' : 'Female'}
-                    </button>
-                  </div>
-
                   <label className="block text-[10px] text-[#4A5D4E] tracking-widest uppercase mb-3 text-center font-bold">1. Sube una foto retrato</label>
                   
                   {estaSubiendoFoto ? (
