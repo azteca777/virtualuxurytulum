@@ -167,16 +167,33 @@ export default function BernarditaBoutique() {
   return (
     <main className="min-h-screen bg-white text-[#333] font-serif selection:bg-[#EAE0D5]">
       
-      {/* HEADER MINIMALISTA Y LOGOTIPO */}
-      <header className="relative w-full py-8 px-8 flex flex-col items-center border-b border-gray-100">
-        <button onClick={() => window.location.href = '/boutiques'} className="absolute top-6 left-6 md:top-10 md:left-10 flex items-center gap-2 text-gray-400 hover:text-[#2A2A2A] text-[9px] md:text-[10px] font-bold tracking-[0.2em] uppercase transition-colors">
+      {/* 👇 HEADER MODIFICADO CON FONDO ROSA Y LOGO GIGANTE 👇 */}
+      <header className="relative w-full py-16 px-8 flex flex-col items-center bg-[#EBD4D4] border-b border-[#d8b8b8]">
+        
+        {/* Botón Volver */}
+        <button onClick={() => window.location.href = '/boutiques'} className="absolute top-6 left-6 md:top-10 md:left-10 flex items-center gap-2 text-[#6e5a5a] hover:text-black text-[9px] md:text-[10px] font-bold tracking-[0.2em] uppercase transition-colors">
           {t.volver}
         </button>
-        <button onClick={() => setIdioma(idioma === 'es' ? 'en' : 'es')} className="absolute top-6 right-6 md:top-10 md:right-10 flex items-center gap-2 border border-gray-200 px-4 py-2 rounded-full text-gray-500 hover:bg-gray-100 hover:text-black text-[9px] md:text-[10px] font-bold tracking-[0.2em] uppercase transition-all">
+
+        {/* Botón Idioma (Ajustado para verse bien en el fondo rosa) */}
+        <button 
+          onClick={() => setIdioma(idioma === 'es' ? 'en' : 'es')} 
+          className="absolute top-6 right-6 md:top-10 md:right-10 flex items-center gap-2 border border-[#d8b8b8] px-4 py-2 rounded-full text-[#6e5a5a] bg-white/50 hover:bg-white hover:text-black text-[9px] md:text-[10px] font-bold tracking-[0.2em] uppercase transition-all shadow-sm"
+        >
           {idioma === 'es' ? '🇺🇸 EN' : '🇲🇽 ES'}
         </button>
-        <img src="/bernardita.jpeg" alt="Bernardita Swimwear" className="h-14 md:h-16 object-contain mb-2 mix-blend-multiply" />
-        <p className="text-[10px] md:text-xs tracking-[0.3em] uppercase text-gray-400 text-center">{t.subtitulo}</p>
+
+        {/* Logotipo Gigante */}
+        <img 
+          src="/bernardita.jpeg" 
+          alt="Bernardita Swimwear" 
+          className="h-40 md:h-48 object-contain mb-4 mix-blend-multiply drop-shadow-md transition-transform duration-500 hover:scale-105" 
+        />
+        
+        {/* Subtítulo */}
+        <p className="text-[10px] md:text-xs tracking-[0.3em] uppercase text-[#8e7a7a] font-bold text-center">
+          {t.subtitulo}
+        </p>
       </header>
 
       {/* HISTORIA DE LA MARCA */}
@@ -232,13 +249,13 @@ export default function BernarditaBoutique() {
       <section className="max-w-6xl mx-auto px-6 pb-24 bg-[#FDFBF7] pt-16 rounded-t-3xl border-t border-gray-100">
         <div className="text-center mb-12">
           <h2 className="text-xl md:text-2xl uppercase tracking-[0.2em] font-light text-gray-800">{t.tituloProbador}</h2>
-          <div className="w-12 h-px bg-gray-300 mx-auto mt-4"></div>
+          <div className="w-12 h-px bg-[#EBD4D4] mx-auto mt-4"></div>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
           {CATALOGO_PROBADOR.map((item) => (
             <div key={item.id} className="group cursor-pointer flex flex-col items-center" onClick={() => setPrendaSeleccionada(item)}>
-              <div className="w-full aspect-[3/4] overflow-hidden bg-[#F4EFEB] rounded-xl mb-5 shadow-sm relative">
+              <div className="w-full aspect-[3/4] overflow-hidden bg-[#F4EFEB] rounded-xl mb-5 shadow-sm relative border border-transparent group-hover:border-[#EBD4D4] transition-colors duration-300">
                 <img src={item.url} alt={item.nombreEs} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000 ease-out"/>
                 
                 <div className="absolute inset-0 bg-black/10 backdrop-blur-[2px] flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-500">
@@ -259,7 +276,7 @@ export default function BernarditaBoutique() {
       {/* --- EL ESPEJO MÁGICO (MODAL PARA LOS 8 TRAJES) --- */}
       {prendaSeleccionada && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-md p-4 animate-in fade-in duration-300">
-          <div className="bg-white w-full max-w-sm md:max-w-md p-8 md:p-10 rounded-3xl shadow-2xl relative flex flex-col items-center">
+          <div className="bg-white w-full max-w-sm md:max-w-md p-8 md:p-10 rounded-3xl shadow-2xl relative flex flex-col items-center border border-[#EBD4D4]">
             
             <button onClick={() => {setPrendaSeleccionada(null); setResultadoTryOnUrl(null); setFotoUsuarioUrl(null); setErrorTryOn(null);}} className="absolute top-5 right-5 w-8 h-8 flex items-center justify-center bg-gray-100 rounded-full text-gray-400 hover:text-black hover:bg-gray-200 transition-colors">✕</button>
             
@@ -276,7 +293,7 @@ export default function BernarditaBoutique() {
                   <label className="block text-[10px] text-gray-500 tracking-widest uppercase mb-3 text-center font-bold font-sans">{t.paso1}</label>
                   
                   {estaSubiendoFoto ? (
-                    <div className="w-full p-4 bg-gray-50 text-[10px] uppercase tracking-widest text-gray-400 text-center animate-pulse border border-gray-100 rounded-2xl font-sans">{t.cargandoFoto}</div>
+                    <div className="w-full p-4 bg-[#FDFBF7] text-[10px] uppercase tracking-widest text-gray-400 text-center animate-pulse border border-gray-100 rounded-2xl font-sans">{t.cargandoFoto}</div>
                   ) : (
                     <div className="relative w-full">
                       <input type="file" accept="image/*" onChange={manejarSubidaFoto} className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"/>
@@ -302,12 +319,12 @@ export default function BernarditaBoutique() {
                 </div>
                 
                 <div className="flex flex-col gap-3 w-full">
-                  <a href={generarLinkWhatsApp()} target="_blank" rel="noreferrer" className="w-full py-4 bg-[#EAE0D5] text-black text-[10px] font-bold font-sans text-center uppercase tracking-[0.2em] rounded-2xl hover:bg-[#d8cbbd] transition-colors shadow-md flex items-center justify-center">
+                  <a href={generarLinkWhatsApp()} target="_blank" rel="noreferrer" className="w-full py-4 bg-[#EBD4D4] text-black text-[10px] font-bold font-sans text-center uppercase tracking-[0.2em] rounded-2xl hover:bg-[#d8b8b8] transition-colors shadow-md flex items-center justify-center">
                     {t.pedirInfo}
                   </a>
                   
                   <div className="flex gap-3 w-full">
-                    <button onClick={() => setResultadoTryOnUrl(null)} className="flex-1 py-3 bg-[#FDFBF7] text-gray-600 text-[9px] font-bold font-sans uppercase tracking-[0.2em] rounded-2xl hover:bg-gray-200 transition-colors">
+                    <button onClick={() => setResultadoTryOnUrl(null)} className="flex-1 py-3 bg-[#FDFBF7] text-gray-600 text-[9px] font-bold font-sans uppercase tracking-[0.2em] rounded-2xl hover:bg-[#EBD4D4] transition-colors">
                       {t.reintentar}
                     </button>
                     <a href={resultadoTryOnUrl} download="Bernardita_TryOn.jpg" target="_blank" rel="noreferrer" className="flex-1 py-3 bg-[#2A2A2A] text-white text-[9px] font-bold font-sans text-center uppercase tracking-[0.2em] rounded-2xl hover:bg-black transition-colors shadow-lg">
