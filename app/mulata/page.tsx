@@ -118,11 +118,11 @@ export default function MulataBoutique() {
     // PALETA TERRÁNEA: Fondos blancos cálidos, texto verde oliva oscuro
     <main className="min-h-screen bg-[#FDFBF7] text-[#2C4132] font-serif selection:bg-[#2C4132] selection:text-white">
       
-      {/* NAVEGACIÓN */}
+     {/* NAVEGACIÓN */}
       <nav className="absolute top-0 w-full p-8 flex justify-between items-center z-50 mix-blend-difference">
-        <NextLink href="/tulum" className="text-sm tracking-widest font-sans font-semibold uppercase hover:opacity-70 transition-opacity text-[#2C4132]">
+        <button onClick={() => window.location.href = '/boutiques'} className="text-sm tracking-widest font-sans font-semibold uppercase hover:opacity-70 transition-opacity text-[#2C4132] cursor-pointer">
           ← Volver
-        </NextLink>
+        </button>
         <button onClick={() => setIdioma(idioma === 'es' ? 'en' : 'es')} className="text-xs font-sans border border-[#2C4132] text-[#2C4132] px-4 py-2 rounded-full tracking-widest hover:bg-[#2C4132] hover:text-white transition-all">
           {idioma === 'es' ? 'EN' : 'ES'}
         </button>
