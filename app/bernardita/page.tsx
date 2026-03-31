@@ -167,31 +167,32 @@ export default function BernarditaBoutique() {
   return (
     <main className="min-h-screen bg-white text-[#333] font-serif selection:bg-[#EAE0D5]">
       
-      {/* 👇 HEADER MODIFICADO CON FONDO ROSA Y LOGO GIGANTE 👇 */}
-      <header className="relative w-full py-16 px-8 flex flex-col items-center bg-[#EBD4D4] border-b border-[#d8b8b8]">
+      {/* 👇 HEADER MODIFICADO CON FONDO ROSA MEXICANO 👇 */}
+      {/* 🎨 Cambia el bg-[#C4346E] por tu color exacto si es necesario 🎨 */}
+      <header className="relative w-full py-4 px-2 flex flex-col items-center bg-[#C4346E] border-b border-black/10">
         
-        {/* Botón Volver */}
-        <button onClick={() => window.location.href = '/boutiques'} className="absolute top-6 left-6 md:top-10 md:left-10 flex items-center gap-2 text-[#6e5a5a] hover:text-black text-[9px] md:text-[10px] font-bold tracking-[0.2em] uppercase transition-colors">
+        {/* Botón Volver (Ahora en blanco) */}
+        <button onClick={() => window.location.href = '/boutiques'} className="absolute top-6 left-6 md:top-10 md:left-10 flex items-center gap-2 text-white/80 hover:text-white text-[9px] md:text-[10px] font-bold tracking-[0.2em] uppercase transition-colors">
           {t.volver}
         </button>
 
-        {/* Botón Idioma (Ajustado para verse bien en el fondo rosa) */}
+        {/* Botón Idioma (Ajustado a blanco y fondo semi-transparente) */}
         <button 
           onClick={() => setIdioma(idioma === 'es' ? 'en' : 'es')} 
-          className="absolute top-6 right-6 md:top-10 md:right-10 flex items-center gap-2 border border-[#d8b8b8] px-4 py-2 rounded-full text-[#6e5a5a] bg-white/50 hover:bg-white hover:text-black text-[9px] md:text-[10px] font-bold tracking-[0.2em] uppercase transition-all shadow-sm"
+          className="absolute top-6 right-6 md:top-10 md:right-10 flex items-center gap-2 border border-white/30 px-4 py-2 rounded-full text-white bg-white/10 hover:bg-white hover:text-[#C4346E] text-[9px] md:text-[10px] font-bold tracking-[0.2em] uppercase transition-all shadow-sm"
         >
           {idioma === 'es' ? '🇺🇸 EN' : '🇲🇽 ES'}
         </button>
 
-        {/* Logotipo Gigante */}
+        {/* Logotipo Gigante (Sin el efecto multiply para que no se oscurezca) */}
         <img 
-          src="/bernardita.jpeg" 
+          src="/logo_berni.jpeg" 
           alt="Bernardita Swimwear" 
-          className="h-40 md:h-48 object-contain mb-4 mix-blend-multiply drop-shadow-md transition-transform duration-500 hover:scale-105" 
+          className="h-15 md:h-17 object-contain mb-2 drop-shadow-md transition-transform duration-500 hover:scale-105" 
         />
         
-        {/* Subtítulo */}
-        <p className="text-[10px] md:text-xs tracking-[0.3em] uppercase text-[#8e7a7a] font-bold text-center">
+        {/* Subtítulo (Ahora en blanco) */}
+        <p className="text-[10px] md:text-xs tracking-[0.3em] uppercase text-white/90 font-bold text-center">
           {t.subtitulo}
         </p>
       </header>
