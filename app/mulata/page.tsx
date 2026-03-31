@@ -37,14 +37,14 @@ function FadeIn({ children, delay = 0, className = "" }: { children: React.React
 // === EL CATÁLOGO DE MULATA PARA EL TRY-ON ===
 // 🔥 CATÁLOGO ACTUALIZADO CON TUS IMÁGENES 🔥
 const CATALOGO = [
-  { id: 1, nombreEs: 'Mulata Clásico - Miel', nombreEn: 'Mulata Classic - Honey', url: '/im7.jpeg' },
-  { id: 2, nombreEs: 'Mulata Clásico - Oliva', nombreEn: 'Mulata Classic - Olive', url: '/im8.jpeg' },
-  { id: 3, nombreEs: 'Mulata Riviera - Negro', nombreEn: 'Mulata Riviera - Black', url: '/im9.jpeg' },
-  { id: 4, nombreEs: 'Mulata Riviera - Arena', nombreEn: 'Mulata Riviera - Sand', url: '/im14.jpeg' },
-  { id: 5, nombreEs: 'Edición Especial - Paja', nombreEn: 'Special Edition - Straw', url: '/im15.jpeg' },
-  { id: 6, nombreEs: 'Edición Especial - Carbón', nombreEn: 'Special Edition - Charcoal', url: '/im16.jpeg' },
-  { id: 7, nombreEs: 'Mulata Premium - Tabaco', nombreEn: 'Mulata Premium - Tobacco', url: '/im17.jpeg' },
-  { id: 8, nombreEs: 'Mulata Premium - Piedra', nombreEn: 'Mulata Premium - Stone', url: '/im18.jpeg' },
+  { id: 1, nombreEs: 'Mulata Clásico - Miel', nombreEn: 'Mulata Classic - Honey', url: 'https://grutgbujoy4xc00c.public.blob.vercel-storage.com/im7.jpeg' },
+  { id: 2, nombreEs: 'Mulata Clásico - Oliva', nombreEn: 'Mulata Classic - Olive', url: 'https://grutgbujoy4xc00c.public.blob.vercel-storage.com/im8.jpeg' },
+  { id: 3, nombreEs: 'Mulata Riviera - Negro', nombreEn: 'Mulata Riviera - Black', url: 'https://grutgbujoy4xc00c.public.blob.vercel-storage.com/im9.jpeg' },
+  { id: 4, nombreEs: 'Mulata Riviera - Arena', nombreEn: 'Mulata Riviera - Sand', url: 'https://grutgbujoy4xc00c.public.blob.vercel-storage.com/im14.jpeg' },
+  { id: 5, nombreEs: 'Edición Especial - Paja', nombreEn: 'Special Edition - Straw', url: 'https://grutgbujoy4xc00c.public.blob.vercel-storage.com/im15.jpeg' },
+  { id: 6, nombreEs: 'Edición Especial - Carbón', nombreEn: 'Special Edition - Charcoal', url: 'https://grutgbujoy4xc00c.public.blob.vercel-storage.com/im16.jpeg' },
+  { id: 7, nombreEs: 'Mulata Premium - Tabaco', nombreEn: 'Mulata Premium - Tobacco', url: 'https://grutgbujoy4xc00c.public.blob.vercel-storage.com/im17.jpeg' },
+  { id: 8, nombreEs: 'Mulata Premium - Piedra', nombreEn: 'Mulata Premium - Stone', url: 'https://grutgbujoy4xc00c.public.blob.vercel-storage.com/im18.jpeg' },
 ];
 
 export default function MulataBoutique() {
@@ -57,6 +57,8 @@ export default function MulataBoutique() {
   const [estaSubiendoFoto, setEstaSubiendoFoto] = useState(false); 
   const [resultadoTryOnUrl, setResultadoTryOnUrl] = useState<string | null>(null);
   const [errorTryOn, setErrorTryOn] = useState<string | null>(null);
+  // 🔥 Agregado estado de género 🔥
+  const [generoUsuario, setGeneroUsuario] = useState('male'); 
 
   const ejecutarPruebaVirtual = async () => {
     if (!fotoUsuarioUrl || !prendaSeleccionada) {
@@ -68,7 +70,8 @@ export default function MulataBoutique() {
       const response = await fetch(URL_API_VIOS_CODE, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ src_file_url: fotoUsuarioUrl, ref_file_url: prendaSeleccionada.url, tipoPrenda: 'cloth' }), // Mantengo 'cloth' según instrucciones previas
+        // 🔥 Enviamos tipoPrenda: 'hat' y gender 🔥
+        body: JSON.stringify({ src_file_url: fotoUsuarioUrl, ref_file_url: prendaSeleccionada.url, tipoPrenda: 'hat', gender: generoUsuario }), 
       });
       const data = await response.json();
       if (!response.ok) throw new Error(data.error || 'Error.');
@@ -76,9 +79,10 @@ export default function MulataBoutique() {
       if (!taskId) throw new Error('Error.');
 
       let terminado = false; let intentos = 0;
-      while (!terminado && intentos < 20) { 
+      while (!terminado && intentos < 35) { 
         await new Promise(res => setTimeout(res, 2000)); 
-        const pollRes = await fetch(`${URL_API_VIOS_CODE}?taskId=${taskId}`);
+        // 🔥 Consulta GET con tipoPrenda=hat 🔥
+        const pollRes = await fetch(`${URL_API_VIOS_CODE}?taskId=${taskId}&tipoPrenda=hat`);
         const pollData = await pollRes.json();
         if (pollData.data?.task_status === 'done' || pollData.data?.task_status === 'success') {
           terminado = true; setResultadoTryOnUrl(pollData.data?.results?.url); break;
@@ -116,7 +120,7 @@ export default function MulataBoutique() {
       
       {/* NAVEGACIÓN */}
       <nav className="absolute top-0 w-full p-8 flex justify-between items-center z-50 mix-blend-difference">
-        <NextLink href="/luxury/tulum" className="text-sm tracking-widest font-sans font-semibold uppercase hover:opacity-70 transition-opacity text-[#2C4132]">
+        <NextLink href="/tulum" className="text-sm tracking-widest font-sans font-semibold uppercase hover:opacity-70 transition-opacity text-[#2C4132]">
           ← Volver
         </NextLink>
         <button onClick={() => setIdioma(idioma === 'es' ? 'en' : 'es')} className="text-xs font-sans border border-[#2C4132] text-[#2C4132] px-4 py-2 rounded-full tracking-widest hover:bg-[#2C4132] hover:text-white transition-all">
@@ -373,12 +377,10 @@ export default function MulataBoutique() {
             <p className="text-[#4A5D4E] uppercase tracking-widest text-sm">Pruébate nuestra colección desde donde estés</p>
           </div>
           
-          {/* 🔥 CATÁLOGO CON LAS NUEVAS IMÁGENES 🔥 */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
             {CATALOGO.map((item) => (
               <div key={item.id} className="group cursor-pointer flex flex-col items-center" onClick={() => setPrendaSeleccionada(item)}>
                 <div className="w-full aspect-[3/4] overflow-hidden bg-[#F4EFE6] rounded-sm mb-6 relative border border-transparent group-hover:border-[#2C4132] transition-colors duration-500">
-                  {/* Se ajustó el object-fit para los sombreros */}
                   <Image src={item.url} alt={item.nombreEs} fill className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000 ease-out"/>
                   
                   <div className="absolute inset-0 bg-[#2C4132]/10 backdrop-blur-sm flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-500">
@@ -415,6 +417,22 @@ export default function MulataBoutique() {
                 </div>
                 
                 <div className="w-full mb-8 font-sans">
+                  {/* 🔥 SELECTOR DE GÉNERO AÑADIDO Y ESTILIZADO PARA MULATA 🔥 */}
+                  <div className="w-full flex justify-center gap-4 mb-6">
+                    <button 
+                      onClick={() => setGeneroUsuario('male')}
+                      className={`px-5 py-2 text-[10px] rounded-full uppercase tracking-widest transition-all font-bold ${generoUsuario === 'male' ? 'bg-[#2C4132] text-white shadow-[0_0_10px_rgba(44,65,50,0.3)]' : 'bg-transparent border border-[#2C4132]/30 text-[#4A5D4E] hover:bg-[#F4EFE6]'}`}
+                    >
+                      👨 {idioma === 'es' ? 'Hombre' : 'Male'}
+                    </button>
+                    <button 
+                      onClick={() => setGeneroUsuario('female')}
+                      className={`px-5 py-2 text-[10px] rounded-full uppercase tracking-widest transition-all font-bold ${generoUsuario === 'female' ? 'bg-[#2C4132] text-white shadow-[0_0_10px_rgba(44,65,50,0.3)]' : 'bg-transparent border border-[#2C4132]/30 text-[#4A5D4E] hover:bg-[#F4EFE6]'}`}
+                    >
+                      👩 {idioma === 'es' ? 'Mujer' : 'Female'}
+                    </button>
+                  </div>
+
                   <label className="block text-[10px] text-[#4A5D4E] tracking-widest uppercase mb-3 text-center font-bold">1. Sube una foto retrato</label>
                   
                   {estaSubiendoFoto ? (
