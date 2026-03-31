@@ -116,14 +116,27 @@ export default function MulataBoutique() {
 
   return (
     // PALETA TERRÁNEA: Fondos blancos cálidos, texto verde oliva oscuro
-    <main className="min-h-screen bg-[#FDFBF7] text-[#2C4132] font-serif selection:bg-[#2C4132] selection:text-white">
+    <main className="min-h-screen bg-[#FDFBF7] text-[#2C4132] font-serif selection:bg-[#2C4132] selection:text-white relative">
       
      {/* NAVEGACIÓN */}
       <nav className="absolute top-0 w-full p-8 flex justify-between items-center z-50 mix-blend-difference">
-        <button onClick={() => window.location.href = '/boutiques'} className="text-sm tracking-widest font-sans font-semibold uppercase hover:opacity-70 transition-opacity text-[#2C4132] cursor-pointer">
+        <button onClick={() => window.location.href = '/boutiques'} className="text-sm tracking-widest font-sans font-semibold uppercase hover:opacity-70 transition-opacity text-[#2C4132] cursor-pointer z-10">
           ← Volver
         </button>
-        <button onClick={() => setIdioma(idioma === 'es' ? 'en' : 'es')} className="text-xs font-sans border border-[#2C4132] text-[#2C4132] px-4 py-2 rounded-full tracking-widest hover:bg-[#2C4132] hover:text-white transition-all">
+        
+        {/* 🔥 LOGO MULATA AÑADIDO AL CENTRO Y MÁS ABAJO 🔥 */}
+        <div className="absolute left-1/2 top-10 transform -translate-x-1/2 flex justify-center items-center pointer-events-none">
+          <Image 
+            src="/mulata_bw.jpeg" 
+            alt="Mulata Logo" 
+            width={240} 
+            height={100} 
+            className="object-contain"
+            priority
+          />
+        </div>
+
+        <button onClick={() => setIdioma(idioma === 'es' ? 'en' : 'es')} className="text-xs font-sans border border-[#2C4132] text-[#2C4132] px-4 py-2 rounded-full tracking-widest hover:bg-[#2C4132] hover:text-white transition-all z-10">
           {idioma === 'es' ? 'EN' : 'ES'}
         </button>
       </nav>
