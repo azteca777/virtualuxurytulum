@@ -114,8 +114,8 @@ export default function BernarditaBoutique() {
       let terminado = false;
       let intentos = 0;
 
-      while (!terminado && intentos < 20) { 
-        await new Promise(res => setTimeout(res, 2000)); 
+      while (!terminado && intentos < 40) { 
+        await new Promise(res => setTimeout(res, 3000)); 
         const pollRes = await fetch(`${URL_API_VIOS_CODE}?taskId=${taskId}`);
         const pollData = await pollRes.json();
         
