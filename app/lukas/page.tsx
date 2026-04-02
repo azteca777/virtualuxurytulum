@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 
-// === BASE DE DATOS DE PRODUCTOS (Actualizado con fotos reales) ===
+// === BASE DE DATOS DE PRODUCTOS ===
 const CATALOGO_LUKAS = [
   { id: 1, marca: 'BEAST', nombre: 'CLA + L-Carnitina Fresa/Kiwi', precio: '1,320.00', imagen: '/lukas/su3.jpeg', tag: 'Más Vendido', desc: 'Fórmula quemadora de grasa sin estimulantes para mayor definición muscular.' },
   { id: 2, marca: 'DRAGON PHARMA', nombre: 'Creatine Monohydrate', precio: '890.00', imagen: '/lukas/su6.jpeg', desc: 'Creatina de grado farmacéutico para fuerza y recuperación explosiva.' },
@@ -34,15 +34,15 @@ const Button = ({ children, variant = 'primary', className = '' }: { children: R
   return <button className={`${baseClass} ${variants[variant]} ${className}`}>{children}</button>;
 };
 
-// === COMPONENTE TARJETA DE PRODUCTO ===
+// === COMPONENTE TARJETA DE PRODUCTO (Ajustado para responsive: 2 móvil / 4 escritorio) ===
 const ProductCard = ({ producto, onClick }: { producto: any, onClick: () => void }) => (
   <div 
     onClick={onClick}
-    className="border border-zinc-100 bg-white p-3 md:p-6 group hover:shadow-2xl hover:border-red-600 transition-all duration-500 flex flex-col cursor-pointer"
+    className="border border-zinc-100 bg-white p-3 lg:p-4 group hover:shadow-2xl hover:border-red-600 transition-all duration-500 flex flex-col cursor-pointer"
   >
-    <div className="aspect-square w-full relative mb-3 md:mb-6 overflow-hidden bg-zinc-50 flex items-center justify-center p-2 md:p-4">
+    <div className="aspect-square w-full relative mb-3 lg:mb-4 overflow-hidden bg-zinc-50 flex items-center justify-center p-2 lg:p-4">
       {producto.tag && (
-        <span className={`absolute top-2 right-2 text-[8px] md:text-xs font-bold px-2 py-1 md:px-4 md:py-1.5 uppercase z-10 tracking-wider ${producto.tag === 'Agotado' ? 'bg-zinc-300 text-zinc-600' : 'bg-red-600 text-white'}`}>
+        <span className={`absolute top-1 lg:top-2 right-1 lg:right-2 text-[7px] lg:text-[9px] font-bold px-1.5 py-0.5 lg:px-2 lg:py-1 uppercase z-10 tracking-wider ${producto.tag === 'Agotado' ? 'bg-zinc-300 text-zinc-600' : 'bg-red-600 text-white'}`}>
           {producto.tag}
         </span>
       )}
@@ -55,13 +55,14 @@ const ProductCard = ({ producto, onClick }: { producto: any, onClick: () => void
     </div>
     <div className="flex-grow flex flex-col justify-between">
       <div>
-        <p className="text-[9px] md:text-xs text-zinc-400 uppercase tracking-widest mb-1 font-bold">{producto.marca}</p>
-        <h3 className="font-bold text-[11px] md:text-lg mb-2 md:mb-3 h-8 md:h-14 line-clamp-2 leading-tight text-zinc-800 group-hover:text-black transition-colors">{producto.nombre}</h3>
+        <p className="text-[8px] lg:text-[10px] text-zinc-400 uppercase tracking-widest mb-1 font-bold">{producto.marca}</p>
+        <h3 className="font-bold text-[10px] lg:text-sm mb-1 lg:mb-2 h-8 lg:h-10 line-clamp-2 leading-tight text-zinc-800 group-hover:text-black transition-colors">{producto.nombre}</h3>
       </div>
       <div>
-        <p className="font-extrabold text-sm md:text-2xl text-red-600 mb-2 md:mb-6">${producto.precio} <span className="text-[9px] md:text-sm text-zinc-400">MXN</span></p>
+        <p className="font-extrabold text-sm lg:text-lg text-red-600 mb-1 lg:mb-4">${producto.precio} <span className="text-[8px] lg:text-[10px] text-zinc-400">MXN</span></p>
+        {/* El botón solo se muestra en pantallas medianas/grandes para ahorrar espacio en móvil */}
         <div className="hidden md:grid grid-cols-1 gap-2">
-          <Button variant="primary" className="w-full text-xs">Ver Detalle</Button>
+          <Button variant="primary" className="w-full text-[9px] lg:text-[11px] py-2">Ver Detalle</Button>
         </div>
       </div>
     </div>
@@ -165,7 +166,7 @@ export default function LukasStore() {
           </div>
         </section>
 
-        {/* 5. ARSENAL (2 COLUMNAS) */}
+        {/* 5. ARSENAL DESTACADO */}
         <section className="max-w-[1400px] mx-auto px-4 md:px-6 mb-20">
           <div className="flex flex-col md:flex-row items-center justify-between mb-10 gap-4">
             <div>
@@ -177,8 +178,8 @@ export default function LukasStore() {
             </Link>
           </div>
           
-          {/* 👇 CUADRÍCULA DE 2 COLUMNAS 👇 */}
-          <div className="grid grid-cols-2 gap-3 md:gap-8">
+          {/* 👇 AQUÍ APLICAMOS: 2 en celular (grid-cols-2), 3 en tablet (md:grid-cols-3) y 4 en PC (lg:grid-cols-4) 👇 */}
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-6">
             {CATALOGO_LUKAS.map((prod) => (
               <ProductCard key={prod.id} producto={prod} onClick={() => setProductoSeleccionado(prod)} />
             ))}
@@ -281,7 +282,6 @@ export default function LukasStore() {
       {/* 👇 VENTANA MODAL (REDUCIDA DE TAMAÑO) 👇 */}
       {productoSeleccionado && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 animate-in fade-in duration-300">
-          {/* max-w-2xl para que sea más estrecha y compacta */}
           <div className="bg-white w-full max-w-2xl rounded-3xl shadow-2xl relative flex flex-col md:flex-row overflow-hidden border-2 border-red-600">
             
             {/* Botón cerrar */}
@@ -292,7 +292,7 @@ export default function LukasStore() {
               ✕
             </button>
 
-            {/* Imagen (más pequeña y paddings reducidos) */}
+            {/* Imagen */}
             <div className="w-full md:w-1/2 bg-zinc-50 p-6 flex items-center justify-center relative">
               {productoSeleccionado.tag && (
                 <span className={`absolute top-4 left-4 text-[10px] font-bold px-2 py-1 uppercase z-10 tracking-wider ${productoSeleccionado.tag === 'Agotado' ? 'bg-zinc-300 text-zinc-600' : 'bg-red-600 text-white'}`}>
@@ -306,7 +306,7 @@ export default function LukasStore() {
               />
             </div>
 
-            {/* Detalles (Textos ajustados para que todo quepa mejor) */}
+            {/* Detalles */}
             <div className="w-full md:w-1/2 p-6 md:p-8 flex flex-col justify-center">
               <p className="text-[10px] text-zinc-400 uppercase tracking-widest mb-2 font-bold">{productoSeleccionado.marca}</p>
               <h2 className="text-xl md:text-2xl font-black uppercase italic tracking-tighter mb-3 text-zinc-900">{productoSeleccionado.nombre}</h2>
