@@ -3,24 +3,24 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 
-// === BASE DE DATOS DE PRODUCTOS ===
+// === BASE DE DATOS DE PRODUCTOS (Actualizado con fotos reales) ===
 const CATALOGO_LUKAS = [
-  { id: 1, marca: 'Marca 1', nombre: 'Suplemento Pro - Vainilla', precio: '1,320.00', imagen: '/lukas/su3.jpeg', tag: 'Más Vendido', desc: 'Proteína de suero de leche ultra microfiltrada para rápida absorción.' },
-  { id: 2, marca: 'Marca 2', nombre: 'Pre-Entreno Explosivo', precio: '890.00', imagen: '/lukas/su6.jpeg', desc: 'Energía intensa y bombeo muscular extremo para tus rutinas.' },
-  { id: 3, marca: 'Marca 3', nombre: 'Creatina Monohidratada', precio: '450.00', imagen: '/lukas/su2.jpeg', tag: 'Oferta', desc: '100% creatina pura para maximizar tu fuerza y recuperación.' },
-  { id: 4, marca: 'Marca 4', nombre: 'BCAA Recovery Formula', precio: '680.00', imagen: '/lukas/su4.jpeg', desc: 'Aminoácidos de cadena ramificada para evitar el catabolismo.' },
-  { id: 5, marca: 'Marca 5', nombre: 'Quemador de Grasa Termo', precio: '950.00', imagen: '/lukas/su8.jpeg', desc: 'Acelera tu metabolismo y usa la grasa como fuente de energía.' },
-  { id: 6, marca: 'Marca 6', nombre: 'Proteína Isolatada - Fresa', precio: '1,650.00', imagen: '/lukas/su11.jpeg', desc: 'Cero carbohidratos, cero grasas. Pura proteína limpia.' },
-  { id: 7, marca: 'Marca 7', nombre: 'Multivitamínico Deportivo', precio: '399.00', imagen: '/lukas/su13.jpeg', tag: 'Nuevo', desc: 'Vitaminas y minerales esenciales para el atleta de alto rendimiento.' },
-  { id: 8, marca: 'Marca 8', nombre: 'Ganador de Masa MassTech', precio: '1,100.00', imagen: '/lukas/su15.jpeg', desc: 'Calorías de calidad para un aumento de masa muscular magra.' },
-  { id: 9, marca: 'Marca 9', nombre: 'Pre-Entreno Sin Cafeína', precio: '750.00', imagen: '/lukas/su17.jpeg', desc: 'Toda la fuerza y concentración sin alterar tu sueño nocturno.' },
-  { id: 10, marca: 'Marca 10', nombre: 'Aminoácidos Esenciales (EAA)', precio: '550.00', imagen: '/lukas/su18.jpeg', tag: 'Agotado', desc: 'Perfil completo de aminoácidos para la construcción muscular.' },
-  { id: 11, marca: 'Marca 11', nombre: 'Omega 3 Fish Oil Premium', precio: '290.00', imagen: '/lukas/su19.jpeg', desc: 'Salud cardiovascular y soporte articular comprobado.' },
-  { id: 12, marca: 'Marca 12', nombre: 'Shaker Oficial Lukas', precio: '150.00', imagen: '/lukas/su20.jpeg', desc: 'Mezclador antiderrame libre de BPA con rejilla metálica.' },
-  { id: 13, marca: 'Marca 13', nombre: 'Glutamina en Polvo 500g', precio: '420.00', imagen: '/lukas/su21.jpeg', desc: 'Recuperación intestinal y muscular acelerada.' },
-  { id: 14, marca: 'Marca 14', nombre: 'Óxido Nítrico Extremo', precio: '820.00', imagen: '/lukas/su25.jpeg', tag: 'Oferta', desc: 'Vasodilatador para venas marcadas y mayor oxigenación.' },
-  { id: 15, marca: 'Marca 15', nombre: 'Snack Proteico Choco', precio: '60.00', imagen: '/lukas/su27.jpeg', desc: '20g de proteína en una deliciosa barra sin azúcar.' },
-  { id: 16, marca: 'Marca 16', nombre: 'Cinturón de Levantamiento', precio: '990.00', imagen: '/lukas/su28.jpeg', desc: 'Soporte lumbar de cuero genuino para peso muerto y sentadillas.' },
+  { id: 1, marca: 'BEAST', nombre: 'CLA + L-Carnitina Fresa/Kiwi', precio: '1,320.00', imagen: '/lukas/su3.jpeg', tag: 'Más Vendido', desc: 'Fórmula quemadora de grasa sin estimulantes para mayor definición muscular.' },
+  { id: 2, marca: 'DRAGON PHARMA', nombre: 'Creatine Monohydrate', precio: '890.00', imagen: '/lukas/su6.jpeg', desc: 'Creatina de grado farmacéutico para fuerza y recuperación explosiva.' },
+  { id: 3, marca: 'USN', nombre: 'Immune Health 7 in 1', precio: '450.00', imagen: '/lukas/su2.jpeg', tag: 'Oferta', desc: 'Soporte inmunológico completo con vitamina C, Zinc y antioxidantes.' },
+  { id: 4, marca: 'AGEX', nombre: 'Colágeno + Biotina', precio: '680.00', imagen: '/lukas/su4.jpeg', desc: 'Salud articular, piel, cabello y uñas fortalecidos.' },
+  { id: 5, marca: 'EVOX', nombre: 'Colágeno Biotina Sabor Cereza', precio: '950.00', imagen: '/lukas/su8.jpeg', desc: 'Delicioso colágeno hidrolizado para tu rutina diaria de belleza y bienestar.' },
+  { id: 6, marca: 'INSANE LABZ', nombre: 'Psychotic Pre-Workout', precio: '1,650.00', imagen: '/lukas/su11.jpeg', desc: 'Energía extrema y enfoque mental láser para tus entrenamientos más pesados.' },
+  { id: 7, marca: 'VITFIT', nombre: 'Creatina Monohidratada', precio: '399.00', imagen: '/lukas/su13.jpeg', tag: 'Nuevo', desc: 'Creatina pura para mejorar tu rendimiento y resistencia deportiva.' },
+  { id: 8, marca: 'VITFIT', nombre: 'Proteína Whey Sabor Chocolate', precio: '1,100.00', imagen: '/lukas/su15.jpeg', desc: 'Proteína de suero de leche de rápida absorción, ideal post-entreno.' },
+  { id: 9, marca: 'VITFIT', nombre: 'Amino Energy Sabor Fresa', precio: '750.00', imagen: '/lukas/su17.jpeg', desc: 'Aminoácidos con energía limpia para entrenar o tu día a día.' },
+  { id: 10, marca: 'VITFIT', nombre: 'Chaos Pre-Workout Maracuyá', precio: '550.00', imagen: '/lukas/su18.jpeg', tag: 'Agotado', desc: 'Bombeos musculares y energía sostenida con sabor tropical.' },
+  { id: 11, marca: 'VITFIT', nombre: 'Whey Protein Sabor Vainilla (Bote)', precio: '290.00', imagen: '/lukas/su19.jpeg', desc: 'Proteína premium para desarrollo muscular y recuperación.' },
+  { id: 12, marca: 'VITFIT', nombre: 'Chaos Pre-Workout Blue Raz Ice', precio: '150.00', imagen: '/lukas/su20.jpeg', desc: 'Entrenamientos intensos con un toque refrescante de mora azul.' },
+  { id: 13, marca: 'VITFIT', nombre: 'WPI-90 Isolate Proteína', precio: '420.00', imagen: '/lukas/su21.jpeg', desc: 'Aislado de suero de leche de altísima pureza y rápida digestión.' },
+  { id: 14, marca: 'VITFIT', nombre: 'Whey Protein Sabor Vainilla (Bolsa)', precio: '820.00', imagen: '/lukas/su25.jpeg', tag: 'Oferta', desc: 'Proteína diaria esencial en un empaque económico y práctico.' },
+  { id: 15, marca: 'VITFIT', nombre: 'Whey Protein Sabor Fresa', precio: '60.00', imagen: '/lukas/su27.jpeg', desc: 'Recuperación muscular con un delicioso y suave sabor a fresa.' },
+  { id: 16, marca: 'VITFIT', nombre: 'Creatina Monohidratada (Bolsa)', precio: '990.00', imagen: '/lukas/su28.jpeg', desc: 'El suplemento más estudiado para aumentar fuerza, ahora en bolsa.' },
 ];
 
 // === COMPONENTE BOTÓN ===
@@ -165,7 +165,7 @@ export default function LukasStore() {
           </div>
         </section>
 
-        {/* 5. ARSENAL (MODIFICADO A 2 COLUMNAS) */}
+        {/* 5. ARSENAL (2 COLUMNAS) */}
         <section className="max-w-[1400px] mx-auto px-4 md:px-6 mb-20">
           <div className="flex flex-col md:flex-row items-center justify-between mb-10 gap-4">
             <div>
@@ -177,7 +177,7 @@ export default function LukasStore() {
             </Link>
           </div>
           
-          {/* 👇 AQUÍ FORZAMOS LAS 2 COLUMNAS (grid-cols-2) 👇 */}
+          {/* 👇 CUADRÍCULA DE 2 COLUMNAS 👇 */}
           <div className="grid grid-cols-2 gap-3 md:gap-8">
             {CATALOGO_LUKAS.map((prod) => (
               <ProductCard key={prod.id} producto={prod} onClick={() => setProductoSeleccionado(prod)} />
