@@ -34,7 +34,7 @@ const Button = ({ children, variant = 'primary', className = '' }: { children: R
   return <button className={`${baseClass} ${variants[variant]} ${className}`}>{children}</button>;
 };
 
-// === COMPONENTE TARJETA DE PRODUCTO (Ajustado para 4 columnas en móvil) ===
+// === COMPONENTE TARJETA DE PRODUCTO ===
 const ProductCard = ({ producto, onClick }: { producto: any, onClick: () => void }) => (
   <div 
     onClick={onClick}
@@ -108,7 +108,7 @@ export default function LukasStore() {
         </header>
       </div>
 
-      {/* 👇 3. HERO VIDEOS (CON URLs DE VERCEL BLOB) 👇 */}
+      {/* 👇 3. HERO VIDEOS 👇 */}
       <section className="fixed top-[110px] left-0 h-[calc(100vh-110px)] w-full bg-black flex items-center justify-center z-0">
         <div className="absolute inset-0 flex w-full h-full">
           <video autoPlay loop muted playsInline className="w-1/2 h-full object-cover opacity-50 mix-blend-luminosity">
@@ -165,7 +165,7 @@ export default function LukasStore() {
           </div>
         </section>
 
-        {/* 5. ARSENAL */}
+        {/* 5. ARSENAL (MODIFICADO A 3 COLUMNAS) */}
         <section className="max-w-[1400px] mx-auto px-4 md:px-6 mb-20">
           <div className="flex flex-col md:flex-row items-center justify-between mb-10 gap-4">
             <div>
@@ -177,7 +177,8 @@ export default function LukasStore() {
             </Link>
           </div>
           
-          <div className="grid grid-cols-4 gap-2 md:gap-6">
+          {/* 👇 AQUÍ FORZAMOS LAS 3 COLUMNAS (grid-cols-3) INCLUSO EN MÓVIL 👇 */}
+          <div className="grid grid-cols-3 gap-2 md:gap-6">
             {CATALOGO_LUKAS.map((prod) => (
               <ProductCard key={prod.id} producto={prod} onClick={() => setProductoSeleccionado(prod)} />
             ))}
@@ -199,7 +200,7 @@ export default function LukasStore() {
           </div>
         </section>
 
-        {/* 7. Guías Video (CON URL DE VERCEL BLOB) */}
+        {/* 7. Guías Video */}
         <section className="bg-zinc-100 py-20 border-y border-zinc-200">
           <div className="max-w-[1400px] mx-auto px-6 grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
             <div>
@@ -277,10 +278,11 @@ export default function LukasStore() {
 
       </main>
 
-      {/* 👇 VENTANA MODAL DEL PRODUCTO SELECCIONADO 👇 */}
+      {/* 👇 VENTANA MODAL (REDUCIDA DE TAMAÑO) 👇 */}
       {productoSeleccionado && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 animate-in fade-in duration-300">
-          <div className="bg-white w-full max-w-3xl rounded-3xl shadow-2xl relative flex flex-col md:flex-row overflow-hidden border-2 border-red-600">
+          {/* max-w-2xl para que sea más estrecha y compacta */}
+          <div className="bg-white w-full max-w-2xl rounded-3xl shadow-2xl relative flex flex-col md:flex-row overflow-hidden border-2 border-red-600">
             
             {/* Botón cerrar */}
             <button 
@@ -290,30 +292,30 @@ export default function LukasStore() {
               ✕
             </button>
 
-            {/* Imagen Grande */}
-            <div className="w-full md:w-1/2 bg-zinc-50 p-8 flex items-center justify-center relative">
+            {/* Imagen (más pequeña y paddings reducidos) */}
+            <div className="w-full md:w-1/2 bg-zinc-50 p-6 flex items-center justify-center relative">
               {productoSeleccionado.tag && (
-                <span className={`absolute top-4 left-4 text-xs font-bold px-3 py-1 uppercase z-10 tracking-wider ${productoSeleccionado.tag === 'Agotado' ? 'bg-zinc-300 text-zinc-600' : 'bg-red-600 text-white'}`}>
+                <span className={`absolute top-4 left-4 text-[10px] font-bold px-2 py-1 uppercase z-10 tracking-wider ${productoSeleccionado.tag === 'Agotado' ? 'bg-zinc-300 text-zinc-600' : 'bg-red-600 text-white'}`}>
                   {productoSeleccionado.tag}
                 </span>
               )}
               <img 
                 src={productoSeleccionado.imagen} 
                 alt={productoSeleccionado.nombre} 
-                className="w-full h-auto max-h-[400px] object-contain"
+                className="w-full h-auto max-h-[250px] md:max-h-[300px] object-contain"
               />
             </div>
 
-            {/* Detalles */}
-            <div className="w-full md:w-1/2 p-8 md:p-12 flex flex-col justify-center">
-              <p className="text-xs text-zinc-400 uppercase tracking-widest mb-2 font-bold">{productoSeleccionado.marca}</p>
-              <h2 className="text-2xl md:text-3xl font-black uppercase italic tracking-tighter mb-4 text-zinc-900">{productoSeleccionado.nombre}</h2>
-              <p className="text-sm text-zinc-600 mb-6">{productoSeleccionado.desc || 'Suplemento de alto rendimiento diseñado para maximizar tus resultados en el gimnasio.'}</p>
+            {/* Detalles (Textos ajustados para que todo quepa mejor) */}
+            <div className="w-full md:w-1/2 p-6 md:p-8 flex flex-col justify-center">
+              <p className="text-[10px] text-zinc-400 uppercase tracking-widest mb-2 font-bold">{productoSeleccionado.marca}</p>
+              <h2 className="text-xl md:text-2xl font-black uppercase italic tracking-tighter mb-3 text-zinc-900">{productoSeleccionado.nombre}</h2>
+              <p className="text-xs md:text-sm text-zinc-600 mb-4 line-clamp-3">{productoSeleccionado.desc || 'Suplemento de alto rendimiento diseñado para maximizar tus resultados en el gimnasio.'}</p>
               
-              <p className="font-extrabold text-3xl text-red-600 mb-8">${productoSeleccionado.precio} <span className="text-base text-zinc-400 font-medium">MXN</span></p>
+              <p className="font-extrabold text-2xl text-red-600 mb-6">${productoSeleccionado.precio} <span className="text-sm text-zinc-400 font-medium">MXN</span></p>
               
               <div className="flex gap-4">
-                <Button variant="danger" className="w-full py-4 text-base">🛒 Añadir al Carrito</Button>
+                <Button variant="danger" className="w-full py-3 text-sm">🛒 Añadir al Carrito</Button>
               </div>
             </div>
 
