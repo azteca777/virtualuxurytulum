@@ -38,11 +38,11 @@ const Button = ({ children, variant = 'primary', className = '' }: { children: R
 const ProductCard = ({ producto, onClick }: { producto: any, onClick: () => void }) => (
   <div 
     onClick={onClick}
-    className="border border-zinc-100 bg-white p-2 md:p-4 group hover:shadow-2xl hover:border-red-600 transition-all duration-500 flex flex-col cursor-pointer"
+    className="border border-zinc-100 bg-white p-3 md:p-6 group hover:shadow-2xl hover:border-red-600 transition-all duration-500 flex flex-col cursor-pointer"
   >
-    <div className="aspect-square w-full relative mb-2 md:mb-4 overflow-hidden bg-zinc-50 flex items-center justify-center p-2 md:p-4">
+    <div className="aspect-square w-full relative mb-3 md:mb-6 overflow-hidden bg-zinc-50 flex items-center justify-center p-2 md:p-4">
       {producto.tag && (
-        <span className={`absolute top-1 right-1 text-[7px] md:text-[10px] font-bold px-1.5 py-0.5 md:px-3 md:py-1 uppercase z-10 tracking-wider ${producto.tag === 'Agotado' ? 'bg-zinc-300 text-zinc-600' : 'bg-red-600 text-white'}`}>
+        <span className={`absolute top-2 right-2 text-[8px] md:text-xs font-bold px-2 py-1 md:px-4 md:py-1.5 uppercase z-10 tracking-wider ${producto.tag === 'Agotado' ? 'bg-zinc-300 text-zinc-600' : 'bg-red-600 text-white'}`}>
           {producto.tag}
         </span>
       )}
@@ -55,13 +55,13 @@ const ProductCard = ({ producto, onClick }: { producto: any, onClick: () => void
     </div>
     <div className="flex-grow flex flex-col justify-between">
       <div>
-        <p className="text-[7px] md:text-[10px] text-zinc-400 uppercase tracking-widest mb-1 font-bold">{producto.marca}</p>
-        <h3 className="font-bold text-[9px] md:text-sm mb-1 md:mb-2 h-8 md:h-10 line-clamp-2 leading-tight text-zinc-800 group-hover:text-black transition-colors">{producto.nombre}</h3>
+        <p className="text-[9px] md:text-xs text-zinc-400 uppercase tracking-widest mb-1 font-bold">{producto.marca}</p>
+        <h3 className="font-bold text-[11px] md:text-lg mb-2 md:mb-3 h-8 md:h-14 line-clamp-2 leading-tight text-zinc-800 group-hover:text-black transition-colors">{producto.nombre}</h3>
       </div>
       <div>
-        <p className="font-extrabold text-xs md:text-lg text-red-600 md:mb-4">${producto.precio} <span className="text-[8px] md:text-xs text-zinc-400">MXN</span></p>
+        <p className="font-extrabold text-sm md:text-2xl text-red-600 mb-2 md:mb-6">${producto.precio} <span className="text-[9px] md:text-sm text-zinc-400">MXN</span></p>
         <div className="hidden md:grid grid-cols-1 gap-2">
-          <Button variant="primary" className="w-full text-[10px]">Ver Detalle</Button>
+          <Button variant="primary" className="w-full text-xs">Ver Detalle</Button>
         </div>
       </div>
     </div>
@@ -165,7 +165,7 @@ export default function LukasStore() {
           </div>
         </section>
 
-        {/* 5. ARSENAL (MODIFICADO A 3 COLUMNAS) */}
+        {/* 5. ARSENAL (MODIFICADO A 2 COLUMNAS) */}
         <section className="max-w-[1400px] mx-auto px-4 md:px-6 mb-20">
           <div className="flex flex-col md:flex-row items-center justify-between mb-10 gap-4">
             <div>
@@ -177,8 +177,8 @@ export default function LukasStore() {
             </Link>
           </div>
           
-          {/* 👇 AQUÍ FORZAMOS LAS 3 COLUMNAS (grid-cols-3) INCLUSO EN MÓVIL 👇 */}
-          <div className="grid grid-cols-3 gap-2 md:gap-6">
+          {/* 👇 AQUÍ FORZAMOS LAS 2 COLUMNAS (grid-cols-2) 👇 */}
+          <div className="grid grid-cols-2 gap-3 md:gap-8">
             {CATALOGO_LUKAS.map((prod) => (
               <ProductCard key={prod.id} producto={prod} onClick={() => setProductoSeleccionado(prod)} />
             ))}
