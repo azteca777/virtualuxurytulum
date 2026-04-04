@@ -166,7 +166,7 @@ export default function LukasStore() {
             <div className="flex items-center gap-4 md:gap-6 text-xl">
               <button 
                 onClick={() => setIdioma(idioma === 'es' ? 'en' : 'es')} 
-                className="text-xs font-bold uppercase tracking-widest hover:text-red-500 transition-colors hidden md:block"
+                className="text-[9px] md:text-xs font-bold uppercase tracking-widest hover:text-red-500 transition-colors"
               >
                 {idioma === 'es' ? '🇺🇸 ENG' : '🇲🇽 ESP'}
               </button>
