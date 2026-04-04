@@ -119,7 +119,7 @@ export default function LukasStore() {
     
     const numeroWhatsApp = "5219984760310"; 
     
-    const llaveManyChat = idioma === 'es' ? '[TIENDA: GODS AESTHETICS]' : '[STORE: GODS AESTHETICS]';
+    const llaveManyChat = idioma === 'es' ? '[NUEVA ORDEN: GODS AESTHETICS]' : '[NEW ORDER: GODS AESTHETICS]';
     
     let textoMensaje = `${llaveManyChat}\n\n`;
     
