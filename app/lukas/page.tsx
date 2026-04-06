@@ -89,9 +89,28 @@ export default function LukasStore() {
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [idioma, setIdioma] = useState('es');
   const [procesandoPago, setProcesandoPago] = useState(false);
+  
+  // 🌍 NUEVO ESTADO: RADAR DE GEOLOCALIZACIÓN 🌍
+  const [gatewayDetectado, setGatewayDetectado] = useState('stripe'); // Por defecto mundial
 
   useEffect(() => {
     setMounted(true);
+    
+    // 🌍 DETECCIÓN AUTOMÁTICA DE PAÍS POR IP 🌍
+    fetch('https://ipapi.co/json/')
+      .then(res => res.json())
+      .then(data => {
+        // Si el cliente está en México, encendemos Mercado Pago
+        if (data.country_code === 'MX') {
+          setGatewayDetectado('mercadopago');
+        } else {
+          // Si está en cualquier otra parte del mundo, usamos Stripe
+          setGatewayDetectado('stripe');
+        }
+      })
+      .catch(err => {
+        console.warn('Radar IP falló, usando pasarela segura por defecto', err);
+      });
   }, []);
 
   if (!mounted) return null;
@@ -116,7 +135,7 @@ export default function LukasStore() {
     return carrito.reduce((total, item) => total + (item.precio * item.cantidad), 0);
   };
 
-  // === COMUNICACIÓN CON LA MATRIZ (VIOS CODE) PARA MERCADO PAGO ===
+  // === COMUNICACIÓN CON LA MATRIZ (VIOS CODE) ===
   const generarLinkDePago = async () => {
     if (carrito.length === 0) return;
     setProcesandoPago(true);
@@ -130,7 +149,8 @@ export default function LukasStore() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ 
           carrito: carrito,
-          tienda: 'vios_test' // <-- La llave secreta que armamos hoy
+          tienda: 'vios_test',
+          gateway: gatewayDetectado // 👈 ¡EL SWITCH MÁGICO AUTOMÁTICO EN ACCIÓN!
         })
       });
 
@@ -433,16 +453,20 @@ export default function LukasStore() {
                   <span className="text-2xl font-black text-red-600">${calcularTotal().toLocaleString('es-MX')} MXN</span>
                 </div>
                 
-                {/* BOTÓN MERCADO PAGO CONECTADO A LA MATRIZ */}
+                {/* 🚀 BOTÓN DINÁMICO QUE CAMBIA SEGÚN EL PAÍS DEL USUARIO 🚀 */}
                 <button 
                   onClick={generarLinkDePago}
                   disabled={procesandoPago}
-                  className={`w-full py-4 rounded-xl font-bold uppercase tracking-widest transition-colors shadow-lg flex items-center justify-center gap-2 ${procesandoPago ? 'bg-zinc-400 cursor-not-allowed' : 'bg-[#009EE3] hover:bg-[#0089C4] text-white shadow-[#009EE3]/30'}`}
+                  className={`w-full py-4 rounded-xl font-bold uppercase tracking-widest transition-colors shadow-lg flex items-center justify-center gap-2 ${procesandoPago ? 'bg-zinc-400 cursor-not-allowed' : (gatewayDetectado === 'mercadopago' ? 'bg-[#009EE3] hover:bg-[#0089C4] text-white shadow-[#009EE3]/30' : 'bg-[#635BFF] hover:bg-[#544ee6] text-white shadow-[#635BFF]/30')}`}
                 >
                   <span className="text-xl">💳</span> 
                   {procesandoPago 
                     ? (idioma === 'es' ? 'Procesando...' : 'Processing...') 
-                    : (idioma === 'es' ? 'Pagar con Mercado Pago' : 'Pay with Mercado Pago')}
+                    : (gatewayDetectado === 'mercadopago'
+                        ? (idioma === 'es' ? 'Pagar con Mercado Pago' : 'Pay with Mercado Pago')
+                        : (idioma === 'es' ? 'Pago Seguro con Stripe' : 'Secure Checkout via Stripe')
+                      )
+                  }
                 </button>
                 <p className="text-[10px] text-center text-zinc-500 mt-4 px-4 leading-relaxed">
                   {idioma === 'es' 
