@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
+import SensorTrafico from '../components/SensorTrafico'; // 📡 IMPORTACIÓN DEL RADAR
 
 // === BASE DE DATOS DE PRODUCTOS ===
 const CATALOGO_LUKAS = [
@@ -173,6 +174,9 @@ export default function LukasStore() {
   return (
     <div className="min-h-screen bg-white text-black font-sans selection:bg-red-600 selection:text-white relative">
       
+      {/* 📡 SENSOR INYECTADO AQUÍ */}
+      <SensorTrafico marca="LUKAS" />
+
       {/* 👇 NAVEGACIÓN FIJA 👇 */}
       <div className="fixed top-0 left-0 w-full z-40">
         <div className="bg-red-600 text-white text-xs font-bold uppercase tracking-widest text-center py-2.5 overflow-hidden relative shadow-md">
