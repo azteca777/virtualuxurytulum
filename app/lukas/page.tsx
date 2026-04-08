@@ -150,7 +150,7 @@ export default function LukasStore() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ 
           carrito: carrito,
-          tienda: 'vios_test',
+          tienda: 'LUKAS', // 👈 Ahora sí el God Mode lo reconocerá
           gateway: gatewayDetectado // 👈 ¡EL SWITCH MÁGICO AUTOMÁTICO EN ACCIÓN!
         })
       });

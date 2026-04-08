@@ -35,67 +35,133 @@ function FadeIn({ children, delay = 0, className = "" }: { children: React.React
   );
 }
 
-// === EL CATÁLOGO DE MULATA PARA EL TRY-ON ===
-// 🔥 CATÁLOGO ACTUALIZADO CON TUS IMÁGENES 🔥
+// === EL CATÁLOGO DE MULATA (CON PRECIOS Y ESTADOS DE PROBADOR) ===
 const CATALOGO = [
-  { id: 1, nombreEs: 'Mulata Clásico - Miel', nombreEn: 'Mulata Classic - Honey', url: 'https://grutgbujoy4xc00c.public.blob.vercel-storage.com/im7.jpeg' },
-  { id: 2, nombreEs: 'Mulata Clásico - Oliva', nombreEn: 'Mulata Classic - Olive', url: 'https://grutgbujoy4xc00c.public.blob.vercel-storage.com/im8.jpeg' },
-  { id: 3, nombreEs: 'Mulata Riviera - Negro', nombreEn: 'Mulata Riviera - Black', url: 'https://grutgbujoy4xc00c.public.blob.vercel-storage.com/im9.jpeg' },
-  { id: 4, nombreEs: 'Mulata Riviera - Arena', nombreEn: 'Mulata Riviera - Sand', url: 'https://grutgbujoy4xc00c.public.blob.vercel-storage.com/im14.jpeg' },
-  { id: 5, nombreEs: 'Edición Especial - Paja', nombreEn: 'Special Edition - Straw', url: 'https://grutgbujoy4xc00c.public.blob.vercel-storage.com/im15.jpeg' },
-  { id: 6, nombreEs: 'Edición Especial - Carbón', nombreEn: 'Special Edition - Charcoal', url: 'https://grutgbujoy4xc00c.public.blob.vercel-storage.com/im16.jpeg' },
-  { id: 7, nombreEs: 'Mulata Premium - Tabaco', nombreEn: 'Mulata Premium - Tobacco', url: 'https://grutgbujoy4xc00c.public.blob.vercel-storage.com/im17.jpeg' },
-  { id: 8, nombreEs: 'Mulata Premium - Piedra', nombreEn: 'Mulata Premium - Stone', url: 'https://grutgbujoy4xc00c.public.blob.vercel-storage.com/im18.jpeg' },
+  { id: 1, nombreEs: 'Mulata Clásico - Miel', nombreEn: 'Mulata Classic - Honey', precio: 1850, url: 'https://grutgbujoy4xc00c.public.blob.vercel-storage.com/im7.jpeg', tieneProbador: true },
+  { id: 2, nombreEs: 'Mulata Clásico - Oliva', nombreEn: 'Mulata Classic - Olive', precio: 1850, url: 'https://grutgbujoy4xc00c.public.blob.vercel-storage.com/im8.jpeg', tieneProbador: true },
+  { id: 3, nombreEs: 'Mulata Riviera - Negro', nombreEn: 'Mulata Riviera - Black', precio: 2100, url: 'https://grutgbujoy4xc00c.public.blob.vercel-storage.com/im9.jpeg', tieneProbador: true },
+  { id: 4, nombreEs: 'Mulata Riviera - Arena', nombreEn: 'Mulata Riviera - Sand', precio: 2100, url: 'https://grutgbujoy4xc00c.public.blob.vercel-storage.com/im14.jpeg', tieneProbador: true },
+  { id: 5, nombreEs: 'Edición Especial - Paja', nombreEn: 'Special Edition - Straw', precio: 1650, url: 'https://grutgbujoy4xc00c.public.blob.vercel-storage.com/im15.jpeg', tieneProbador: true },
+  { id: 6, nombreEs: 'Edición Especial - Carbón', nombreEn: 'Special Edition - Charcoal', precio: 1750, url: 'https://grutgbujoy4xc00c.public.blob.vercel-storage.com/im16.jpeg', tieneProbador: true },
+  { id: 7, nombreEs: 'Mulata Premium - Tabaco', nombreEn: 'Mulata Premium - Tobacco', precio: 2450, url: 'https://grutgbujoy4xc00c.public.blob.vercel-storage.com/im17.jpeg', tieneProbador: true },
+  { id: 8, nombreEs: 'Mulata Premium - Piedra', nombreEn: 'Mulata Premium - Stone', precio: 2450, url: 'https://grutgbujoy4xc00c.public.blob.vercel-storage.com/im18.jpeg', tieneProbador: true },
 ];
+
+const TEXTOS = {
+  es: {
+    volver: "← Volver",
+    idiomaBtn: "EN",
+    probadorBtn: "PROBAR",
+    añadirBtn: "AÑADIR",
+    tituloProbador: "PROBADOR VIRTUAL",
+    paso1: "1. Sube una foto retrato",
+    cargandoFoto: "Conectando...",
+    fotoGuardada: "✅ Retrato Guardado",
+    seleccionarArchivo: "📸 Seleccionar Archivo",
+    paso2: "2. Ver la Mezcla de Culturas",
+    procesando: "TALLANDO DISEÑO...",
+    probarEstaPieza: "PROBARME ESTE SOMBRERO",
+    pedirInfo: "ASESORÍA WHATSAPP",
+    reintentar: "Probar Otro",
+    descargar: "Descargar",
+    carritoTitulo: "TU SELECCIÓN",
+    total: "TOTAL ESTIMADO",
+    pagarBtn: "PROCEDER AL PAGO CON",
+    vacio: "Tu selección está vacía.",
+    waMensaje: "¡Hola! Me probé el sombrero *[PRENDA]* en su boutique virtual. Mira cómo me queda: [URL] ¡Quiero más información!"
+  },
+  en: {
+    volver: "← Back",
+    idiomaBtn: "ES",
+    probadorBtn: "TRY ON",
+    añadirBtn: "ADD",
+    tituloProbador: "VIRTUAL FITTING",
+    paso1: "1. Upload a portrait photo",
+    cargandoFoto: "Connecting...",
+    fotoGuardada: "✅ Portrait Saved",
+    seleccionarArchivo: "📸 Select File",
+    paso2: "2. See the Culture Mix",
+    procesando: "CRAFTING DESIGN...",
+    probarEstaPieza: "TRY ON THIS HAT",
+    pedirInfo: "WHATSAPP ADVICE",
+    reintentar: "Try Another",
+    descargar: "Download",
+    carritoTitulo: "YOUR SELECTION",
+    total: "ESTIMATED TOTAL",
+    pagarBtn: "PROCEED TO CHECKOUT VIA",
+    vacio: "Your selection is empty.",
+    waMensaje: "Hi! I tried the *[PRENDA]* hat in your virtual boutique. Look how it fits: [URL] I want more info!"
+  }
+};
 
 export default function MulataBoutique() {
   const [idioma, setIdioma] = useState<'es' | 'en'>('es');
+  const t = TEXTOS[idioma];
   
-  // Estados Try-On
+  // === ESTADOS DEL CARRITO Y PAGOS ===
+  const [carrito, setCarrito] = useState<any[]>([]);
+  const [isCartOpen, setIsCartOpen] = useState(false);
+  const [procesandoPago, setProcesandoPago] = useState(false);
+  const [gatewayDetectado, setGatewayDetectado] = useState('stripe');
+
+  // === ESTADOS DEL PROBADOR ===
   const [fotoUsuarioUrl, setFotoUsuarioUrl] = useState<string | null>(null); 
   const [prendaSeleccionada, setPrendaSeleccionada] = useState<any | null>(null);
   const [estaProcesando, setEstaProcesando] = useState(false);
   const [estaSubiendoFoto, setEstaSubiendoFoto] = useState(false); 
   const [resultadoTryOnUrl, setResultadoTryOnUrl] = useState<string | null>(null);
   const [errorTryOn, setErrorTryOn] = useState<string | null>(null);
-  // 🔥 Agregado estado de género 🔥
   const [generoUsuario, setGeneroUsuario] = useState('male'); 
 
-  const ejecutarPruebaVirtual = async () => {
-    if (!fotoUsuarioUrl || !prendaSeleccionada) {
-      setErrorTryOn('Falta tu foto o la prenda.'); return;
-    }
-    setEstaProcesando(true); setErrorTryOn(null); setResultadoTryOnUrl(null);
-    try {
-      const URL_API_VIOS_CODE = 'https://vios-code.vercel.app/api/youcam-tryon'; 
-      const response = await fetch(URL_API_VIOS_CODE, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        // 🔥 Enviamos tipoPrenda: 'hat' y gender 🔥
-        body: JSON.stringify({ src_file_url: fotoUsuarioUrl, ref_file_url: prendaSeleccionada.url, tipoPrenda: 'hat', gender: generoUsuario }), 
-      });
-      const data = await response.json();
-      if (!response.ok) throw new Error(data.error || 'Error.');
-      const taskId = data.data?.task_id;
-      if (!taskId) throw new Error('Error.');
+  // DETECCIÓN DE GATEWAY (MercadoPago / Stripe)
+  useEffect(() => {
+    fetch('https://ipapi.co/json/')
+      .then(res => res.json())
+      .then(data => {
+        if (data.country_code === 'MX') setGatewayDetectado('mercadopago');
+        else setGatewayDetectado('stripe');
+      })
+      .catch(() => setGatewayDetectado('stripe'));
+  }, []);
 
-      let terminado = false; let intentos = 0;
-      while (!terminado && intentos < 35) { 
-        await new Promise(res => setTimeout(res, 2000)); 
-        // 🔥 Consulta GET con tipoPrenda=hat 🔥
-        const pollRes = await fetch(`${URL_API_VIOS_CODE}?taskId=${taskId}&tipoPrenda=hat`);
-        const pollData = await pollRes.json();
-        if (pollData.data?.task_status === 'done' || pollData.data?.task_status === 'success') {
-          terminado = true; setResultadoTryOnUrl(pollData.data?.results?.url); break;
-        } else if (pollData.data?.task_status === 'failed') {
-          throw new Error('La IA no pudo procesar esta foto.');
-        }
-        intentos++;
-      }
-      if (!terminado) throw new Error('Tiempo de espera agotado.');
-    } catch (err: any) { setErrorTryOn(err.message); } finally { setEstaProcesando(false); }
+  // === FUNCIONES DEL CARRITO ===
+  const agregarAlCarrito = (p: any) => {
+    setCarrito(prev => {
+      const existe = prev.find(item => item.id === p.id);
+      if (existe) return prev.map(item => item.id === p.id ? { ...item, cantidad: item.cantidad + 1 } : item);
+      return [...prev, { ...p, nombre: idioma === 'es' ? (p.nombreEs || p.nombre) : (p.nombreEn || p.nombre), imagen: p.url, cantidad: 1 }];
+    });
+    setIsCartOpen(true);
   };
 
+  const eliminarDelCarrito = (id: number) => setCarrito(prev => prev.filter(item => item.id !== id));
+  const calcularTotal = () => carrito.reduce((acc, item) => acc + (item.precio * item.cantidad), 0);
+
+  // === FUNCIÓN DE CHECKOUT ===
+  const generarLinkDePago = async () => {
+    if (carrito.length === 0) return;
+    setProcesandoPago(true);
+    try {
+      const MATRIZ_URL = 'https://www.vioscode.io/api/checkout';
+      const response = await fetch(MATRIZ_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ 
+          carrito: carrito,
+          tienda: 'MULATA', // 📡 ETIQUETA PARA EL GOD MODE
+          gateway: gatewayDetectado 
+        })
+      });
+      const data = await response.json();
+      if (data.urlPago) window.location.href = data.urlPago;
+      else { alert('Error: ' + data.error); setProcesandoPago(false); }
+    } catch (error) {
+      console.error(error);
+      setProcesandoPago(false);
+    }
+  };
+
+  // === FUNCIONES DEL PROBADOR MÁGICO ===
   const manejarSubidaFoto = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
@@ -105,30 +171,63 @@ export default function MulataBoutique() {
         const blob = await response.json();
         if (!response.ok) throw new Error('Error Blob');
         setFotoUsuarioUrl(blob.url); 
-      } catch (err: any) { setErrorTryOn('Error al subir foto.'); } finally { setEstaSubiendoFoto(false); }
+      } catch (err: any) { setErrorTryOn(idioma === 'es' ? 'Error al subir foto.' : 'Upload error.'); } 
+      finally { setEstaSubiendoFoto(false); }
     }
+  };
+
+  const ejecutarPruebaVirtual = async () => {
+    if (!fotoUsuarioUrl || !prendaSeleccionada) {
+      setErrorTryOn(idioma === 'es' ? 'Falta tu foto o la prenda.' : 'Missing photo or garment.'); return;
+    }
+    setEstaProcesando(true); setErrorTryOn(null); setResultadoTryOnUrl(null);
+    try {
+      const URL_API_VIOS_CODE = 'https://vios-code.vercel.app/api/youcam-tryon'; 
+      const response = await fetch(URL_API_VIOS_CODE, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ src_file_url: fotoUsuarioUrl, ref_file_url: prendaSeleccionada.url, tipoPrenda: 'hat', gender: generoUsuario }), 
+      });
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.error || 'Error.');
+      const taskId = data.data?.task_id;
+
+      let terminado = false; let intentos = 0;
+      while (!terminado && intentos < 35) { 
+        await new Promise(res => setTimeout(res, 2000)); 
+        const pollRes = await fetch(`${URL_API_VIOS_CODE}?taskId=${taskId}&tipoPrenda=hat`);
+        const pollData = await pollRes.json();
+        if (pollData.data?.task_status === 'done' || pollData.data?.task_status === 'success') {
+          terminado = true; setResultadoTryOnUrl(pollData.data?.results?.url); break;
+        } else if (pollData.data?.task_status === 'failed') {
+          throw new Error(idioma === 'es' ? 'La IA no pudo procesar esta foto.' : 'AI failed.');
+        }
+        intentos++;
+      }
+    } catch (err: any) { setErrorTryOn(err.message); } 
+    finally { setEstaProcesando(false); }
   };
 
   const generarLinkWhatsApp = () => {
     if (!prendaSeleccionada || !resultadoTryOnUrl) return "#";
+    const nombrePrenda = idioma === 'es' ? prendaSeleccionada.nombreEs : prendaSeleccionada.nombreEn;
     const urlFoto = encodeURIComponent(resultadoTryOnUrl);
-    return `https://wa.me/5219842537197?text=¡Hola! Me probé el sombrero ${prendaSeleccionada.nombreEs} en su boutique virtual. Mira cómo me queda: ${urlFoto} ¡Quiero más información!`;
+    return `https://wa.me/5219842537197?text=${t.waMensaje.replace('[PRENDA]', nombrePrenda).replace('[URL]', urlFoto)}`;
   };
 
   return (
-    // PALETA TERRÁNEA: Fondos blancos cálidos, texto verde oliva oscuro
     <main className="min-h-screen bg-[#FDFBF7] text-[#2C4132] font-serif selection:bg-[#2C4132] selection:text-white relative">
       
       {/* 📡 SENSOR DE TRÁFICO INYECTADO */}
       <SensorTrafico marca="MULATA" />
 
      {/* NAVEGACIÓN */}
-      <nav className="absolute top-0 w-full p-8 flex justify-between items-center z-50 mix-blend-difference">
+      <nav className="absolute top-0 w-full p-8 flex justify-between items-start z-50 mix-blend-difference">
         <button onClick={() => window.location.href = '/boutiques'} className="text-sm tracking-widest font-sans font-semibold uppercase hover:opacity-70 transition-opacity text-[#2C4132] cursor-pointer z-10">
-          ← Volver
+          {t.volver}
         </button>
         
-        {/* 🔥 LOGO MULATA AÑADIDO AL CENTRO Y MÁS ABAJO 🔥 */}
+        {/* LOGO MULATA */}
         <div className="absolute left-1/2 top-10 transform -translate-x-1/2 flex justify-center items-center pointer-events-none">
           <Image 
             src="/mulata_bw.jpeg" 
@@ -140,9 +239,17 @@ export default function MulataBoutique() {
           />
         </div>
 
-        <button onClick={() => setIdioma(idioma === 'es' ? 'en' : 'es')} className="text-xs font-sans border border-[#2C4132] text-[#2C4132] px-4 py-2 rounded-full tracking-widest hover:bg-[#2C4132] hover:text-white transition-all z-10">
-          {idioma === 'es' ? 'EN' : 'ES'}
-        </button>
+        <div className="flex flex-col items-end gap-4 z-10">
+          <div className="flex gap-4 items-center">
+            <button onClick={() => setIdioma(idioma === 'es' ? 'en' : 'es')} className="text-xs font-sans border border-[#2C4132] text-[#2C4132] px-4 py-2 rounded-full tracking-widest hover:bg-[#2C4132] hover:text-white transition-all">
+              {t.idiomaBtn}
+            </button>
+            <button onClick={() => setIsCartOpen(true)} className="relative text-xl text-[#2C4132]">
+              🛒
+              {carrito.length > 0 && <span className="absolute -top-2 -right-2 bg-[#2C4132] text-white text-[9px] font-sans font-bold w-5 h-5 rounded-full flex items-center justify-center border border-[#FDFBF7]">{carrito.reduce((acc, i) => acc + i.cantidad, 0)}</span>}
+            </button>
+          </div>
+        </div>
       </nav>
 
       {/* SECCIÓN 1: HÉROE PRINCIPAL */}
@@ -386,7 +493,7 @@ export default function MulataBoutique() {
         </div>
       </section>
 
-      {/* --- EL CATÁLOGO INTERACTIVO (TRY-ON MATRIX) --- */}
+      {/* --- EL CATÁLOGO INTERACTIVO (TRY-ON MATRIX + CARRITO) --- */}
       <section id="catalogo" className="max-w-7xl mx-auto py-32 px-6">
         <FadeIn>
           <div className="text-center mb-16">
@@ -396,24 +503,76 @@ export default function MulataBoutique() {
           
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
             {CATALOGO.map((item) => (
-              <div key={item.id} className="group cursor-pointer flex flex-col items-center" onClick={() => setPrendaSeleccionada(item)}>
+              <div key={item.id} className="group flex flex-col items-center">
                 <div className="w-full aspect-[3/4] overflow-hidden bg-[#F4EFE6] rounded-sm mb-6 relative border border-transparent group-hover:border-[#2C4132] transition-colors duration-500">
                   <Image src={item.url} alt={item.nombreEs} fill className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000 ease-out"/>
                   
-                  <div className="absolute inset-0 bg-[#2C4132]/10 backdrop-blur-sm flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-500">
-                    <span className="bg-[#2C4132] text-white px-8 py-4 text-[10px] font-sans uppercase tracking-[0.2em] shadow-xl transform translate-y-4 group-hover:translate-y-0 transition-all duration-500">
-                      Probar Pieza ✨
-                    </span>
+                  {/* BOTONES DOBLES EN HOVER */}
+                  <div className="absolute inset-0 bg-[#2C4132]/20 backdrop-blur-sm flex flex-col items-center justify-center gap-3 opacity-0 group-hover:opacity-100 transition-all duration-500 px-6">
+                    {item.tieneProbador && (
+                      <button 
+                        onClick={() => setPrendaSeleccionada(item)}
+                        className="w-full bg-[#FDFBF7] text-[#2C4132] px-8 py-3 text-[10px] font-sans font-bold uppercase tracking-[0.2em] shadow-xl hover:bg-white transition-colors"
+                      >
+                        {t.probadorBtn} ✨
+                      </button>
+                    )}
+                    <button 
+                      onClick={() => agregarAlCarrito(item)}
+                      className="w-full bg-[#2C4132] text-white px-8 py-3 text-[10px] font-sans font-bold uppercase tracking-[0.2em] shadow-xl hover:bg-[#1e2d23] transition-colors"
+                    >
+                      {t.añadirBtn}
+                    </button>
                   </div>
                 </div>
                 <h3 className="text-xs font-sans font-semibold tracking-[0.2em] uppercase text-[#2C4132] text-center px-4 leading-relaxed">
                   {idioma === 'es' ? item.nombreEs : item.nombreEn}
                 </h3>
+                <p className="text-sm font-sans font-bold text-[#4A5D4E] mt-2">${item.precio.toLocaleString('es-MX')} MXN</p>
               </div>
             ))}
           </div>
         </FadeIn>
       </section>
+
+      {/* --- PANEL LATERAL DEL CARRITO --- */}
+      {isCartOpen && (
+        <div className="fixed inset-0 z-[100] flex justify-end font-sans">
+          <div className="absolute inset-0 bg-[#2C4132]/60 backdrop-blur-sm" onClick={() => setIsCartOpen(false)} />
+          <div className="relative w-full max-w-md bg-[#FDFBF7] h-full shadow-2xl flex flex-col p-8 border-l border-[#E3DCC8]">
+            <button onClick={() => setIsCartOpen(false)} className="absolute top-6 right-6 text-xl text-[#2C4132] hover:text-[#4A5D4E]">✕</button>
+            <h2 className="text-xl font-bold uppercase tracking-widest text-[#2C4132] mb-8 font-serif">{t.carritoTitulo}</h2>
+            
+            <div className="flex-1 overflow-y-auto space-y-6 hidden-scrollbar">
+              {carrito.length === 0 ? <p className="text-sm text-[#4A5D4E]">{t.vacio}</p> : carrito.map((item, idx) => (
+                <div key={idx} className="flex gap-4 border-b border-[#E3DCC8] pb-4">
+                  <div className="w-20 h-20 relative bg-white border border-[#E3DCC8] rounded-sm p-1">
+                    <img src={item.imagen} className="w-full h-full object-cover" />
+                  </div>
+                  <div className="flex-1">
+                    <h4 className="text-[11px] font-bold uppercase text-[#2C4132]">{item.nombre}</h4>
+                    <p className="text-[11px] text-[#4A5D4E] font-bold mt-1">${item.precio.toLocaleString('es-MX')} MXN</p>
+                    <p className="text-[10px] text-[#A69F91] mt-1 uppercase tracking-widest">Cant: {item.cantidad}</p>
+                  </div>
+                  <button onClick={() => eliminarDelCarrito(item.id)} className="text-[10px] text-[#A69F91] hover:text-red-800 underline">✕</button>
+                </div>
+              ))}
+            </div>
+            
+            {carrito.length > 0 && (
+              <div className="pt-8 border-t border-[#E3DCC8]">
+                <div className="flex justify-between mb-6">
+                  <span className="text-[10px] font-bold uppercase tracking-widest text-[#4A5D4E]">{t.total}</span>
+                  <span className="text-xl font-bold text-[#2C4132]">${calcularTotal().toLocaleString('es-MX')} MXN</span>
+                </div>
+                <button onClick={generarLinkDePago} disabled={procesandoPago} className="w-full py-4 bg-[#2C4132] text-white font-bold uppercase text-[10px] tracking-widest shadow-xl hover:bg-[#1e2d23] transition-colors rounded-sm">
+                  {procesandoPago ? 'PROCESANDO...' : `${t.pagarBtn} ${gatewayDetectado === 'mercadopago' ? 'MERCADO PAGO' : 'STRIPE'}`}
+                </button>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
 
       {/* --- MODAL DEL ESPEJO MÁGICO TERRÁNEO --- */}
       {prendaSeleccionada && (
@@ -423,7 +582,7 @@ export default function MulataBoutique() {
             <button onClick={() => {setPrendaSeleccionada(null); setResultadoTryOnUrl(null); setFotoUsuarioUrl(null); setErrorTryOn(null);}} className="absolute top-5 right-5 w-8 h-8 flex items-center justify-center bg-[#F4EFE6] rounded-full text-[#2C4132] hover:text-white hover:bg-[#2C4132] transition-colors font-sans">✕</button>
             
             <h2 className="text-xl md:text-2xl uppercase tracking-[0.2em] mb-2 mt-4 font-serif text-center text-[#2C4132]">
-              {idioma === 'es' ? 'Probador Virtual' : 'Virtual Fitting'}
+              {t.tituloProbador}
             </h2>
             <p className="text-[9px] font-sans text-[#4A5D4E] tracking-[0.3em] uppercase mb-8 text-center">Powered by ViOs Code Matrix</p>
 
@@ -434,7 +593,7 @@ export default function MulataBoutique() {
                 </div>
                 
                 <div className="w-full mb-8 font-sans">
-                  {/* 🔥 SELECTOR DE GÉNERO AÑADIDO Y ESTILIZADO PARA MULATA 🔥 */}
+                  {/* SELECTOR DE GÉNERO */}
                   <div className="w-full flex justify-center gap-4 mb-6">
                     <button 
                       onClick={() => setGeneroUsuario('male')}
@@ -450,24 +609,24 @@ export default function MulataBoutique() {
                     </button>
                   </div>
 
-                  <label className="block text-[10px] text-[#4A5D4E] tracking-widest uppercase mb-3 text-center font-bold">1. Sube una foto retrato</label>
+                  <label className="block text-[10px] text-[#4A5D4E] tracking-widest uppercase mb-3 text-center font-bold">{t.paso1}</label>
                   
                   {estaSubiendoFoto ? (
-                    <div className="w-full p-4 bg-[#F4EFE6] text-[10px] uppercase tracking-widest text-[#2C4132] text-center animate-pulse border border-[#E3DCC8] rounded-sm">Conectando...</div>
+                    <div className="w-full p-4 bg-[#F4EFE6] text-[10px] uppercase tracking-widest text-[#2C4132] text-center animate-pulse border border-[#E3DCC8] rounded-sm">{t.cargandoFoto}</div>
                   ) : (
                     <div className="relative w-full">
                       <input type="file" accept="image/*" onChange={manejarSubidaFoto} className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"/>
                       <div className={`w-full p-4 border border-dashed rounded-sm text-[10px] uppercase tracking-widest text-center transition-colors ${fotoUsuarioUrl ? 'border-[#2C4132] bg-[#2C4132]/10 text-[#2C4132]' : 'border-[#4A5D4E]/50 bg-white text-[#4A5D4E] hover:bg-[#4A5D4E]/5'}`}>
-                        {fotoUsuarioUrl ? '✅ Retrato Guardado' : '📸 Seleccionar Archivo'}
+                        {fotoUsuarioUrl ? t.fotoGuardada : t.seleccionarArchivo}
                       </div>
                     </div>
                   )}
                 </div>
 
                 <div className="w-full font-sans">
-                  <label className="block text-[10px] text-[#4A5D4E] tracking-widest uppercase mb-3 text-center font-bold">2. Ver la Mezcla de Culturas</label>
+                  <label className="block text-[10px] text-[#4A5D4E] tracking-widest uppercase mb-3 text-center font-bold">{t.paso2}</label>
                   <button onClick={ejecutarPruebaVirtual} disabled={estaProcesando || estaSubiendoFoto || !fotoUsuarioUrl} className={`w-full py-4 rounded-sm text-[10px] tracking-[0.2em] font-bold uppercase transition-all flex items-center justify-center ${estaProcesando ? 'bg-[#E3DCC8] text-[#A69F91] cursor-not-allowed' : 'bg-[#2C4132] text-white hover:bg-[#1e2d23] shadow-md hover:shadow-xl hover:-translate-y-1'}`}>
-                    {estaProcesando ? 'TALLANDO DISEÑO...' : 'PROBARME ESTE SOMBRERO'}
+                    {estaProcesando ? t.procesando : t.probarEstaPieza}
                   </button>
                 </div>
                 {errorTryOn && <p className="text-red-700 text-[10px] mt-4 text-center uppercase tracking-widest font-sans">{errorTryOn}</p>}
@@ -479,16 +638,24 @@ export default function MulataBoutique() {
                 </div>
                 
                 <div className="flex flex-col gap-3 w-full">
-                  <a href={generarLinkWhatsApp()} target="_blank" rel="noreferrer" className="w-full py-4 bg-[#2C4132] text-white text-[10px] font-bold text-center uppercase tracking-[0.2em] rounded-sm hover:bg-[#1e2d23] transition-colors shadow-md flex items-center justify-center">
-                    SOLICITAR ASESORÍA
+                  {/* 🔥 BOTÓN PRINCIPAL: AÑADIR AL CARRITO DESDE EL ESPEJO 🔥 */}
+                  <button 
+                    onClick={() => { agregarAlCarrito(prendaSeleccionada); setPrendaSeleccionada(null); setResultadoTryOnUrl(null); }} 
+                    className="w-full py-4 bg-[#2C4132] text-white text-[10px] font-bold text-center uppercase tracking-[0.2em] rounded-sm hover:bg-[#1e2d23] transition-colors shadow-md flex items-center justify-center gap-2"
+                  >
+                    🛒 {t.añadirBtn} AL CARRITO
+                  </button>
+
+                  <a href={generarLinkWhatsApp()} target="_blank" rel="noreferrer" className="w-full py-3 bg-[#F4EFE6] text-[#2C4132] text-[10px] font-bold text-center uppercase tracking-[0.2em] rounded-sm hover:bg-[#E3DCC8] transition-colors border border-transparent">
+                    {t.pedirInfo}
                   </a>
                   
-                  <div className="flex gap-3 w-full">
+                  <div className="flex gap-3 w-full mt-2">
                     <button onClick={() => setResultadoTryOnUrl(null)} className="flex-1 py-3 bg-white border border-[#E3DCC8] text-[#2C4132] text-[9px] font-bold uppercase tracking-[0.2em] rounded-sm hover:bg-[#F4EFE6] transition-colors">
-                      Probar Otro
+                      {t.reintentar}
                     </button>
                     <a href={resultadoTryOnUrl} download="Mulata_TryOn.jpg" target="_blank" rel="noreferrer" className="flex-1 py-3 bg-[#4A5D4E] text-white text-[9px] font-bold text-center uppercase tracking-[0.2em] rounded-sm hover:bg-[#2C4132] transition-colors shadow-md">
-                      Descargar
+                      {t.descargar}
                     </a>
                   </div>
                 </div>
