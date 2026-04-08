@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
+import SensorTrafico from '../components/SensorTrafico'; // 📡 IMPORTACIÓN DEL RADAR
 
 // === 1. CATÁLOGO PRINCIPAL (3x3, Cambio de imagen en hover, Sin probador) ===
 // 💡 NOTA: Ajusta 'urlAtras' con el nombre correcto de la foto trasera de cada bikini.
@@ -167,6 +168,9 @@ export default function BernarditaBoutique() {
   return (
     <main className="min-h-screen bg-white text-[#333] font-serif selection:bg-[#EAE0D5]">
       
+      {/* 📡 SENSOR DE TRÁFICO INYECTADO */}
+      <SensorTrafico marca="BERNARDITA" />
+
       {/* 👇 HEADER MODIFICADO CON FONDO ROSA MEXICANO 👇 */}
       {/* 🎨 Cambia el bg-[#C4346E] por tu color exacto si es necesario 🎨 */}
       <header className="relative w-full py-4 px-2 flex flex-col items-center bg-[#C4346E] border-b border-black/10">
