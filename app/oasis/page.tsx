@@ -231,7 +231,12 @@ export default function OasisBoutique() {
       const response = await fetch(URL_API_VIOS_CODE, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ src_file_url: fotoUsuarioUrl, ref_file_url: prendaPublicUrl, tipoPrenda: 'cloth' }),
+        body: JSON.stringify({ 
+          src_file_url: fotoUsuarioUrl, 
+          ref_file_url: prendaPublicUrl, 
+          tipoPrenda: 'cloth', 
+          tienda: 'OASIS' // 📡 ETIQUETA PARA EL CONTADOR EN LA MATRIZ
+        }),
       });
 
       const data = await response.json();

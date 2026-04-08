@@ -186,7 +186,7 @@ export default function MulataBoutique() {
       const response = await fetch(URL_API_VIOS_CODE, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ src_file_url: fotoUsuarioUrl, ref_file_url: prendaSeleccionada.url, tipoPrenda: 'hat', gender: generoUsuario }), 
+        body: JSON.stringify({ src_file_url: fotoUsuarioUrl, ref_file_url: prendaSeleccionada.url, tipoPrenda: 'hat', gender: generoUsuario, tienda: 'MULATA' }), 
       });
       const data = await response.json();
       if (!response.ok) throw new Error(data.error || 'Error.');
