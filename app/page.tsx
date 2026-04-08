@@ -4,6 +4,7 @@ import React, { useState, Suspense } from 'react';
 import * as THREE from 'three';
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls, Html, useVideoTexture } from '@react-three/drei';
+import SensorTrafico from './components/SensorTrafico'; // 📡 IMPORTACIÓN DEL RADAR (Ruta ajustada para la página principal)
 
 // === COMPONENTE: LA ESFERA GIGANTE 360 ===
 function Entorno360({ urlVideo }: { urlVideo: string }) {
@@ -38,6 +39,9 @@ export default function Home() {
   return (
     <main className="relative flex min-h-screen flex-col items-center justify-center bg-black overflow-hidden font-inter selection:bg-yellow-500/30">
       
+      {/* 📡 SENSOR DE TRÁFICO INYECTADO */}
+      <SensorTrafico marca="VIRTUAL_LUXURY_MAIN" />
+
       {/* 🎬 1. INTRODUCCIÓN CINEMÁTICA */}
       {!introTerminada && (
         <div className={`absolute inset-0 z-50 bg-black transition-opacity duration-1000 ease-in-out ${desvanecerIntro ? 'opacity-0' : 'opacity-100'}`}>

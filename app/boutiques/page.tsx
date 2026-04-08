@@ -4,6 +4,7 @@ import React, { Suspense, useState } from 'react';
 import * as THREE from 'three';
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls, Html, useVideoTexture } from '@react-three/drei';
+import SensorTrafico from '../components/SensorTrafico'; // 📡 IMPORTACIÓN DEL RADAR
 
 // === COMPONENTE: ENTORNOS 360 ===
 function Entorno360({ urlVideo }: { urlVideo: string }) {
@@ -72,6 +73,9 @@ export default function BoutiquesHub() {
   return (
     <main className="relative flex min-h-screen flex-col items-center justify-center bg-black overflow-hidden font-inter selection:bg-yellow-500/30">
       
+      {/* 📡 SENSOR DE TRÁFICO INYECTADO */}
+      <SensorTrafico marca="BOUTIQUES_HUB" />
+
       {/* 🌍 EL METAVERSO 360 */}
       <div className="absolute inset-0 z-0 bg-black">
         <Canvas camera={{ position: [0, 0, 0.1], fov: 75 }}>

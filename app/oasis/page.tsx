@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import SensorTrafico from '../components/SensorTrafico'; // 📡 IMPORTACIÓN DEL RADAR
 
 // === IMÁGENES DEL CARRUSEL PRINCIPAL ===
 const HERO_IMAGES = [
@@ -247,6 +248,9 @@ export default function OasisBoutique() {
   return (
     <main className="min-h-screen bg-white text-black font-sans">
       
+      {/* 📡 SENSOR DE TRÁFICO INYECTADO */}
+      <SensorTrafico marca="OASIS" />
+
       {/* NAVEGACIÓN ESTILO BERSHKA (Con Logo Oasis) */}
       <header className="sticky top-0 z-40 w-full bg-white flex items-center justify-between px-4 md:px-8 py-4 border-b border-gray-100">
         <div className="flex items-center gap-6">

@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
 import NextLink from 'next/link'; 
+import SensorTrafico from '../components/SensorTrafico'; // 📡 IMPORTACIÓN DEL RADAR
 
 // === COMPONENTE DE ANIMACIÓN AL HACER SCROLL ===
 function FadeIn({ children, delay = 0, className = "" }: { children: React.ReactNode, delay?: number, className?: string }) {
@@ -118,6 +119,9 @@ export default function MulataBoutique() {
     // PALETA TERRÁNEA: Fondos blancos cálidos, texto verde oliva oscuro
     <main className="min-h-screen bg-[#FDFBF7] text-[#2C4132] font-serif selection:bg-[#2C4132] selection:text-white relative">
       
+      {/* 📡 SENSOR DE TRÁFICO INYECTADO */}
+      <SensorTrafico marca="MULATA" />
+
      {/* NAVEGACIÓN */}
       <nav className="absolute top-0 w-full p-8 flex justify-between items-center z-50 mix-blend-difference">
         <button onClick={() => window.location.href = '/boutiques'} className="text-sm tracking-widest font-sans font-semibold uppercase hover:opacity-70 transition-opacity text-[#2C4132] cursor-pointer z-10">
@@ -302,7 +306,7 @@ export default function MulataBoutique() {
             <div className="flex flex-col gap-8">
               {[
                 { icon: "🌿", t: "Selección de Materiales", d: "Cada fibra, cada hilo, cada material es elegido con criterio y respeto por su origen natural y cultural." },
-                { icon: "👐", t: "Hecho a Mano", d: "Manos expertas dan forma a cada sombrero con técnicas artesanales transmitidas a través de generaciones." },
+                { icon: "👐", t: "Hecho a Mano", d: "Manos expertas dan forma a cada sombrero con técnicas artesanales transmitidas a través de generations." },
                 { icon: "✨", t: "Atención al Detalle", d: "Cada acabado, cada detalle — cadenas, grabados, costuras — es revisado con minuciosidad antes de salir al mundo." },
                 { icon: "⭐", t: "Acabados Únicos", d: "El resultado es una pieza irrepetible: un sombrero que lleva la huella de quien lo creó y la historia de las culturas que lo inspiraron." }
               ].map((step, i) => (
