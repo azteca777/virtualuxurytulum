@@ -262,10 +262,11 @@ export default function LoyaltinkBrigade() {
               />
               
               <div className={`absolute inset-0 w-full h-full flex transition-opacity duration-1000 ${mostrarFotos ? 'opacity-100' : 'opacity-0'}`}>
-                 <img src="/loyaltink/chuloski.jpeg" alt="Chuloski" className="w-1/4 h-full object-cover border-r border-zinc-800" />
-                 <img src="/loyaltink/rafa.jpeg" alt="Rafa" className="w-1/4 h-full object-cover border-r border-zinc-800" />
-                 <img src="/loyaltink/prana.jpeg" alt="Plana" className="w-1/4 h-full object-cover border-r border-zinc-800" />
-                 <img src="/loyaltink/nai.jpeg" alt="Nai" className="w-1/4 h-full object-cover" />
+                 <img src="/loyaltink/chuloski.jpeg" alt="Chuloski" className="w-1/5 h-full object-cover border-r border-zinc-800" />
+                 <img src="/loyaltink/rafa.jpeg" alt="Rafa" className="w-1/5 h-full object-cover border-r border-zinc-800" />
+                 <img src="/loyaltink/prana.jpeg" alt="Plana" className="w-1/5 h-full object-cover border-r border-zinc-800" />
+                 <img src="/loyaltink/nai.jpeg" alt="Nai" className="w-1/5 h-full object-cover border-r border-zinc-800" />
+                 <img src="/loyaltink/perfil_boris.png" alt="Boris" className="w-1/5 h-full object-cover" />
               </div>
             </div>
         </div>
@@ -597,6 +598,21 @@ export default function LoyaltinkBrigade() {
                 Originaria de Tierra del Fuego, Argentina. Nai se destaca por su extrema delicadeza y precisión. Su estilo se enfoca en el Fine Line, composiciones florales y piezas ilustrativas con sombras muy suaves. Domina la tendencia del Red Ink, creando diseños minimalistas y elegantes.
               </p>
               <a href="https://www.instagram.com/tattoonaink?igsh=ODV3ZTFxM2F0eDdx" target="_blank" rel="noopener noreferrer" className="w-10 h-10 border border-[#333] rounded-full flex items-center justify-center text-[#8B5CF6] hover:bg-[#8B5CF6] hover:text-white transition-colors cursor-pointer">
+                IG
+              </a>
+            </div>
+
+            {/* 👇 ARTISTA 5: BORIS 👇 */}
+            <div className="flex flex-col items-center">
+              <div className="w-48 h-48 rounded-full overflow-hidden border-4 border-[#222] shadow-[0_0_30px_rgba(139,92,246,0.15)] mb-8 bg-zinc-800">
+                 <img src="/loyaltink/perfil_boris.png" alt="Boris Arga" className="w-full h-full object-cover" />
+              </div>
+              <h3 className="text-2xl font-bold text-white uppercase tracking-wider mb-2">BORIS ARGA "BORIS"</h3>
+              <p className="text-[#06b6d4] text-[10px] font-bold tracking-[0.2em] uppercase mb-6">MICRO-REALISMO • FOTORREALISMO • COLOR POP</p>
+              <p className="text-zinc-400 text-sm leading-relaxed max-w-2xl mb-6">
+                Originario de Argentina. Boris es un especialista en llevar el fotorrealismo a escalas reducidas (micro-realismo). Su técnica destaca por la precisión casi fotográfica en retratos humanos y animales, logrando expresiones vívidas y texturas hiperrealistas. Es el único en el estudio que domina el uso de colores vibrantes y de alto contraste (Color Pop) para dar vida a figuras de la cultura pop y deportes con acabados impecables.
+              </p>
+              <a href="https://www.instagram.com/borisbortix?igsh=MTR6MTF0dDI1dmp1Yg==" target="_blank" rel="noopener noreferrer" className="w-10 h-10 border border-[#333] rounded-full flex items-center justify-center text-[#8B5CF6] hover:bg-[#8B5CF6] hover:text-white transition-colors cursor-pointer">
                 IG
               </a>
             </div>
