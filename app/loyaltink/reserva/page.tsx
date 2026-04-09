@@ -24,6 +24,10 @@ export default function ReservaLoyaltink() {
   const [complexity, setComplexity] = useState("Moderada");
   const [style, setStyle] = useState("Blackwork"); 
   
+  // Estados de Usuario
+  const [nombreCliente, setNombreCliente] = useState("");
+  const [telefonoCliente, setTelefonoCliente] = useState("");
+
   // Estados Calendario REALES Y DINÁMICOS
   const hoy = new Date();
   const [mesActual, setMesActual] = useState(hoy.getMonth()); 
@@ -102,7 +106,7 @@ export default function ReservaLoyaltink() {
     }
   }, [paso, artistaSeleccionado, mesActual, anioActual]); // Se recarga si cambias de mes
 
-  // --- NUEVA LÓGICA: CREAR EVENTO CON FECHA DINÁMICA ---
+  // --- NUEVA LÓGICA: CREAR EVENTO CON DATOS COMPLETOS (GOOGLE + SUPABASE) ---
   const confirmarReservaEnGoogle = async () => {
     setProcesandoPago(true);
     
@@ -122,16 +126,21 @@ export default function ReservaLoyaltink() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           artistaId: artistaSeleccionado.id,
-          titulo: `TATUAJE - ${style} - Cliente Web`,
-          descripcion: `¡Nueva cita generada desde la web!\n\nColor: ${colorType}\nTamaño: ${size}cm\nComplejidad: ${complexity}\nCosto Total Estimado: $${costoTotal} USD\nAnticipo pagado: $${anticipo} USD`,
+          nombreArtista: artistaSeleccionado.nombre,
+          nombreCliente,
+          telefonoCliente,
+          titulo: `TATUAJE - ${nombreCliente} - Cliente Web`,
+          descripcion: `Cliente: ${nombreCliente}\nWhatsApp: ${telefonoCliente}\n\nColor: ${colorType}\nTamaño: ${size}cm\nComplejidad: ${complexity}\nCosto Total Estimado: $${costoTotal} USD\nAnticipo pagado: $${anticipo} USD\nFalta por pagar en estudio: $${costoTotal - anticipo} USD`,
           inicioIso,
-          finIso
+          finIso,
+          costoTotal,
+          anticipo
         })
       });
 
       const data = await res.json();
       if(data.success) {
-        alert("¡Éxito! Tu pago fue procesado y tu reserva se ha guardado en el calendario.");
+        alert("¡Éxito! Tu reserva está confirmada. Te enviaremos un WhatsApp con los detalles.");
         window.location.href = '/loyaltink'; 
       } else {
         alert("El pago pasó, pero hubo un error agendando en el calendario.");
@@ -380,21 +389,38 @@ export default function ReservaLoyaltink() {
               </div>
             </div>
 
-            <p className="text-[10px] text-zinc-500 text-center mb-8 px-4">
-              Al procesar el pago, tu cita quedará confirmada automáticamente en el calendario del artista. El saldo restante se liquidará en el estudio.
+            <p className="text-[10px] text-zinc-500 text-center mb-6 px-4">
+              Ingresa tus datos de contacto. Al procesar el pago, tu cita quedará confirmada automáticamente en el calendario del artista.
             </p>
+
+            <div className="space-y-3 mb-8">
+               <input 
+                 type="text" 
+                 placeholder="Tu Nombre Completo" 
+                 value={nombreCliente}
+                 onChange={(e) => setNombreCliente(e.target.value)}
+                 className="w-full bg-[#222] border border-[#333] text-white text-sm rounded-lg p-3 outline-none focus:border-[#8B5CF6]"
+               />
+               <input 
+                 type="tel" 
+                 placeholder="Tu número de WhatsApp (Ej: +52...)" 
+                 value={telefonoCliente}
+                 onChange={(e) => setTelefonoCliente(e.target.value)}
+                 className="w-full bg-[#222] border border-[#333] text-white text-sm rounded-lg p-3 outline-none focus:border-[#8B5CF6]"
+               />
+            </div>
 
             <div className="flex flex-col gap-4">
               {/* BOTÓN DE MERCADO PAGO SIMULADO */}
               <button 
                 onClick={simularPagoMercadoPago} 
-                disabled={procesandoPago}
-                className="w-full bg-[#009EE3] disabled:bg-[#333] text-white py-4 rounded-lg font-bold flex items-center justify-center gap-3 hover:bg-[#0088cc] transition-colors shadow-lg"
+                disabled={procesandoPago || !nombreCliente || !telefonoCliente}
+                className="w-full bg-[#009EE3] disabled:bg-[#333] disabled:text-zinc-500 text-white py-4 rounded-lg font-bold flex items-center justify-center gap-3 hover:bg-[#0088cc] transition-colors shadow-lg"
               >
                 {procesandoPago ? (
                   <>
                     <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                    CONECTANDO CON GOOGLE CALENDAR...
+                    PROCESANDO PAGO Y RESERVA...
                   </>
                 ) : (
                   <>

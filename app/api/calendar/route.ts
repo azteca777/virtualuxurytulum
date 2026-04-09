@@ -1,14 +1,20 @@
 import { NextResponse } from 'next/server';
 import { google } from 'googleapis';
+import { createClient } from '@supabase/supabase-js';
 
-// Función para leer la clave privada arreglando los saltos de línea
+// --- CONFIGURACIÓN DE SUPABASE ---
+// Usamos las variables que ya tienes en tu .env.local / Vercel
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
+const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
+const supabase = createClient(supabaseUrl, supabaseKey);
+
+// --- CONFIGURACIÓN DE GOOGLE CALENDAR ---
 const getPrivateKey = () => {
   const key = process.env.GOOGLE_PRIVATE_KEY;
   if (!key) return undefined;
   return key.replace(/\\n/g, '\n');
 };
 
-// Configuración de nuestro Bot (Cuenta de Servicio)
 const auth = new google.auth.GoogleAuth({
   credentials: {
     client_email: process.env.GOOGLE_CLIENT_EMAIL,
@@ -19,11 +25,9 @@ const auth = new google.auth.GoogleAuth({
 
 const calendar = google.calendar({ version: 'v3', auth });
 
-// Vinculamos a cada artista con su correo real de Google Calendar
 const getCalendarId = (artistaId: string) => {
   const ids: Record<string, string | undefined> = {
     chuloski: process.env.CALENDAR_ID_CHULOSKI,
-    // Cuando los demás artistas te pasen sus correos, los agregas en tu .env.local y los descomentas aquí:
     // rafa: process.env.CALENDAR_ID_RAFA,
     // prana: process.env.CALENDAR_ID_PRANA,
     // nai: process.env.CALENDAR_ID_NAI,
@@ -46,7 +50,7 @@ export async function GET(request: Request) {
   }
 
   const calendarId = getCalendarId(artistaId);
-  if (!calendarId) return NextResponse.json({ fechasOcupadas: [] }); // Si no hay calendario, asume que está libre
+  if (!calendarId) return NextResponse.json({ fechasOcupadas: [] }); 
 
   try {
     const response = await calendar.events.list({
@@ -68,22 +72,26 @@ export async function GET(request: Request) {
 }
 
 // -------------------------------------------------------------
-// POST: Crear la reserva en el calendario (Después de pagar)
+// POST: Crear la reserva (Calendar) + Guardar reporte (Supabase) + ManyChat
 // -------------------------------------------------------------
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { artistaId, titulo, descripcion, inicioIso, finIso } = body;
+    const { 
+      artistaId, nombreArtista, nombreCliente, telefonoCliente, 
+      titulo, descripcion, inicioIso, finIso, costoTotal, anticipo 
+    } = body;
 
     const calendarId = getCalendarId(artistaId);
     if (!calendarId) return NextResponse.json({ error: 'Calendario no encontrado' }, { status: 404 });
 
+    // 1. CREAR EVENTO EN GOOGLE CALENDAR
     const event = {
       summary: titulo,
       description: descripcion,
-      start: { dateTime: inicioIso, timeZone: 'America/Cancun' }, // Ajustado a horario de Tulum/Cancún
+      start: { dateTime: inicioIso, timeZone: 'America/Cancun' },
       end: { dateTime: finIso, timeZone: 'America/Cancun' },
-      colorId: '5', // Color amarillo en Google Calendar para destacar las citas de la web
+      colorId: '5', // Color amarillo
     };
 
     const response = await calendar.events.insert({
@@ -91,9 +99,62 @@ export async function POST(request: Request) {
       requestBody: event,
     });
 
-    return NextResponse.json({ success: true, eventId: response.data.id });
+    const googleEventId = response.data.id;
+
+    // 2. GUARDAR REPORTE EN SUPABASE PARA TU PANEL DE ADMINISTRADOR
+    const comisionEstudio = anticipo; // En este ejemplo, el estudio se queda el 20% (el anticipo)
+    const faltaPorPagar = costoTotal - anticipo;
+
+    const { error: dbError } = await supabase
+      .from('reservas_loyaltink')
+      .insert([
+        {
+          cliente_nombre: nombreCliente,
+          cliente_whatsapp: telefonoCliente,
+          artista: nombreArtista,
+          fecha_cita: inicioIso,
+          costo_total: costoTotal,
+          anticipo_pagado: anticipo,
+          falta_por_pagar: faltaPorPagar,
+          comision_estudio: comisionEstudio,
+          google_event_id: googleEventId
+        }
+      ]);
+
+    if (dbError) {
+      console.error("Error guardando en Supabase:", dbError);
+      // No rompemos el flujo si Supabase falla, lo importante es que Calendar ya guardó la cita
+    }
+
+    // 3. ENVIAR WHATSAPP AUTOMÁTICO VÍA MANYCHAT
+    // ⚠️ Descomentar cuando generes tu Token en Configuración > API de ManyChat y lo pongas en Vercel
+    /*
+    const MANYCHAT_TOKEN = process.env.MANYCHAT_API_TOKEN;
+    
+    if (MANYCHAT_TOKEN) {
+      await fetch('https://api.manychat.com/wa/messages/sendTemplate', {
+        method: 'POST',
+        headers: { 
+          'Authorization': `Bearer ${MANYCHAT_TOKEN}`, 
+          'Content-Type': 'application/json' 
+        },
+        body: JSON.stringify({
+          phone: telefonoCliente, // El número que el cliente ingresó
+          template_name: "reserva_loyaltink", // El nombre de la plantilla aprobada en ManyChat
+          language: "es_MX",
+          parameters: [
+            { type: "text", text: nombreCliente },
+            { type: "text", text: nombreArtista },
+            { type: "text", text: anticipo.toString() }
+          ]
+        })
+      });
+    }
+    */
+
+    return NextResponse.json({ success: true, eventId: googleEventId });
   } catch (error) {
-    console.error("Error al crear evento:", error);
+    console.error("Error en el POST del calendario:", error);
     return NextResponse.json({ error: 'Error al crear la reserva' }, { status: 500 });
   }
 }
