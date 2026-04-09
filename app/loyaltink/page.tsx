@@ -266,7 +266,7 @@ export default function LoyaltinkBrigade() {
                  <img src="/loyaltink/rafa.jpeg" alt="Rafa" className="w-1/5 h-full object-cover border-r border-zinc-800" />
                  <img src="/loyaltink/prana.jpeg" alt="Plana" className="w-1/5 h-full object-cover border-r border-zinc-800" />
                  <img src="/loyaltink/nai.jpeg" alt="Nai" className="w-1/5 h-full object-cover border-r border-zinc-800" />
-                 <img src="/loyaltink/boris.jpeg" alt="Boris" className="w-1/5 h-full object-cover" />
+                 <img src="/loyaltink/perfil_boris.png" alt="Boris" className="w-1/5 h-full object-cover" />
               </div>
             </div>
         </div>
@@ -277,7 +277,10 @@ export default function LoyaltinkBrigade() {
           </span>
 
           <div className="flex flex-col w-full sm:w-auto gap-4">
-            <button className="w-full sm:w-80 bg-white text-[#8B5CF6] font-bold py-4 px-8 transition-all uppercase tracking-[0.2em] text-xs hover:bg-zinc-100 shadow-[0_0_20px_rgba(255,255,255,0.2)]">
+            <button 
+              onClick={() => window.location.href = '/loyaltink/reserva'} 
+              className="w-full sm:w-80 bg-white text-[#8B5CF6] font-bold py-4 px-8 transition-all uppercase tracking-[0.2em] text-xs hover:bg-zinc-100 shadow-[0_0_20px_rgba(255,255,255,0.2)]"
+            >
               RESERVAR SESIÓN
             </button>
             <button 
@@ -602,7 +605,7 @@ export default function LoyaltinkBrigade() {
               </a>
             </div>
 
-            {/* 👇 ARTISTA 5: BORIS 👇 */}
+            {/* ARTISTA 5: BORIS */}
             <div className="flex flex-col items-center">
               <div className="w-48 h-48 rounded-full overflow-hidden border-4 border-[#222] shadow-[0_0_30px_rgba(139,92,246,0.15)] mb-8 bg-zinc-800">
                  <img src="/loyaltink/perfil_boris.png" alt="Boris Arga" className="w-full h-full object-cover" />
@@ -684,7 +687,10 @@ export default function LoyaltinkBrigade() {
          <p className="text-white/80 max-w-lg mb-10 leading-relaxed">
            Nuestros libros están abiertos para consultas y sesiones. Trabajamos solo con cita previa para darle a cada cliente el enfoque y el tiempo que su pieza merece.
          </p>
-         <button className="bg-white text-[#8B5CF6] font-bold py-4 px-10 uppercase tracking-[0.2em] text-xs hover:bg-zinc-100 transition-colors w-full sm:w-auto">
+         <button 
+           onClick={() => window.location.href = '/loyaltink/reserva'}
+           className="bg-white text-[#8B5CF6] font-bold py-4 px-10 uppercase tracking-[0.2em] text-xs hover:bg-zinc-100 transition-colors w-full sm:w-auto"
+         >
            SOLICITAR UNA CONSULTA
          </button>
       </section>
@@ -731,7 +737,7 @@ export default function LoyaltinkBrigade() {
               <button className="hover:text-white transition-colors">Servicios y Precios</button>
               <button className="hover:text-white transition-colors">Cuidados Posteriores</button>
               <button className="hover:text-white transition-colors">Políticas del Estudio</button>
-              <button className="hover:text-white transition-colors">Agendar Consulta</button>
+              <button onClick={() => window.location.href = '/loyaltink/reserva'} className="hover:text-white transition-colors">Agendar Consulta</button>
             </div>
           </div>
         </div>
