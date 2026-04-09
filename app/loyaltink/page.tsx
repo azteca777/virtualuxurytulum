@@ -39,7 +39,6 @@ function FlechaStreetView({ posicion, angulo = 0, onClick, hoverText = '' }: { p
         <circleGeometry args={[1.2, 32]} />
         <meshBasicMaterial color="white" transparent opacity={hovered ? 0.3 : 0.1} />
       </mesh>
-      {/* 👇 TRIÁNGULO VERDE 👇 */}
       <mesh position={[0, 0.3, 0.02]} rotation={[0, 0, Math.PI / 2]}>
         <circleGeometry args={[0.4, 3]} />
         <meshBasicMaterial color="#10b981" transparent opacity={hovered ? 1 : 0.8} /> 
@@ -291,11 +290,11 @@ export default function LoyaltinkBrigade() {
       </header>
 
       {/* 🔥 CALCULADORA PRO TIPO SAAS 🔥 */}
-      <section className="py-24 px-4 bg-[#0a0a0a] border-t border-[#222]">
+      <section className="py-12 md:py-24 px-4 bg-[#0a0a0a] border-t border-[#222]">
         <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-12">
-            <h2 className="text-4xl md:text-5xl font-black text-white uppercase tracking-tighter mb-4">ESTIMADOR DE TATUAJES PRO</h2>
-            <p className="text-zinc-400">Calcula el costo y tiempo de tu pieza en segundos.</p>
+          <div className="text-center mb-8 md:mb-12">
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-black text-white uppercase tracking-tighter mb-2 md:mb-4">ESTIMADOR DE TATUAJES PRO</h2>
+            <p className="text-xs md:text-sm text-zinc-400">Calcula el costo y tiempo de tu pieza en segundos.</p>
           </div>
 
           <div className="bg-[#1a1a1a] rounded-2xl border border-[#333] overflow-hidden flex flex-col lg:flex-row shadow-2xl">
@@ -305,51 +304,51 @@ export default function LoyaltinkBrigade() {
               <div className="flex border-b border-[#333] bg-[#141414]">
                 <button 
                   onClick={() => setCalcTab('cost')}
-                  className={`flex-1 py-5 text-sm font-bold tracking-wider transition-colors ${calcTab === 'cost' ? 'text-white border-b-2 border-[#06b6d4] bg-[#1a1a1a]' : 'text-zinc-500 hover:text-zinc-300 hover:bg-[#1a1a1a]'}`}
+                  className={`flex-1 py-3 md:py-5 text-xs md:text-sm font-bold tracking-wider transition-colors ${calcTab === 'cost' ? 'text-white border-b-2 border-[#06b6d4] bg-[#1a1a1a]' : 'text-zinc-500 hover:text-zinc-300 hover:bg-[#1a1a1a]'}`}
                 >
                   Costo del Tatuaje
                 </button>
                 <button 
                   onClick={() => setCalcTab('time')}
-                  className={`flex-1 py-5 text-sm font-bold tracking-wider transition-colors ${calcTab === 'time' ? 'text-white border-b-2 border-[#8B5CF6] bg-[#1a1a1a]' : 'text-zinc-500 hover:text-zinc-300 hover:bg-[#1a1a1a]'}`}
+                  className={`flex-1 py-3 md:py-5 text-xs md:text-sm font-bold tracking-wider transition-colors ${calcTab === 'time' ? 'text-white border-b-2 border-[#8B5CF6] bg-[#1a1a1a]' : 'text-zinc-500 hover:text-zinc-300 hover:bg-[#1a1a1a]'}`}
                 >
                   Tiempo de Sesión
                 </button>
               </div>
 
-              <div className="p-8 space-y-8">
+              <div className="p-4 sm:p-6 md:p-8 space-y-5 md:space-y-8">
                 <div>
-                  <h3 className="text-xl font-bold text-white mb-1">
+                  <h3 className="text-lg md:text-xl font-bold text-white mb-1">
                     {calcTab === 'cost' ? 'Calculadora de Costos' : 'Estimador de Tiempos'}
                   </h3>
-                  <p className="text-xs text-zinc-500">
+                  <p className="text-[10px] md:text-xs text-zinc-500 leading-tight">
                     {calcTab === 'cost' 
                       ? 'Estima tu tatuaje basado en tamaño, estilo, color y experiencia del artista.' 
                       : 'Estima la duración basada en tamaño, complejidad, estilo y tolerancia al dolor.'}
                   </p>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
                   {calcTab === 'cost' ? (
                     <div>
-                      <label className="block text-xs font-bold text-zinc-400 mb-2">Ubicación del Estudio</label>
+                      <label className="block text-[10px] md:text-xs font-bold text-zinc-400 mb-2">Ubicación del Estudio</label>
                       <select 
                         value={location} onChange={(e) => setLocation(e.target.value)}
-                        className="w-full bg-[#222] border border-[#333] text-white text-sm rounded-lg p-3 outline-none focus:border-[#06b6d4]"
+                        className="w-full bg-[#222] border border-[#333] text-white text-xs md:text-sm rounded-lg p-2 md:p-3 outline-none focus:border-[#06b6d4]"
                       >
-                        <option>Tulum Centro</option>
-                        <option>Aldea Zama</option>
-                        <option>La Veleta</option>
+                        <option>Playa del Carmen</option>
+                        <option>Tulum</option>
+                        <option>Cancún</option>
                       </select>
                     </div>
                   ) : (
                     <div>
-                      <label className="block text-xs font-bold text-zinc-400 mb-2">Tolerancia al Dolor</label>
+                      <label className="block text-[10px] md:text-xs font-bold text-zinc-400 mb-2">Tolerancia al Dolor</label>
                       <div className="flex bg-[#222] rounded-lg p-1 border border-[#333]">
                         {["Sensible", "Promedio", "Alta"].map((p) => (
                           <button 
                             key={p} onClick={() => setPainTolerance(p)}
-                            className={`flex-1 py-2 text-xs font-bold rounded-md transition-colors ${painTolerance === p ? 'bg-[#333] text-white shadow-sm' : 'text-zinc-500 hover:text-zinc-300'}`}
+                            className={`flex-1 py-1.5 md:py-2 text-[10px] md:text-xs font-bold rounded-md transition-colors ${painTolerance === p ? 'bg-[#333] text-white shadow-sm' : 'text-zinc-500 hover:text-zinc-300'}`}
                           >
                             {p}
                           </button>
@@ -359,12 +358,12 @@ export default function LoyaltinkBrigade() {
                   )}
 
                   <div>
-                    <label className="block text-xs font-bold text-zinc-400 mb-2">Tipo de Color</label>
+                    <label className="block text-[10px] md:text-xs font-bold text-zinc-400 mb-2">Tipo de Color</label>
                     <div className="flex bg-[#222] rounded-lg p-1 border border-[#333]">
                       {["Blanco y Negro", "Color"].map((c) => (
                         <button 
                           key={c} onClick={() => setColorType(c)}
-                          className={`flex-1 py-2 text-xs font-bold rounded-md transition-colors ${colorType === c ? 'bg-[#333] text-white shadow-sm' : 'text-zinc-500 hover:text-zinc-300'}`}
+                          className={`flex-1 py-1.5 md:py-2 text-[10px] md:text-xs font-bold rounded-md transition-colors ${colorType === c ? 'bg-[#333] text-white shadow-sm' : 'text-zinc-500 hover:text-zinc-300'}`}
                         >
                           {c}
                         </button>
@@ -375,34 +374,34 @@ export default function LoyaltinkBrigade() {
 
                 <div>
                   <div className="flex justify-between items-end mb-2">
-                    <label className="block text-xs font-bold text-zinc-400">Tamaño del Tatuaje</label>
-                    <span className="text-[10px] text-zinc-600 border border-[#333] px-2 py-1 rounded">Usar cm</span>
+                    <label className="block text-[10px] md:text-xs font-bold text-zinc-400">Tamaño del Tatuaje</label>
+                    <span className="text-[9px] md:text-[10px] text-zinc-600 border border-[#333] px-2 py-1 rounded">Usar cm</span>
                   </div>
-                  <p className="text-white font-bold mb-4">Tamaño: {size} cm²</p>
+                  <p className="text-white text-sm md:text-base font-bold mb-3 md:mb-4">Tamaño: {size} cm²</p>
                   
                   <input 
                     type="range" min="1" max="100" value={size} 
                     onChange={(e) => setSize(Number(e.target.value))}
-                    className="w-full h-2 bg-[#333] rounded-lg appearance-none cursor-pointer accent-[#8B5CF6] mb-6"
+                    className="w-full h-2 bg-[#333] rounded-lg appearance-none cursor-pointer accent-[#8B5CF6] mb-4 md:mb-6"
                   />
                   
-                  <div className="w-full h-32 bg-[#222] border border-[#333] rounded-lg flex items-center justify-center relative overflow-hidden">
+                  <div className="w-full h-20 md:h-32 bg-[#222] border border-[#333] rounded-lg flex items-center justify-center relative overflow-hidden">
                      <div 
                         className="border-2 border-dashed border-[#06b6d4]/50 flex items-center justify-center transition-all"
                         style={{ width: `${Math.min(100, Math.max(10, size))}%`, height: `${Math.min(100, Math.max(10, size))}%` }}
                      >
-                       <span className="text-zinc-600 text-xs">Área Visual</span>
+                       <span className="text-zinc-600 text-[10px] md:text-xs">Área Visual</span>
                      </div>
                   </div>
                 </div>
 
                 <div>
-                  <label className="block text-xs font-bold text-zinc-400 mb-3">Estilo del Tatuaje ?</label>
-                  <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
+                  <label className="block text-[10px] md:text-xs font-bold text-zinc-400 mb-2 md:mb-3">Estilo del Tatuaje ?</label>
+                  <div className="grid grid-cols-3 md:grid-cols-4 gap-1.5 md:gap-2">
                     {["Línea Fina", "Blackwork", "Tradicional", "Ilustrativo", "Realismo", "Acuarela", "Neo-Japonés", "Geométrico", "Tribal", "Biomecánico", "Retrato", "Puntillismo"].map((s) => (
                       <button 
                         key={s} onClick={() => setStyle(s)}
-                        className={`py-3 text-[10px] font-bold rounded-lg border transition-all ${style === s ? 'bg-[#333] border-[#8B5CF6] text-white shadow-[0_0_10px_rgba(139,92,246,0.2)]' : 'bg-[#222] border-[#333] text-zinc-500 hover:border-[#444] hover:text-zinc-300'}`}
+                        className={`py-2 md:py-3 text-[9px] md:text-[10px] font-bold rounded-lg border transition-all ${style === s ? 'bg-[#333] border-[#8B5CF6] text-white shadow-[0_0_10px_rgba(139,92,246,0.2)]' : 'bg-[#222] border-[#333] text-zinc-500 hover:border-[#444] hover:text-zinc-300'}`}
                       >
                         {s}
                       </button>
@@ -413,36 +412,36 @@ export default function LoyaltinkBrigade() {
                 <div>
                   {calcTab === 'cost' ? (
                     <>
-                      <label className="block text-xs font-bold text-zinc-400 mb-3">Experiencia del Artista</label>
-                      <div className="grid grid-cols-2 gap-3">
+                      <label className="block text-[10px] md:text-xs font-bold text-zinc-400 mb-2 md:mb-3">Experiencia del Artista</label>
+                      <div className="grid grid-cols-2 gap-2 md:gap-3">
                         {[
                           { n: "Aprendiz", t: "0-2 años" }, { n: "Junior", t: "2-5 años" }, 
                           { n: "Establecido", t: "5-10 años" }, { n: "Master", t: "10+ años" }
                         ].map((exp) => (
                           <button 
                             key={exp.n} onClick={() => setExperience(exp.n)}
-                            className={`p-4 flex flex-col items-center rounded-lg border transition-all ${experience === exp.n ? 'bg-[#333] border-[#06b6d4] text-white shadow-[0_0_10px_rgba(6,182,212,0.2)]' : 'bg-[#222] border-[#333] text-zinc-500 hover:border-[#444]'}`}
+                            className={`p-2 md:p-4 flex flex-col items-center rounded-lg border transition-all ${experience === exp.n ? 'bg-[#333] border-[#06b6d4] text-white shadow-[0_0_10px_rgba(6,182,212,0.2)]' : 'bg-[#222] border-[#333] text-zinc-500 hover:border-[#444]'}`}
                           >
-                            <span className="text-sm font-bold">{exp.n}</span>
-                            <span className="text-[10px] opacity-60">{exp.t}</span>
+                            <span className="text-xs md:text-sm font-bold">{exp.n}</span>
+                            <span className="text-[9px] md:text-[10px] opacity-60">{exp.t}</span>
                           </button>
                         ))}
                       </div>
                     </>
                   ) : (
                     <>
-                      <label className="block text-xs font-bold text-zinc-400 mb-3">Complejidad del Diseño</label>
-                      <div className="grid grid-cols-2 gap-3">
+                      <label className="block text-[10px] md:text-xs font-bold text-zinc-400 mb-2 md:mb-3">Complejidad del Diseño</label>
+                      <div className="grid grid-cols-2 gap-2 md:gap-3">
                         {[
                           { n: "Simple", t: "Formas básicas, sin detalle" }, { n: "Moderada", t: "Varios elementos, sombras" }, 
                           { n: "Compleja", t: "Detalles finos, texturas" }, { n: "Muy Compleja", t: "Fotorrealismo, multicapa" }
                         ].map((comp) => (
                           <button 
                             key={comp.n} onClick={() => setComplexity(comp.n)}
-                            className={`p-4 flex flex-col items-center text-center rounded-lg border transition-all ${complexity === comp.n ? 'bg-[#333] border-[#8B5CF6] text-white shadow-[0_0_10px_rgba(139,92,246,0.2)]' : 'bg-[#222] border-[#333] text-zinc-500 hover:border-[#444]'}`}
+                            className={`p-2 md:p-4 flex flex-col items-center text-center rounded-lg border transition-all ${complexity === comp.n ? 'bg-[#333] border-[#8B5CF6] text-white shadow-[0_0_10px_rgba(139,92,246,0.2)]' : 'bg-[#222] border-[#333] text-zinc-500 hover:border-[#444]'}`}
                           >
-                            <span className="text-sm font-bold">{comp.n}</span>
-                            <span className="text-[10px] opacity-60">{comp.t}</span>
+                            <span className="text-xs md:text-sm font-bold">{comp.n}</span>
+                            <span className="text-[9px] md:text-[10px] opacity-60">{comp.t}</span>
                           </button>
                         ))}
                       </div>
@@ -454,25 +453,25 @@ export default function LoyaltinkBrigade() {
             </div>
 
             {/* PANEL DERECHO: RESULTADOS */}
-            <div className="w-full lg:w-[380px] bg-[#141414] p-8 flex flex-col">
-              <div className="bg-[#1a1a1a] rounded-xl border border-[#333] p-6 flex-1 flex flex-col shadow-inner">
-                <h4 className="text-white font-bold mb-8">
+            <div className="w-full lg:w-[380px] bg-[#141414] p-4 sm:p-6 md:p-8 flex flex-col">
+              <div className="bg-[#1a1a1a] rounded-xl border border-[#333] p-5 md:p-6 flex-1 flex flex-col shadow-inner">
+                <h4 className="text-white font-bold mb-4 md:mb-8 text-sm md:text-base">
                   {calcTab === 'cost' ? 'Costo Estimado' : 'Tiempo Estimado'}
                 </h4>
                 
-                <div className="flex-1 flex justify-center items-center mb-8">
-                  <div className="w-48 h-48 rounded-full border border-[#333] bg-[#222] flex flex-col items-center justify-center shadow-lg relative">
+                <div className="flex-1 flex justify-center items-center mb-6 md:mb-8">
+                  <div className="w-36 h-36 md:w-48 md:h-48 rounded-full border border-[#333] bg-[#222] flex flex-col items-center justify-center shadow-lg relative">
                      <div className={`absolute inset-0 rounded-full blur-xl opacity-20 ${calcTab === 'cost' ? 'bg-[#06b6d4]' : 'bg-[#8B5CF6]'}`}></div>
-                     <span className="text-3xl font-black text-white relative z-10">
+                     <span className="text-2xl md:text-3xl font-black text-white relative z-10">
                        {calcTab === 'cost' ? getEstimatedCost() : getEstimatedTime()}
                      </span>
-                     <span className="text-xs text-zinc-500 mt-1 relative z-10">
+                     <span className="text-[10px] md:text-xs text-zinc-500 mt-0 md:mt-1 relative z-10">
                        {calcTab === 'cost' ? 'USD' : 'Aprox'}
                      </span>
                   </div>
                 </div>
 
-                <div className="space-y-4 text-xs">
+                <div className="space-y-3 md:space-y-4 text-[10px] md:text-xs">
                   <div className="flex justify-between border-b border-[#333] pb-2">
                     <span className="text-zinc-500">Tamaño</span><span className="text-white font-bold">{size} cm²</span>
                   </div>
@@ -498,11 +497,11 @@ export default function LoyaltinkBrigade() {
                   )}
                 </div>
 
-                <div className="mt-8 pt-6 border-t border-[#333]">
-                  <p className="text-[10px] text-white font-bold mb-3 uppercase tracking-wider">
+                <div className="mt-6 md:mt-8 pt-4 md:pt-6 border-t border-[#333]">
+                  <p className="text-[9px] md:text-[10px] text-white font-bold mb-2 md:mb-3 uppercase tracking-wider">
                     {calcTab === 'cost' ? 'Factores de Precio' : 'Factores de Tiempo'}
                   </p>
-                  <div className="grid grid-cols-2 gap-2 text-[9px] text-zinc-500">
+                  <div className="grid grid-cols-2 gap-1.5 md:gap-2 text-[8px] md:text-[9px] text-zinc-500">
                     {calcTab === 'cost' ? (
                       <>
                         <p>• Tarifas y popularidad</p>
@@ -523,7 +522,7 @@ export default function LoyaltinkBrigade() {
                       </>
                     )}
                   </div>
-                  <p className="text-[9px] text-zinc-600 text-center mt-6">Powered by ViOs Code</p>
+                  <p className="text-[8px] md:text-[9px] text-zinc-600 text-center mt-4 md:mt-6">Powered by ViOs Code</p>
                 </div>
               </div>
             </div>
@@ -542,6 +541,7 @@ export default function LoyaltinkBrigade() {
           </p>
 
           <div className="space-y-32">
+            {/* ARTISTA 1: CHULOSKI */}
             <div className="flex flex-col items-center">
               <div className="w-48 h-48 rounded-full overflow-hidden border-4 border-[#222] shadow-[0_0_30px_rgba(139,92,246,0.15)] mb-8 bg-zinc-800">
                 <img src="/loyaltink/perfil_chuloski.png" alt="Chuloski" className="w-full h-full object-cover" />
@@ -556,6 +556,7 @@ export default function LoyaltinkBrigade() {
               </a>
             </div>
 
+            {/* ARTISTA 2: RAFA */}
             <div className="flex flex-col items-center">
               <div className="w-48 h-48 rounded-full overflow-hidden border-4 border-[#222] shadow-[0_0_30px_rgba(6,182,212,0.15)] mb-8 bg-zinc-800">
                  <img src="/loyaltink/perfil_rafa.png" alt="Rafa Moldess" className="w-full h-full object-cover" />
@@ -570,6 +571,7 @@ export default function LoyaltinkBrigade() {
               </a>
             </div>
 
+            {/* ARTISTA 3: PRANA */}
             <div className="flex flex-col items-center">
               <div className="w-48 h-48 rounded-full overflow-hidden border-4 border-[#222] shadow-[0_0_30px_rgba(139,92,246,0.15)] mb-8 bg-zinc-800">
                  <img src="/loyaltink/perfil_prana.png" alt="Lautaro Bordesse" className="w-full h-full object-cover" />
@@ -584,6 +586,7 @@ export default function LoyaltinkBrigade() {
               </a>
             </div>
 
+            {/* ARTISTA 4: NAI */}
             <div className="flex flex-col items-center">
               <div className="w-48 h-48 rounded-full overflow-hidden border-4 border-[#222] shadow-[0_0_30px_rgba(139,92,246,0.15)] mb-8 bg-zinc-800">
                  <img src="/loyaltink/perfil_nai.png" alt="Naiara" className="w-full h-full object-cover" />
