@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import SensorTrafico from '../../components/SensorTrafico';
 
 // === DATOS DE LOS ARTISTAS ===
@@ -20,19 +20,21 @@ export default function ReservaLoyaltink() {
   const [size, setSize] = useState(15);
   const [colorType, setColorType] = useState("Blanco y Negro");
   const [complexity, setComplexity] = useState("Moderada");
+  const [style, setStyle] = useState("Blackwork"); // Añadido para mandar info al calendario
   
-  // Estados Calendario
+  // Estados Calendario REALES
   const [fecha, setFecha] = useState<number | null>(null);
   const [hora, setHora] = useState<string | null>(null);
+  const [diasOcupados, setDiasOcupados] = useState<number[]>([]);
+  const [cargandoCalendario, setCargandoCalendario] = useState(false);
+  const [procesandoPago, setProcesandoPago] = useState(false);
 
-  // --- LÓGICA DE CÁLCULO DE COSTO EXACTO (Media) PARA ANTICIPO ---
+  // --- LÓGICA DE CÁLCULO DE COSTO EXACTO ---
   const getCostoTotal = () => {
     let base = 80;
     let sizeMultiplier = size * 8;
     let colorMult = colorType === "Color" ? 1.3 : 1;
     let compMult = complexity === "Moderada" ? 1 : complexity === "Compleja" ? 1.5 : 2;
-    
-    // Calculamos una media exacta para poder sacar el 20%
     return Math.floor((base + sizeMultiplier) * colorMult * compMult);
   };
 
@@ -44,9 +46,88 @@ export default function ReservaLoyaltink() {
     window.open(`https://wa.me/${artista.wa}?text=${encodeURIComponent(mensaje)}`, '_blank');
   };
 
+  // --- NUEVA LÓGICA: CONSULTAR DISPONIBILIDAD REAL EN GOOGLE CALENDAR ---
+  const consultarDisponibilidad = async (artistaId: string) => {
+    setCargandoCalendario(true);
+    try {
+      // Definimos el rango del mes actual (Ejemplo: Abril 2026)
+      const timeMin = "2026-04-01T00:00:00Z";
+      const timeMax = "2026-04-30T23:59:59Z";
+
+      const res = await fetch(`/api/calendar?artistaId=${artistaId}&timeMin=${timeMin}&timeMax=${timeMax}`);
+      const data = await res.json();
+      
+      if (data.fechasOcupadas) {
+        const diasOcupadosSet = new Set<number>();
+        data.fechasOcupadas.forEach((fechaIso: string) => {
+           if(fechaIso) {
+             const diaStr = fechaIso.split('T')[0].split('-')[2]; 
+             diasOcupadosSet.add(parseInt(diaStr, 10));
+           }
+        });
+        setDiasOcupados(Array.from(diasOcupadosSet));
+      }
+    } catch (error) {
+      console.error("Error cargando calendario", error);
+    }
+    setCargandoCalendario(false);
+  };
+
+  // Llama a la API cuando el usuario entra al Paso 3
+  useEffect(() => {
+    if (paso === 3 && artistaSeleccionado) {
+      consultarDisponibilidad(artistaSeleccionado.id);
+    }
+  }, [paso, artistaSeleccionado]);
+
+  // --- NUEVA LÓGICA: CREAR EVENTO EN GOOGLE CALENDAR ---
+  const confirmarReservaEnGoogle = async () => {
+    setProcesandoPago(true);
+    
+    // Formateamos las fechas al formato de Google (ISO 8601)
+    const mes = "04";
+    const diaFormateado = fecha && fecha < 10 ? `0${fecha}` : fecha;
+    
+    const horaInicioStr = hora || "13:00";
+    const horaInicioNum = parseInt(horaInicioStr.split(":")[0]);
+    const horaFinStr = `${horaInicioNum + 4}:00`; // Asumimos sesiones de 4 horas
+
+    const inicioIso = `2026-${mes}-${diaFormateado}T${horaInicioStr}:00-05:00`;
+    const finIso = `2026-${mes}-${diaFormateado}T${horaFinStr}:00-05:00`;
+
+    try {
+      const res = await fetch('/api/calendar', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          artistaId: artistaSeleccionado.id,
+          titulo: `TATUAJE - ${style} - Cliente Web`,
+          descripcion: `¡Nueva cita generada desde la web!\n\nColor: ${colorType}\nTamaño: ${size}cm\nComplejidad: ${complexity}\nCosto Total Estimado: $${costoTotal} USD\nAnticipo pagado: $${anticipo} USD`,
+          inicioIso,
+          finIso
+        })
+      });
+
+      const data = await res.json();
+      if(data.success) {
+        alert("¡Éxito! Tu pago fue procesado y tu reserva se ha guardado en el calendario.");
+        window.location.href = '/loyaltink'; // Regresa al inicio
+      } else {
+        alert("El pago pasó, pero hubo un error agendando en el calendario.");
+      }
+    } catch (error) {
+      alert("Error de conexión al confirmar.");
+    }
+    setProcesandoPago(false);
+  };
+
   const simularPagoMercadoPago = () => {
-    alert(`Redirigiendo a Mercado Pago para cobrar el anticipo de $${anticipo} USD...`);
-    // Aquí conectaremos el backend de Supabase/Mercado Pago
+    setProcesandoPago(true);
+    // Simulamos que el usuario está metiendo su tarjeta en Mercado Pago...
+    setTimeout(() => {
+      // Una vez que el pago pasa, disparamos la reserva en Google
+      confirmarReservaEnGoogle();
+    }, 1500);
   };
 
   return (
@@ -166,13 +247,12 @@ export default function ReservaLoyaltink() {
           </div>
         )}
 
-        {/* PASO 3: CALENDARIO DE DISPONIBILIDAD */}
+        {/* PASO 3: CALENDARIO DE DISPONIBILIDAD CON GOOGLE CALENDAR */}
         {paso === 3 && (
           <div className="animate-[fadeIn_0.5s_ease-in-out] max-w-2xl mx-auto bg-[#111] border border-[#333] p-8 rounded-2xl shadow-2xl">
             <h2 className="text-2xl font-black text-white uppercase tracking-tighter mb-2">SELECCIONA FECHA Y HORA</h2>
-            <p className="text-zinc-400 text-xs mb-8">Agenda del artista <span className="text-[#8B5CF6] font-bold">{artistaSeleccionado?.nombre}</span></p>
+            <p className="text-zinc-400 text-xs mb-8">Agenda en tiempo real de <span className="text-[#8B5CF6] font-bold">{artistaSeleccionado?.nombre}</span></p>
 
-            {/* Simulación visual de Calendario */}
             <div className="mb-8">
               <div className="flex justify-between items-center mb-4">
                 <button className="text-zinc-500 hover:text-white">◀</button>
@@ -182,29 +262,36 @@ export default function ReservaLoyaltink() {
               <div className="grid grid-cols-7 gap-2 mb-2 text-center text-[10px] font-bold text-zinc-500">
                 <span>DO</span><span>LU</span><span>MA</span><span>MI</span><span>JU</span><span>VI</span><span>SA</span>
               </div>
+              
               <div className="grid grid-cols-7 gap-2">
-                {Array.from({ length: 30 }, (_, i) => i + 1).map((dia) => {
-                  // Simulamos días no disponibles
-                  const ocupado = dia % 4 === 0;
-                  const seleccionado = fecha === dia;
-                  return (
-                    <button 
-                      key={dia} 
-                      disabled={ocupado}
-                      onClick={() => { setFecha(dia); setHora(null); }}
-                      className={`aspect-square rounded-md flex items-center justify-center text-xs transition-all
-                        ${ocupado ? 'bg-[#0a0a0a] text-zinc-700 cursor-not-allowed' : 
-                          seleccionado ? 'bg-[#06b6d4] text-white font-bold shadow-[0_0_10px_rgba(6,182,212,0.4)]' : 
-                          'bg-[#222] text-zinc-300 hover:bg-[#333] hover:text-white'}`}
-                    >
-                      {dia}
-                    </button>
-                  );
-                })}
+                {cargandoCalendario ? (
+                  <div className="col-span-7 py-10 flex flex-col items-center">
+                    <div className="w-6 h-6 border-2 border-[#06b6d4] border-t-transparent rounded-full animate-spin mb-3"></div>
+                    <p className="text-[#06b6d4] text-[10px] font-bold tracking-widest uppercase">Sincronizando calendario...</p>
+                  </div>
+                ) : (
+                  Array.from({ length: 30 }, (_, i) => i + 1).map((dia) => {
+                    // Verifica si el día está ocupado en Google Calendar
+                    const ocupado = diasOcupados.includes(dia);
+                    const seleccionado = fecha === dia;
+                    return (
+                      <button 
+                        key={dia} 
+                        disabled={ocupado}
+                        onClick={() => { setFecha(dia); setHora(null); }}
+                        className={`aspect-square rounded-md flex items-center justify-center text-xs transition-all
+                          ${ocupado ? 'bg-[#0a0a0a] text-zinc-700 cursor-not-allowed line-through' : 
+                            seleccionado ? 'bg-[#06b6d4] text-white font-bold shadow-[0_0_10px_rgba(6,182,212,0.4)]' : 
+                            'bg-[#222] text-zinc-300 hover:bg-[#333] hover:text-white'}`}
+                      >
+                        {dia}
+                      </button>
+                    );
+                  })
+                )}
               </div>
             </div>
 
-            {/* Simulación de Horarios */}
             {fecha && (
               <div className="mb-8 animate-[fadeIn_0.3s_ease-in-out]">
                 <p className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest mb-3">Horarios Disponibles el {fecha} de Abril</p>
@@ -263,23 +350,37 @@ export default function ReservaLoyaltink() {
             </div>
 
             <p className="text-[10px] text-zinc-500 text-center mb-8 px-4">
-              Al procesar el pago, tu cita quedará confirmada automáticamente. El saldo restante de la sesión se liquidará en el estudio el día de tu cita.
+              Al procesar el pago, tu cita quedará confirmada automáticamente en el calendario del artista. El saldo restante se liquidará en el estudio.
             </p>
 
             <div className="flex flex-col gap-4">
-              {/* BOTÓN DE MERCADO PAGO */}
+              {/* BOTÓN DE MERCADO PAGO SIMULADO */}
               <button 
                 onClick={simularPagoMercadoPago} 
-                className="w-full bg-[#009EE3] text-white py-4 rounded-lg font-bold flex items-center justify-center gap-3 hover:bg-[#0088cc] transition-colors shadow-lg"
+                disabled={procesandoPago}
+                className="w-full bg-[#009EE3] disabled:bg-[#333] text-white py-4 rounded-lg font-bold flex items-center justify-center gap-3 hover:bg-[#0088cc] transition-colors shadow-lg"
               >
-                <svg viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5">
-                  <path d="M14.53 10.37h-1.92v-3.4a.63.63 0 00-.63-.64H8.02a.63.63 0 00-.63.64v7.71h1.92V11.6h1.56l2.18 3.1h2.2l-2.45-3.32a2.03 2.03 0 001.73-2.01z" />
-                  <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18.18A8.18 8.18 0 1112 3.82a8.18 8.18 0 010 16.36z" />
-                </svg>
-                PAGAR ANTICIPO CON MERCADO PAGO
+                {procesandoPago ? (
+                  <>
+                    <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                    CONECTANDO CON GOOGLE CALENDAR...
+                  </>
+                ) : (
+                  <>
+                    <svg viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5">
+                      <path d="M14.53 10.37h-1.92v-3.4a.63.63 0 00-.63-.64H8.02a.63.63 0 00-.63.64v7.71h1.92V11.6h1.56l2.18 3.1h2.2l-2.45-3.32a2.03 2.03 0 001.73-2.01z" />
+                      <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18.18A8.18 8.18 0 1112 3.82a8.18 8.18 0 010 16.36z" />
+                    </svg>
+                    PAGAR ANTICIPO CON MERCADO PAGO
+                  </>
+                )}
               </button>
               
-              <button onClick={() => setPaso(3)} className="w-full py-3 text-zinc-500 text-xs font-bold uppercase tracking-widest hover:text-white transition-colors">
+              <button 
+                onClick={() => setPaso(3)} 
+                disabled={procesandoPago}
+                className="w-full py-3 text-zinc-500 text-xs font-bold uppercase tracking-widest hover:text-white transition-colors disabled:opacity-50"
+              >
                 Modificar Fecha
               </button>
             </div>
