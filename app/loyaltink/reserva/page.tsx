@@ -12,24 +12,44 @@ const ARTISTAS = [
   { id: "boris", nombre: "Boris Arga", estilo: "Micro-Realismo / Color Pop", img: "/loyaltink/perfil_boris.png", wa: "521234567890" }
 ];
 
+const NOMBRES_MESES = ["ENERO", "FEBRERO", "MARZO", "ABRIL", "MAYO", "JUNIO", "JULIO", "AGOSTO", "SEPTIEMBRE", "OCTUBRE", "NOVIEMBRE", "DICIEMBRE"];
+
 export default function ReservaLoyaltink() {
-  const [paso, setPaso] = useState(1); // 1: Artista, 2: Detalles y Calculadora, 3: Fecha, 4: Pago
+  const [paso, setPaso] = useState(1); 
   const [artistaSeleccionado, setArtistaSeleccionado] = useState<any>(null);
   
   // Estados Calculadora Mini
   const [size, setSize] = useState(15);
   const [colorType, setColorType] = useState("Blanco y Negro");
   const [complexity, setComplexity] = useState("Moderada");
-  const [style, setStyle] = useState("Blackwork"); // Añadido para mandar info al calendario
+  const [style, setStyle] = useState("Blackwork"); 
   
-  // Estados Calendario REALES
+  // Estados Calendario REALES Y DINÁMICOS
+  const hoy = new Date();
+  const [mesActual, setMesActual] = useState(hoy.getMonth()); 
+  const [anioActual, setAnioActual] = useState(hoy.getFullYear());
   const [fecha, setFecha] = useState<number | null>(null);
   const [hora, setHora] = useState<string | null>(null);
   const [diasOcupados, setDiasOcupados] = useState<number[]>([]);
   const [cargandoCalendario, setCargandoCalendario] = useState(false);
   const [procesandoPago, setProcesandoPago] = useState(false);
 
-  // --- LÓGICA DE CÁLCULO DE COSTO EXACTO ---
+  // Cálculos matemáticos del calendario para pintar los días correctamente
+  const diasEnMes = new Date(anioActual, mesActual + 1, 0).getDate();
+  const primerDiaSemana = new Date(anioActual, mesActual, 1).getDay(); // 0 = Domingo, 1 = Lunes, etc.
+
+  const cambiarMes = (direccion: number) => {
+    let nuevoMes = mesActual + direccion;
+    let nuevoAnio = anioActual;
+    if (nuevoMes < 0) { nuevoMes = 11; nuevoAnio--; }
+    else if (nuevoMes > 11) { nuevoMes = 0; nuevoAnio++; }
+    setMesActual(nuevoMes);
+    setAnioActual(nuevoAnio);
+    setFecha(null);
+    setHora(null);
+  };
+
+  // --- LÓGICA DE CÁLCULO DE COSTO ---
   const getCostoTotal = () => {
     let base = 80;
     let sizeMultiplier = size * 8;
@@ -46,23 +66,26 @@ export default function ReservaLoyaltink() {
     window.open(`https://wa.me/${artista.wa}?text=${encodeURIComponent(mensaje)}`, '_blank');
   };
 
-  // --- NUEVA LÓGICA: CONSULTAR DISPONIBILIDAD REAL EN GOOGLE CALENDAR ---
+  // --- NUEVA LÓGICA: CONSULTAR DISPONIBILIDAD DINÁMICA ---
   const consultarDisponibilidad = async (artistaId: string) => {
     setCargandoCalendario(true);
     try {
-      // Definimos el rango del mes actual (Ejemplo: Abril 2026)
-      const timeMin = "2026-04-01T00:00:00Z";
-      const timeMax = "2026-04-30T23:59:59Z";
+      // Pedimos a Google solo los días del mes que estamos viendo
+      const primerDiaIso = new Date(anioActual, mesActual, 1).toISOString();
+      const ultimoDiaIso = new Date(anioActual, mesActual + 1, 0, 23, 59, 59).toISOString();
 
-      const res = await fetch(`/api/calendar?artistaId=${artistaId}&timeMin=${timeMin}&timeMax=${timeMax}`);
+      const res = await fetch(`/api/calendar?artistaId=${artistaId}&timeMin=${primerDiaIso}&timeMax=${ultimoDiaIso}`);
       const data = await res.json();
       
       if (data.fechasOcupadas) {
         const diasOcupadosSet = new Set<number>();
         data.fechasOcupadas.forEach((fechaIso: string) => {
            if(fechaIso) {
-             const diaStr = fechaIso.split('T')[0].split('-')[2]; 
-             diasOcupadosSet.add(parseInt(diaStr, 10));
+             const fechaObj = new Date(fechaIso);
+             // Solo tachar si el evento es del mes y año que estamos viendo
+             if (fechaObj.getMonth() === mesActual && fechaObj.getFullYear() === anioActual) {
+                diasOcupadosSet.add(fechaObj.getDate());
+             }
            }
         });
         setDiasOcupados(Array.from(diasOcupadosSet));
@@ -73,27 +96,25 @@ export default function ReservaLoyaltink() {
     setCargandoCalendario(false);
   };
 
-  // Llama a la API cuando el usuario entra al Paso 3
   useEffect(() => {
     if (paso === 3 && artistaSeleccionado) {
       consultarDisponibilidad(artistaSeleccionado.id);
     }
-  }, [paso, artistaSeleccionado]);
+  }, [paso, artistaSeleccionado, mesActual, anioActual]); // Se recarga si cambias de mes
 
-  // --- NUEVA LÓGICA: CREAR EVENTO EN GOOGLE CALENDAR ---
+  // --- NUEVA LÓGICA: CREAR EVENTO CON FECHA DINÁMICA ---
   const confirmarReservaEnGoogle = async () => {
     setProcesandoPago(true);
     
-    // Formateamos las fechas al formato de Google (ISO 8601)
-    const mes = "04";
-    const diaFormateado = fecha && fecha < 10 ? `0${fecha}` : fecha;
+    const mesFormateado = (mesActual + 1).toString().padStart(2, '0');
+    const diaFormateado = fecha ? fecha.toString().padStart(2, '0') : '01';
     
     const horaInicioStr = hora || "13:00";
     const horaInicioNum = parseInt(horaInicioStr.split(":")[0]);
-    const horaFinStr = `${horaInicioNum + 4}:00`; // Asumimos sesiones de 4 horas
+    const horaFinStr = `${horaInicioNum + 4}:00`; 
 
-    const inicioIso = `2026-${mes}-${diaFormateado}T${horaInicioStr}:00-05:00`;
-    const finIso = `2026-${mes}-${diaFormateado}T${horaFinStr}:00-05:00`;
+    const inicioIso = `${anioActual}-${mesFormateado}-${diaFormateado}T${horaInicioStr}:00-05:00`;
+    const finIso = `${anioActual}-${mesFormateado}-${diaFormateado}T${horaFinStr}:00-05:00`;
 
     try {
       const res = await fetch('/api/calendar', {
@@ -111,7 +132,7 @@ export default function ReservaLoyaltink() {
       const data = await res.json();
       if(data.success) {
         alert("¡Éxito! Tu pago fue procesado y tu reserva se ha guardado en el calendario.");
-        window.location.href = '/loyaltink'; // Regresa al inicio
+        window.location.href = '/loyaltink'; 
       } else {
         alert("El pago pasó, pero hubo un error agendando en el calendario.");
       }
@@ -123,9 +144,7 @@ export default function ReservaLoyaltink() {
 
   const simularPagoMercadoPago = () => {
     setProcesandoPago(true);
-    // Simulamos que el usuario está metiendo su tarjeta en Mercado Pago...
     setTimeout(() => {
-      // Una vez que el pago pasa, disparamos la reserva en Google
       confirmarReservaEnGoogle();
     }, 1500);
   };
@@ -255,9 +274,9 @@ export default function ReservaLoyaltink() {
 
             <div className="mb-8">
               <div className="flex justify-between items-center mb-4">
-                <button className="text-zinc-500 hover:text-white">◀</button>
-                <p className="text-sm font-bold text-white uppercase tracking-widest">ABRIL 2026</p>
-                <button className="text-zinc-500 hover:text-white">▶</button>
+                <button onClick={() => cambiarMes(-1)} className="text-zinc-500 hover:text-white w-8 h-8 rounded-full hover:bg-[#222]">◀</button>
+                <p className="text-sm font-bold text-white uppercase tracking-widest">{NOMBRES_MESES[mesActual]} {anioActual}</p>
+                <button onClick={() => cambiarMes(1)} className="text-zinc-500 hover:text-white w-8 h-8 rounded-full hover:bg-[#222]">▶</button>
               </div>
               <div className="grid grid-cols-7 gap-2 mb-2 text-center text-[10px] font-bold text-zinc-500">
                 <span>DO</span><span>LU</span><span>MA</span><span>MI</span><span>JU</span><span>VI</span><span>SA</span>
@@ -270,31 +289,43 @@ export default function ReservaLoyaltink() {
                     <p className="text-[#06b6d4] text-[10px] font-bold tracking-widest uppercase">Sincronizando calendario...</p>
                   </div>
                 ) : (
-                  Array.from({ length: 30 }, (_, i) => i + 1).map((dia) => {
-                    // Verifica si el día está ocupado en Google Calendar
-                    const ocupado = diasOcupados.includes(dia);
-                    const seleccionado = fecha === dia;
-                    return (
-                      <button 
-                        key={dia} 
-                        disabled={ocupado}
-                        onClick={() => { setFecha(dia); setHora(null); }}
-                        className={`aspect-square rounded-md flex items-center justify-center text-xs transition-all
-                          ${ocupado ? 'bg-[#0a0a0a] text-zinc-700 cursor-not-allowed line-through' : 
-                            seleccionado ? 'bg-[#06b6d4] text-white font-bold shadow-[0_0_10px_rgba(6,182,212,0.4)]' : 
-                            'bg-[#222] text-zinc-300 hover:bg-[#333] hover:text-white'}`}
-                      >
-                        {dia}
-                      </button>
-                    );
-                  })
+                  <>
+                    {/* Espacios vacíos para que el día 1 caiga en el día de la semana correcto */}
+                    {Array.from({ length: primerDiaSemana }).map((_, i) => (
+                      <div key={`empty-${i}`} className="aspect-square"></div>
+                    ))}
+                    
+                    {/* Días reales del mes */}
+                    {Array.from({ length: diasEnMes }, (_, i) => i + 1).map((dia) => {
+                      const ocupado = diasOcupados.includes(dia);
+                      const seleccionado = fecha === dia;
+                      // Validar que no se reserve en el pasado
+                      const esPasado = (anioActual === hoy.getFullYear() && mesActual === hoy.getMonth() && dia < hoy.getDate());
+                      const deshabilitado = ocupado || esPasado;
+
+                      return (
+                        <button 
+                          key={dia} 
+                          disabled={deshabilitado}
+                          onClick={() => { setFecha(dia); setHora(null); }}
+                          className={`aspect-square rounded-md flex items-center justify-center text-xs transition-all
+                            ${esPasado ? 'bg-[#0a0a0a] text-[#222] cursor-not-allowed' : 
+                              ocupado ? 'bg-[#0a0a0a] text-zinc-700 cursor-not-allowed line-through border border-red-900/30' : 
+                              seleccionado ? 'bg-[#06b6d4] text-white font-bold shadow-[0_0_10px_rgba(6,182,212,0.4)]' : 
+                              'bg-[#222] text-zinc-300 hover:bg-[#333] hover:text-white'}`}
+                        >
+                          {dia}
+                        </button>
+                      );
+                    })}
+                  </>
                 )}
               </div>
             </div>
 
-            {fecha && (
+            {fecha && !cargandoCalendario && (
               <div className="mb-8 animate-[fadeIn_0.3s_ease-in-out]">
-                <p className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest mb-3">Horarios Disponibles el {fecha} de Abril</p>
+                <p className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest mb-3">Horarios Disponibles el {fecha} de {NOMBRES_MESES[mesActual]}</p>
                 <div className="flex gap-3">
                   {['13:00', '15:30', '18:00'].map((h) => (
                     <button 
@@ -337,7 +368,7 @@ export default function ReservaLoyaltink() {
               
               <div className="flex justify-between items-center text-sm">
                 <span className="text-zinc-500">Fecha y Hora:</span>
-                <span className="text-white font-bold">{fecha} de Abril 2026, {hora}</span>
+                <span className="text-white font-bold">{fecha} de {NOMBRES_MESES[mesActual]} {anioActual}, {hora}</span>
               </div>
               <div className="flex justify-between items-center text-sm">
                 <span className="text-zinc-500">Costo Estimado Total:</span>
