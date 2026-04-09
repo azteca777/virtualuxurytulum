@@ -677,19 +677,19 @@ export default function LoyaltinkBrigade() {
       <footer className="bg-[#0a0a0a] pt-20 pb-10 px-6 border-t border-[#222]">
         <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
           <div className="md:col-span-1">
-            <span className="text-xl font-bold tracking-widest text-white block mb-4">NEON RONIN</span>
+            <span className="text-xl font-bold tracking-widest text-white block mb-4">LOYALTINK BRIGADE</span>
             <p className="text-zinc-500 text-xs leading-relaxed">Tatuajes personalizados premium y arte corporal. Artistas de élite, estudio profesional, resultados excepcionales.</p>
           </div>
           
           <div>
             <h4 className="text-white font-bold uppercase tracking-widest text-xs mb-6">CONTACTO</h4>
             <div className="text-zinc-500 text-xs space-y-2">
-              <p>777 Spring Street</p>
-              <p>Unit B</p>
-              <p>Arts District</p>
-              <p>Tulum</p>
+              <p>Plaza Paseo Cobá</p>
+              <p>Avenida Aviación</p>
+              <p>P. Coba Local 206</p>
+              <p>77710 Playa del Carmen</p>
               <p>Quintana Roo</p>
-              <p className="pt-4">(984) 555-0777</p>
+              <p className="pt-4">+52(333) 3482 0746</p>
               <p>book@loyaltink.example</p>
             </div>
           </div>
