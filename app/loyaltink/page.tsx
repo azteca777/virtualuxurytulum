@@ -179,7 +179,7 @@ export default function LoyaltinkBrigade() {
   };
 
   // NÚMERO DE WHATSAPP Y MENSAJE PREDEFINIDO PARA MANYCHAT
-  const whatsappNumber = "5233334820746"; // Número actual en tu footer
+  const whatsappNumber = "529984760310"; // Número actual en tu footer
   const whatsappMessage = encodeURIComponent("[NUEVO LEAD: LOYALTINK] Hola, me gustaría agendar una cita o recibir más información.");
 
   return (
