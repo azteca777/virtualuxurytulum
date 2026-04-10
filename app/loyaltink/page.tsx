@@ -4,6 +4,7 @@ import { useState, useEffect, Suspense } from "react";
 import * as THREE from 'three';
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls, Html, useVideoTexture } from '@react-three/drei';
+import Link from 'next/link';
 import SensorTrafico from '../components/SensorTrafico';
 
 // === ASSETS METAVERSO LOYALTINK ===
@@ -113,8 +114,8 @@ export default function LoyaltinkBrigade() {
   
   // === ESTADOS DEL METAVERSO ===
   const [mostrarMetaverso, setMostrarMetaverso] = useState(false);
-  const [introMetaversoTerminada, setIntroMetaversoTerminada] = useState(false); // Controla la transición de la intro
-  const [mostrarFotos, setMostrarFotos] = useState(false); // Transición de video a fotos en el Hero
+  const [introMetaversoTerminada, setIntroMetaversoTerminada] = useState(false);
+  const [mostrarFotos, setMostrarFotos] = useState(false);
 
   // === ESTADOS DE LA CALCULADORA PRO ===
   const [calcTab, setCalcTab] = useState("cost");
@@ -126,7 +127,6 @@ export default function LoyaltinkBrigade() {
   const [painTolerance, setPainTolerance] = useState("Promedio");
   const [complexity, setComplexity] = useState("Moderada");
 
-  // Temporizador para la transición de fotos en el home
   useEffect(() => {
     const timer = setTimeout(() => {
       setMostrarFotos(true);
@@ -178,51 +178,62 @@ export default function LoyaltinkBrigade() {
     return `${minHrs} - ${maxHrs} hrs`;
   };
 
+  // NÚMERO DE WHATSAPP Y MENSAJE PREDEFINIDO PARA MANYCHAT
+  const whatsappNumber = "5233334820746"; // Número actual en tu footer
+  const whatsappMessage = encodeURIComponent("[NUEVO LEAD: LOYALTINK] Hola, me gustaría agendar una cita o recibir más información.");
+
   return (
     <div className="min-h-screen bg-[#111111] text-gray-200 font-sans selection:bg-[#8B5CF6] selection:text-white overflow-x-hidden relative">
       <SensorTrafico marca="LOYALTINK" />
 
+      {/* 💬 BOTÓN FLOTANTE WHATSAPP (MANYCHAT) */}
+      <a 
+        href={`https://wa.me/${whatsappNumber}?text=${whatsappMessage}`}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="fixed bottom-6 left-6 md:bottom-10 md:left-10 z-[100] flex items-center justify-center w-14 h-14 md:w-16 md:h-16 bg-[#25D366] text-white rounded-full shadow-[0_0_20px_rgba(37,211,102,0.4)] hover:scale-110 hover:shadow-[0_0_30px_rgba(37,211,102,0.6)] transition-all duration-300 group"
+        aria-label="Contactar por WhatsApp"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" className="w-8 h-8 md:w-10 md:h-10">
+          <path d="M12.031 0C5.385 0 0 5.384 0 12.032c0 2.125.552 4.195 1.603 6.012L.266 24l6.104-1.583c1.745.941 3.738 1.442 5.661 1.442 6.646 0 12.031-5.384 12.031-12.031C24 5.384 18.677 0 12.031 0zm3.626 17.275c-.544 1.545-2.616 2.106-3.837 1.839-1.22-.266-3.228-1.39-5.46-3.62-2.23-2.23-3.353-4.24-3.619-5.46-.267-1.22.294-3.293 1.839-3.837.585-.205 1.258-.026 1.637.433l1.104 1.332c.38.46.402 1.108.053 1.59l-.49.658c-.145.195-.125.467.049.64.673.675 1.554 1.365 2.222 1.942.576.495 1.156.974 1.826 1.362.176.103.406.096.556-.021l.53-.414c.48-.376 1.144-.356 1.605.048l1.246 1.094c.44.388.583 1.036.34 1.583z"/>
+        </svg>
+        <span className="absolute -top-10 bg-[#111] border border-[#333] text-white text-[9px] font-bold px-3 py-1 rounded-full uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">
+          Hablar con un asesor
+        </span>
+      </a>
+
       {/* 🔮 VENTANA INMERSIVA DEL METAVERSO (R3F) */}
       {mostrarMetaverso && (
         <div className="fixed inset-0 z-[1000] w-full h-full bg-black flex flex-col items-center justify-center animate-[fadeIn_0.5s_ease-in-out]">
-          
-          {/* BOTÓN DE CIERRE FLOTANTE */}
           <button 
             onClick={() => {
               setMostrarMetaverso(false);
-              setIntroMetaversoTerminada(false); // Reinicia la intro por si vuelven a entrar
+              setIntroMetaversoTerminada(false); 
             }} 
             className="absolute top-6 right-6 md:top-10 md:right-10 z-[1010] flex items-center gap-2 px-6 py-3 bg-black/60 border border-white/20 text-white rounded-full text-xs font-bold uppercase tracking-widest hover:bg-red-900 transition-colors backdrop-blur-md"
           >
             ✕ Cerrar Metaverso
           </button>
 
-          {/* SECUENCIA LÓGICA DEL METAVERSO */}
           {!introMetaversoTerminada ? (
-            /* 1. VIDEO DE INTRODUCCIÓN LINEAL */
             <video 
               src={URL_INTRO}
               autoPlay 
               muted 
               playsInline
-              onEnded={() => setIntroMetaversoTerminada(true)} // Cambia al entorno 360 al terminar
+              onEnded={() => setIntroMetaversoTerminada(true)} 
               className="w-full h-full object-cover"
             />
           ) : (
-            /* 2. ENTORNO 360° INTERACTIVO CON REACT THREE FIBER */
             <div className="w-full h-full relative animate-[fadeIn_1s_ease-in-out]">
-              {/* Overlay UI para guiar al usuario */}
               <div className="absolute bottom-10 left-1/2 -translate-x-1/2 z-10 pointer-events-none flex flex-col items-center opacity-80">
                 <span className="text-white text-[10px] md:text-xs font-bold tracking-widest uppercase bg-black/60 px-6 py-3 rounded-full backdrop-blur-sm border border-white/20 shadow-xl">
                   👆 Arrastra para explorar / Clic a las flechas para caminar
                 </span>
               </div>
-
-              {/* El componente R3F que contiene el recorrido */}
               <RecorridoLoyaltink />
             </div>
           )}
-          
         </div>
       )}
 
@@ -535,90 +546,94 @@ export default function LoyaltinkBrigade() {
         </div>
       </section>
 
-      {/* MEET THE ARTISTS */}
+      {/* MEET THE ARTISTS - CON ENLACES A PERFILES INDIVIDUALES */}
       <section className="py-24 px-6 bg-[#111111] border-t border-[#222]">
-        <div className="max-w-4xl mx-auto text-center">
-          <span className="text-[#06b6d4] text-[10px] font-bold tracking-[0.2em] uppercase mb-4 block">EL COLECTIVO</span>
-          <h2 className="text-4xl md:text-5xl font-black text-[#8B5CF6] uppercase tracking-tighter mb-6">CONOCE A LOS ARTISTAS</h2>
-          <p className="text-zinc-400 mb-20 max-w-xl mx-auto">
-            Artistas de élite. Visiones únicas. Una creencia compartida: el arte del tatuaje no tiene techo.
-          </p>
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-20">
+            <span className="text-[#06b6d4] text-[10px] font-bold tracking-[0.2em] uppercase mb-4 block">EL COLECTIVO</span>
+            <h2 className="text-4xl md:text-5xl font-black text-[#8B5CF6] uppercase tracking-tighter mb-6">CONOCE A LOS ARTISTAS</h2>
+            <p className="text-zinc-400 max-w-xl mx-auto">
+              Artistas de élite. Visiones únicas. Una creencia compartida: el arte del tatuaje no tiene techo.
+            </p>
+          </div>
 
-          <div className="space-y-32">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-16 md:gap-x-12 md:gap-y-24">
+            
             {/* ARTISTA 1: CHULOSKI */}
-            <div className="flex flex-col items-center">
-              <div className="w-48 h-48 rounded-full overflow-hidden border-4 border-[#222] shadow-[0_0_30px_rgba(139,92,246,0.15)] mb-8 bg-zinc-800">
+            <Link href="/loyaltink/artista/chuloski" className="flex flex-col items-center text-center group cursor-pointer">
+              <div className="w-48 h-48 rounded-full overflow-hidden border-4 border-[#222] shadow-[0_0_30px_rgba(139,92,246,0.15)] mb-8 bg-zinc-800 transition-all group-hover:scale-105 group-hover:border-[#8B5CF6]">
                 <img src="/loyaltink/perfil_chuloski.png" alt="Chuloski" className="w-full h-full object-cover" />
               </div>
-              <h3 className="text-2xl font-bold text-white uppercase tracking-wider mb-2">JOEL SKREPNIK "CHULOSKI"</h3>
+              <h3 className="text-2xl font-bold text-white uppercase tracking-wider mb-2 group-hover:text-[#8B5CF6] transition-colors">JOEL SKREPNIK "CHULOSKI"</h3>
               <p className="text-[#06b6d4] text-[10px] font-bold tracking-[0.2em] uppercase mb-6">BLACKWORK • NEO-JAPONÉS • TRADICIONAL</p>
-              <p className="text-zinc-400 text-sm leading-relaxed max-w-2xl mb-6">
-                Originario de Buenos Aires, Argentina. Chuloski es un maestro del alto contraste, fusionando fondos de blackwork extremo con iconografía del tatuaje neo-japonés y tradicional. Sus piezas de gran escala destacan por deidades imponentes y máscaras Hannya, utilizando negros sólidos y profundos que hacen estallar colores clásicos.
+              <p className="text-zinc-400 text-sm leading-relaxed mb-6 group-hover:text-zinc-300 transition-colors">
+                Originario de Buenos Aires, Argentina. Chuloski es un maestro del alto contraste, fusionando fondos de blackwork extremo con iconografía del tatuaje neo-japonés y tradicional. Sus piezas de gran escala destacan por deidades imponentes y máscaras Hannya, utilizando negros sólidos y profundos.
               </p>
-              <a href="https://www.instagram.com/chuloski_?igsh=MmZ4MXB0eXZzOGln" target="_blank" rel="noopener noreferrer" className="w-10 h-10 border border-[#333] rounded-full flex items-center justify-center text-[#8B5CF6] hover:bg-[#8B5CF6] hover:text-white transition-colors cursor-pointer">
-                IG
-              </a>
-            </div>
+              <span className="w-10 h-10 border border-[#333] rounded-full flex items-center justify-center text-[#8B5CF6] group-hover:bg-[#8B5CF6] group-hover:text-white transition-colors">
+                ➔
+              </span>
+            </Link>
 
             {/* ARTISTA 2: RAFA */}
-            <div className="flex flex-col items-center">
-              <div className="w-48 h-48 rounded-full overflow-hidden border-4 border-[#222] shadow-[0_0_30px_rgba(6,182,212,0.15)] mb-8 bg-zinc-800">
+            <Link href="/loyaltink/artista/rafa" className="flex flex-col items-center text-center group cursor-pointer">
+              <div className="w-48 h-48 rounded-full overflow-hidden border-4 border-[#222] shadow-[0_0_30px_rgba(6,182,212,0.15)] mb-8 bg-zinc-800 transition-all group-hover:scale-105 group-hover:border-[#8B5CF6]">
                  <img src="/loyaltink/perfil_rafa.png" alt="Rafa Moldess" className="w-full h-full object-cover" />
               </div>
-              <h3 className="text-2xl font-bold text-white uppercase tracking-wider mb-2">RAFA MOLDESS "RAFA"</h3>
+              <h3 className="text-2xl font-bold text-white uppercase tracking-wider mb-2 group-hover:text-[#8B5CF6] transition-colors">RAFA MOLDESS "RAFA"</h3>
               <p className="text-[#06b6d4] text-[10px] font-bold tracking-[0.2em] uppercase mb-6">BLACK & GREY • REALISMO • NEO-TRIBAL</p>
-              <p className="text-zinc-400 text-sm leading-relaxed max-w-2xl mb-6">
-                Originario de Córdoba, Argentina. Rafa es un artista sumamente versátil que domina desde el Realismo en Black & Grey hasta el Blackwork y el Neo-Tribal. Su habilidad para adaptar la técnica le permite crear piezas con un nivel de detalle fotográfico o composiciones de trazos agresivos y alto contraste.
+              <p className="text-zinc-400 text-sm leading-relaxed mb-6 group-hover:text-zinc-300 transition-colors">
+                Originario de Córdoba, Argentina. Rafa es un artista sumamente versátil que domina desde el Realismo en Black & Grey hasta el Blackwork y el Neo-Tribal. Su habilidad para adaptar la técnica le permite crear piezas con un nivel de detalle fotográfico o composiciones de trazos agresivos.
               </p>
-              <a href="https://www.instagram.com/rafamoldess.tattooer?igsh=MWx5NnVoY2J3OXIyMQ==" target="_blank" rel="noopener noreferrer" className="w-10 h-10 border border-[#333] rounded-full flex items-center justify-center text-[#8B5CF6] hover:bg-[#8B5CF6] hover:text-white transition-colors cursor-pointer">
-                IG
-              </a>
-            </div>
+              <span className="w-10 h-10 border border-[#333] rounded-full flex items-center justify-center text-[#8B5CF6] group-hover:bg-[#8B5CF6] group-hover:text-white transition-colors">
+                ➔
+              </span>
+            </Link>
 
             {/* ARTISTA 3: PRANA */}
-            <div className="flex flex-col items-center">
-              <div className="w-48 h-48 rounded-full overflow-hidden border-4 border-[#222] shadow-[0_0_30px_rgba(139,92,246,0.15)] mb-8 bg-zinc-800">
+            <Link href="/loyaltink/artista/prana" className="flex flex-col items-center text-center group cursor-pointer">
+              <div className="w-48 h-48 rounded-full overflow-hidden border-4 border-[#222] shadow-[0_0_30px_rgba(139,92,246,0.15)] mb-8 bg-zinc-800 transition-all group-hover:scale-105 group-hover:border-[#8B5CF6]">
                  <img src="/loyaltink/perfil_prana.png" alt="Lautaro Bordesse" className="w-full h-full object-cover" />
               </div>
-              <h3 className="text-2xl font-bold text-white uppercase tracking-wider mb-2">LAUTARO BORDESSE "PRANA"</h3>
+              <h3 className="text-2xl font-bold text-white uppercase tracking-wider mb-2 group-hover:text-[#8B5CF6] transition-colors">LAUTARO BORDESSE "PRANA"</h3>
               <p className="text-[#06b6d4] text-[10px] font-bold tracking-[0.2em] uppercase mb-6">REALISMO ÉPICO • ESTATUARIA • MITOLOGÍA</p>
-              <p className="text-zinc-400 text-sm leading-relaxed max-w-2xl mb-6">
+              <p className="text-zinc-400 text-sm leading-relaxed mb-6 group-hover:text-zinc-300 transition-colors">
                 Originario de Córdoba, Argentina. El trabajo de Prana eleva el realismo Black & Grey a una escala monumental. Se especializa en composiciones épicas inspiradas en la mitología nórdica y grecorromana, creando tatuajes que parecen esculpidos en piedra.
               </p>
-              <a href="https://www.instagram.com/pranatattoo_?igsh=MThrMmdram02ZHkwNA==" target="_blank" rel="noopener noreferrer" className="w-10 h-10 border border-[#333] rounded-full flex items-center justify-center text-[#8B5CF6] hover:bg-[#8B5CF6] hover:text-white transition-colors cursor-pointer">
-                IG
-              </a>
-            </div>
+              <span className="w-10 h-10 border border-[#333] rounded-full flex items-center justify-center text-[#8B5CF6] group-hover:bg-[#8B5CF6] group-hover:text-white transition-colors">
+                ➔
+              </span>
+            </Link>
 
             {/* ARTISTA 4: NAI */}
-            <div className="flex flex-col items-center">
-              <div className="w-48 h-48 rounded-full overflow-hidden border-4 border-[#222] shadow-[0_0_30px_rgba(139,92,246,0.15)] mb-8 bg-zinc-800">
+            <Link href="/loyaltink/artista/nai" className="flex flex-col items-center text-center group cursor-pointer">
+              <div className="w-48 h-48 rounded-full overflow-hidden border-4 border-[#222] shadow-[0_0_30px_rgba(139,92,246,0.15)] mb-8 bg-zinc-800 transition-all group-hover:scale-105 group-hover:border-[#8B5CF6]">
                  <img src="/loyaltink/perfil_nai.png" alt="Naiara" className="w-full h-full object-cover" />
               </div>
-              <h3 className="text-2xl font-bold text-white uppercase tracking-wider mb-2">NAIARA "NAI"</h3>
+              <h3 className="text-2xl font-bold text-white uppercase tracking-wider mb-2 group-hover:text-[#8B5CF6] transition-colors">NAIARA "NAI"</h3>
               <p className="text-[#06b6d4] text-[10px] font-bold tracking-[0.2em] uppercase mb-6">FINE LINE • BOTÁNICO • RED INK</p>
-              <p className="text-zinc-400 text-sm leading-relaxed max-w-2xl mb-6">
-                Originaria de Tierra del Fuego, Argentina. Nai se destaca por su extrema delicadeza y precisión. Su estilo se enfoca en el Fine Line, composiciones florales y piezas ilustrativas con sombras muy suaves. Domina la tendencia del Red Ink, creando diseños minimalistas y elegantes.
+              <p className="text-zinc-400 text-sm leading-relaxed mb-6 group-hover:text-zinc-300 transition-colors">
+                Originaria de Tierra del Fuego, Argentina. Nai se destaca por su extrema delicadeza y precisión. Su estilo se enfoca en el Fine Line, composiciones florales y piezas ilustrativas con sombras muy suaves. Domina la tendencia del Red Ink, creando diseños minimalistas.
               </p>
-              <a href="https://www.instagram.com/tattoonaink?igsh=ODV3ZTFxM2F0eDdx" target="_blank" rel="noopener noreferrer" className="w-10 h-10 border border-[#333] rounded-full flex items-center justify-center text-[#8B5CF6] hover:bg-[#8B5CF6] hover:text-white transition-colors cursor-pointer">
-                IG
-              </a>
-            </div>
+              <span className="w-10 h-10 border border-[#333] rounded-full flex items-center justify-center text-[#8B5CF6] group-hover:bg-[#8B5CF6] group-hover:text-white transition-colors">
+                ➔
+              </span>
+            </Link>
 
-            {/* ARTISTA 5: BORIS */}
-            <div className="flex flex-col items-center">
-              <div className="w-48 h-48 rounded-full overflow-hidden border-4 border-[#222] shadow-[0_0_30px_rgba(139,92,246,0.15)] mb-8 bg-zinc-800">
+            {/* ARTISTA 5: BORIS (Centrado en la última fila) */}
+            <Link href="/loyaltink/artista/boris" className="flex flex-col items-center text-center group cursor-pointer md:col-span-2 md:max-w-xl md:mx-auto">
+              <div className="w-48 h-48 rounded-full overflow-hidden border-4 border-[#222] shadow-[0_0_30px_rgba(139,92,246,0.15)] mb-8 bg-zinc-800 transition-all group-hover:scale-105 group-hover:border-[#8B5CF6]">
                  <img src="/loyaltink/perfil_boris.png" alt="Boris Arga" className="w-full h-full object-cover" />
               </div>
-              <h3 className="text-2xl font-bold text-white uppercase tracking-wider mb-2">BORIS ARGA "BORIS"</h3>
+              <h3 className="text-2xl font-bold text-white uppercase tracking-wider mb-2 group-hover:text-[#8B5CF6] transition-colors">BORIS ARGA "BORIS"</h3>
               <p className="text-[#06b6d4] text-[10px] font-bold tracking-[0.2em] uppercase mb-6">MICRO-REALISMO • FOTORREALISMO • COLOR POP</p>
-              <p className="text-zinc-400 text-sm leading-relaxed max-w-2xl mb-6">
-                Originario de Argentina. Boris es un especialista en llevar el fotorrealismo a escalas reducidas (micro-realismo). Su técnica destaca por la precisión casi fotográfica en retratos humanos y animales, logrando expresiones vívidas y texturas hiperrealistas. Es el único en el estudio que domina el uso de colores vibrantes y de alto contraste (Color Pop) para dar vida a figuras de la cultura pop y deportes con acabados impecables.
+              <p className="text-zinc-400 text-sm leading-relaxed mb-6 group-hover:text-zinc-300 transition-colors">
+                Originario de Argentina. Boris es un especialista en llevar el fotorrealismo a escalas reducidas (micro-realismo). Su técnica destaca por la precisión casi fotográfica en retratos humanos y animales. Es el único en el estudio que domina el uso de colores vibrantes y de alto contraste (Color Pop).
               </p>
-              <a href="https://www.instagram.com/borisbortix?igsh=MTR6MTF0dDI1dmp1Yg==" target="_blank" rel="noopener noreferrer" className="w-10 h-10 border border-[#333] rounded-full flex items-center justify-center text-[#8B5CF6] hover:bg-[#8B5CF6] hover:text-white transition-colors cursor-pointer">
-                IG
-              </a>
-            </div>
+              <span className="w-10 h-10 border border-[#333] rounded-full flex items-center justify-center text-[#8B5CF6] group-hover:bg-[#8B5CF6] group-hover:text-white transition-colors">
+                ➔
+              </span>
+            </Link>
+            
           </div>
         </div>
       </section>
