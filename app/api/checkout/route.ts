@@ -1,60 +1,88 @@
 import { NextResponse } from 'next/server';
 import Stripe from 'stripe';
+import { MercadoPagoConfig, Preference } from 'mercadopago';
 
-// 1. Inicializamos la conexión a tu bóveda
+// 1. Inicializamos Stripe (Tu Bóveda Maestra de ViOs Code)
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: '2023-10-16' as any, // Mantenemos tu truco para silenciar a TypeScript
+  apiVersion: '2023-10-16' as any,
 });
 
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { amount, serviceName } = body; 
-    // amount debe venir en centavos. Ej: $1000 pesos = 100000
-
-    console.log(`Iniciando cobro por: ${serviceName} - $${amount / 100}`);
-
-    // --- LA MAGIA DEL SPLIT (PREPARADA PARA EL FUTURO) ---
     
-    // 1. Aquí defines tu comisión. Hoy es 0, mañana puede ser 0.10 (10%)
-    const comisionPorcentaje = 0; 
-    const feeDeViosCode = Math.round(amount * comisionPorcentaje);
+    // Novedad: Recibimos 'negocioSlug' desde el botón de pago del cliente
+    // Ej: Si compran en Magnolia, negocioSlug = 'magnolia'
+    const { amount, serviceName, proveedor, negocioSlug } = body; 
 
-    // 2. Este ID te lo dará Stripe cuando Loyaltink se registre con tu link
-    // Por ahora lo dejamos como una variable lista para usarse
-    const loyaltinkStripeAccountId = "acct_1XXXXXXXXXXXXX"; 
+    // URLs dinámicas: El sistema sabe a qué carpeta regresar al usuario
+    const urlExito = `${process.env.NEXT_PUBLIC_SITE_URL}/${negocioSlug}/reserva/exito`;
+    const urlCancelado = `${process.env.NEXT_PUBLIC_SITE_URL}/${negocioSlug}/reserva`;
 
-    // 3. Creamos la ventana de pago (Checkout Session)
-    const session = await stripe.checkout.sessions.create({
-      payment_method_types: ['card'],
-      line_items: [
-        {
-          price_data: {
-            currency: 'mxn',
-            product_data: {
-              name: serviceName, // Ej: "Anticipo Tatuaje - Loyaltink"
-            },
-            unit_amount: amount, 
+    // --- RUTA A: STRIPE ---
+    if (proveedor === 'stripe') {
+      console.log(`Cobro Stripe | Negocio: ${negocioSlug} | Monto: $${amount}`);
+      
+      // PRÓXIMO PASO PARA TU GOD MODE:
+      // Aquí harás un await supabase.from('negocios').select('stripe_account_id, comision').eq('slug', negocioSlug)
+      
+      // Por ahora, usamos variables de prueba
+      const comisionPorcentaje = 0; 
+      const feeDeViosCode = Math.round((amount * 100) * comisionPorcentaje);
+      const destinoStripeAccountId = "acct_1XXXXXXXXXXXXX"; // Esto vendrá de tu DB después
+
+      const session = await stripe.checkout.sessions.create({
+        payment_method_types: ['card'],
+        line_items: [{
+            price_data: { currency: 'mxn', product_data: { name: serviceName }, unit_amount: amount * 100 },
+            quantity: 1,
+        }],
+        mode: 'payment',
+        payment_intent_data: {
+          application_fee_amount: feeDeViosCode, 
+          transfer_data: { destination: destinoStripeAccountId },
+        },
+        success_url: urlExito,
+        cancel_url: urlCancelado,
+      });
+
+      return NextResponse.json({ url: session.url });
+    }
+
+    // --- RUTA B: MERCADO PAGO ---
+    if (proveedor === 'mercadopago') {
+      console.log(`Cobro MercadoPago | Negocio: ${negocioSlug} | Monto: $${amount}`);
+      
+      // PRÓXIMO PASO PARA TU GOD MODE:
+      // Aquí sacarás el mp_access_token de la base de datos según el negocioSlug
+      const tokenDelNegocio = process.env.MP_ACCESS_TOKEN || 'APP_USR-llave-prueba';
+      
+      const mpClient = new MercadoPagoConfig({ accessToken: tokenDelNegocio });
+      const preference = new Preference(mpClient);
+      
+      const result = await preference.create({
+        body: {
+          items: [
+            {
+              id: 'anticipo',
+              title: serviceName,
+              quantity: 1,
+              unit_price: amount 
+            }
+          ],
+          back_urls: {
+            success: urlExito,
+            failure: urlCancelado,
+            pending: urlCancelado,
           },
-          quantity: 1,
-        },
-      ],
-      mode: 'payment',
-      payment_intent_data: {
-        // Aquí le decimos a Stripe cuánto dinero es para ti (HOY ES CERO)
-        application_fee_amount: feeDeViosCode, 
-        // Y aquí le decimos a qué cuenta mandar el resto del dinero
-        transfer_data: {
-          destination: loyaltinkStripeAccountId,
-        },
-      },
-      // A dónde mandamos al cliente después de pagar
-      success_url: `${process.env.NEXT_PUBLIC_SITE_URL}/loyaltink/reserva/exito`,
-      cancel_url: `${process.env.NEXT_PUBLIC_SITE_URL}/loyaltink/reserva`,
-    });
+          auto_return: 'approved',
+        }
+      });
 
-    // Le devolvemos el link de pago al Frontend para que abra la ventana
-    return NextResponse.json({ url: session.url });
+      return NextResponse.json({ url: result.init_point });
+    }
+
+    return NextResponse.json({ error: "Proveedor de pago no válido" }, { status: 400 });
 
   } catch (error: any) {
     console.error("Error en el pago:", error);
