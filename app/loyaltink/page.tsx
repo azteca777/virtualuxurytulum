@@ -266,7 +266,7 @@ export default function LoyaltinkBrigade() {
                  <img src="/loyaltink/rafa.jpeg" alt="Rafa" className="w-1/5 h-full object-cover border-r border-zinc-800" />
                  <img src="/loyaltink/prana.jpeg" alt="Plana" className="w-1/5 h-full object-cover border-r border-zinc-800" />
                  <img src="/loyaltink/nai.jpeg" alt="Nai" className="w-1/5 h-full object-cover border-r border-zinc-800" />
-                 <img src="/loyaltink/perfil_boris.png" alt="Boris" className="w-1/5 h-full object-cover" />
+                 <img src="/loyaltink/boris.jpeg" alt="Boris" className="w-1/5 h-full object-cover" />
               </div>
             </div>
         </div>
