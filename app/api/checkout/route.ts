@@ -30,7 +30,7 @@ export async function POST(request: Request) {
       .from('ventas')
       .insert([
         {
-          tienda_id: negocioSlug.toUpperCase(), // Ej: 'MAGNOLIA'
+          tienda_id: negocioSlug.toUpperCase(), // Ej: 'MAGNOLIA', 'LOYALTINK'
           total: amount,
           metodo_pago: proveedor,
           comision_vios: comisionCalculada,
@@ -75,7 +75,15 @@ export async function POST(request: Request) {
     if (proveedor === 'mercadopago') {
       console.log(`Cobro MercadoPago | Negocio: ${negocioSlug} | Monto: $${amount}`);
       
-      const tokenDelNegocio = process.env.MP_ACCESS_TOKEN || 'APP_USR-llave-prueba';
+      // 🧠 LÓGICA MULTITENANT: Busca la llave exacta según el negocio
+      // Ej: Si el cliente está en Loyaltink, busca la variable MP_ACCESS_TOKEN_LOYALTINK
+      const nombreVariableEnv = `MP_ACCESS_TOKEN_${negocioSlug.toUpperCase()}`;
+      const tokenDelNegocio = process.env[nombreVariableEnv];
+
+      if (!tokenDelNegocio) {
+        throw new Error(`Falta configurar la cuenta de Mercado Pago para el negocio: ${negocioSlug}`);
+      }
+      
       const mpClient = new MercadoPagoConfig({ accessToken: tokenDelNegocio });
       const preference = new Preference(mpClient);
       
