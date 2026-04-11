@@ -5,7 +5,7 @@ import Link from 'next/link';
 import dynamic from 'next/dynamic';
 import { 
   BarChart3, Globe2, Users, DollarSign, Key, Settings, LogOut, 
-  TrendingUp, Activity, Smartphone, ArrowUpRight, Lock, Mail, Eye, EyeOff
+  TrendingUp, Activity, Smartphone, ArrowUpRight, Lock, Mail, Eye, EyeOff, Loader2
 } from 'lucide-react';
 import { FaInstagram, FaFacebook, FaTiktok } from 'react-icons/fa';
 import { createClient } from '@supabase/supabase-js';
@@ -23,40 +23,81 @@ export default function LoyaltinkDashboard() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [verPassword, setVerPassword] = useState(false);
+  const [cargando, setCargando] = useState(false);
+  const [esRegistro, setEsRegistro] = useState(false); // 👈 NUEVO: Alternar entre login y registro
+
   const [paisesGeoJSON, setPaisesGeoJSON] = useState<any[]>([]);
   const [datosReales, setDatosReales] = useState({ facturado: 0, reservas: 0 });
   const globeRef = useRef<any>(null);
 
-  // 1. ACCESO MAESTRO Y SEGURIDAD
-  const manejarLogin = (e: React.FormEvent) => {
-    e.preventDefault();
-    
-    // Credenciales de Administración Central (ViOs Code)
-    const MASTER_EMAIL = 'osorioalejandro21777@gmail.com';
-    const MASTER_PASS = 'Vios2026'; // Puedes cambiarla aquí o usar variables de entorno
+  // 1. VERIFICAR SESIÓN ACTIVA AL CARGAR
+  useEffect(() => {
+    // Revisar si ya hay una sesión guardada
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      if (session) setEstaLogueado(true);
+    });
 
-    if (email.toLowerCase() === MASTER_EMAIL && password === MASTER_PASS) {
-      setEstaLogueado(true);
-    } else {
-      alert("Acceso Denegado: Solo el administrador maestro de ViOs Code tiene permiso aquí.");
+    // Escuchar cambios (cuando inicia o cierra sesión)
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setEstaLogueado(!!session);
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
+
+  // 2. LÓGICA DE AUTENTICACIÓN REAL
+  const manejarAuth = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setCargando(true);
+
+    try {
+      if (esRegistro) {
+        // --- CREAR CUENTA NUEVA ---
+        const { data, error } = await supabase.auth.signUp({
+          email,
+          password,
+        });
+        
+        if (error) throw error;
+        
+        alert("✅ Registro exitoso. Revisa tu bandeja de entrada o spam para confirmar tu correo.");
+        setEsRegistro(false); // Lo regresamos a la vista de login
+        
+      } else {
+        // --- INICIAR SESIÓN ---
+        const { data, error } = await supabase.auth.signInWithPassword({
+          email,
+          password,
+        });
+        
+        if (error) {
+          if (error.message.includes("Email not confirmed")) {
+             throw new Error("Debes confirmar tu correo electrónico antes de entrar. Revisa tu bandeja de entrada.");
+          }
+          throw new Error("Credenciales incorrectas.");
+        }
+        // Si es exitoso, el onAuthStateChange arriba cambiará estaLogueado a true automáticamente
+      }
+    } catch (error: any) {
+      alert(`❌ Error: ${error.message}`);
+    } finally {
+      setCargando(false);
     }
   };
 
-  // 2. CARGA DE DATOS REALES (MÉTRICAS Y MAPA)
+  const cerrarSesion = async () => {
+    await supabase.auth.signOut();
+  };
+
+  // 3. CARGA DE DATOS REALES (MÉTRICAS Y MAPA)
   useEffect(() => {
     if (estaLogueado) {
-      // Cargar Mapa
       fetch('https://raw.githubusercontent.com/vasturiano/react-globe.gl/master/example/datasets/ne_110m_admin_0_countries.geojson')
         .then(res => res.json())
         .then(datos => setPaisesGeoJSON(datos.features));
 
-      // Consultar Ventas Reales de Loyaltink en Supabase
       const obtenerVentas = async () => {
-        const { data } = await supabase
-          .from('ventas')
-          .select('*')
-          .eq('tienda_id', 'LOYALTINK');
-
+        const { data } = await supabase.from('ventas').select('*').eq('tienda_id', 'LOYALTINK');
         if (data) {
           const total = data.reduce((acc, v) => acc + Number(v.total), 0);
           setDatosReales({ facturado: total, reservas: data.length });
@@ -66,13 +107,13 @@ export default function LoyaltinkDashboard() {
     }
   }, [estaLogueado]);
 
-  // Foco inicial del globo hacia México/Tulum
   useEffect(() => {
-    if (globeRef.current) {
+    if (globeRef.current && estaLogueado) {
       globeRef.current.pointOfView({ lat: 20, lng: -90, altitude: 2.5 });
     }
-  }, [paisesGeoJSON]);
+  }, [paisesGeoJSON, estaLogueado]);
 
+  // PANTALLA DE LOGIN / REGISTRO
   if (!estaLogueado) {
     return (
       <div className="min-h-screen bg-[#0a0a0a] flex items-center justify-center p-4 font-sans">
@@ -81,16 +122,19 @@ export default function LoyaltinkDashboard() {
             <div className="w-16 h-16 bg-[#8B5CF6] rounded-2xl flex items-center justify-center mb-4 border border-white/10">
               <img src="/loyaltink/logo_loyaltink.jpeg" className="w-full h-full object-cover rounded-2xl" />
             </div>
-            <h1 className="text-white font-black tracking-widest uppercase text-xl text-center">Master Access</h1>
+            <h1 className="text-white font-black tracking-widest uppercase text-xl text-center">
+              {esRegistro ? 'Crear Cuenta' : 'Master Access'}
+            </h1>
             <p className="text-[#8B5CF6] text-[10px] tracking-[0.3em] uppercase mt-2 font-bold">ViOs Code Administration</p>
           </div>
 
-          <form onSubmit={manejarLogin} className="space-y-4">
+          <form onSubmit={manejarAuth} className="space-y-4">
             <div className="relative">
               <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-500" />
               <input 
                 type="email" 
-                placeholder="Email Maestro" 
+                placeholder="Correo Electrónico" 
+                required
                 className="w-full bg-[#1a1a1a] border border-[#333] rounded-xl py-4 pl-12 pr-4 text-white outline-none focus:border-[#8B5CF6] transition-all"
                 onChange={(e) => setEmail(e.target.value)}
               />
@@ -99,7 +143,9 @@ export default function LoyaltinkDashboard() {
               <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-500" />
               <input 
                 type={verPassword ? "text" : "password"} 
-                placeholder="Contraseña Maestra" 
+                placeholder="Contraseña (mínimo 6 caracteres)" 
+                required
+                minLength={6}
                 className="w-full bg-[#1a1a1a] border border-[#333] rounded-xl py-4 pl-12 pr-12 text-white outline-none focus:border-[#8B5CF6] transition-all"
                 onChange={(e) => setPassword(e.target.value)}
               />
@@ -107,15 +153,34 @@ export default function LoyaltinkDashboard() {
                 {verPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
               </button>
             </div>
-            <button className="w-full bg-white text-black font-black py-4 rounded-xl uppercase tracking-widest text-sm hover:bg-zinc-200 transition-all">
-              Desbloquear Dashboard
+            
+            <button 
+              disabled={cargando}
+              className="w-full bg-white text-black font-black py-4 rounded-xl uppercase tracking-widest text-sm hover:bg-zinc-200 transition-all flex justify-center items-center gap-2 disabled:opacity-70"
+            >
+              {cargando && <Loader2 className="w-4 h-4 animate-spin" />}
+              {esRegistro ? 'Registrarme en Supabase' : 'Desbloquear Dashboard'}
             </button>
           </form>
+
+          {/* BOTÓN PARA CAMBIAR ENTRE LOGIN Y REGISTRO */}
+          <div className="mt-6 text-center border-t border-[#222] pt-6">
+            <p className="text-zinc-500 text-xs">
+              {esRegistro ? '¿Ya tienes cuenta de acceso?' : '¿Aún no configuras tu llave maestra?'}
+            </p>
+            <button 
+              onClick={() => setEsRegistro(!esRegistro)}
+              className="mt-2 text-[#8B5CF6] font-bold text-xs uppercase tracking-widest hover:text-white transition-colors"
+            >
+              {esRegistro ? 'Iniciar Sesión' : 'Crear Cuenta Nueva'}
+            </button>
+          </div>
         </div>
       </div>
     );
   }
 
+  // --- DASHBOARD PRINCIPAL ---
   return (
     <div className="min-h-screen bg-[#0a0a0a] text-gray-200 font-sans selection:bg-[#8B5CF6] selection:text-white">
       
@@ -133,8 +198,8 @@ export default function LoyaltinkDashboard() {
         </div>
         <div className="flex items-center gap-4">
           <span className="text-[9px] text-zinc-600 uppercase font-bold hidden md:block">Master: {email}</span>
-          <button onClick={() => setEstaLogueado(false)} className="text-zinc-500 hover:text-red-400 transition-colors">
-            <LogOut className="w-5 h-5" />
+          <button onClick={cerrarSesion} className="text-zinc-500 hover:text-red-400 transition-colors flex items-center gap-2 text-xs font-bold uppercase tracking-widest">
+            Salir <LogOut className="w-4 h-4" />
           </button>
         </div>
       </nav>
@@ -154,7 +219,6 @@ export default function LoyaltinkDashboard() {
                 <p className="text-3xl font-black text-white">{datosReales.reservas}</p>
                 <p className="text-[9px] text-[#8B5CF6] mt-2 font-bold uppercase tracking-widest">Citas en Agenda</p>
               </div>
-              {/* ... otros KPIs estáticos por ahora ... */}
             </div>
 
             {/* RADAR 3D DE TRÁFICO */}
@@ -179,22 +243,6 @@ export default function LoyaltinkDashboard() {
                     polygonStrokeColor={() => '#1a1a1a'}
                   />
                 )}
-              </div>
-              
-              <div className="bg-[#111] border border-[#222] p-6 rounded-3xl">
-                <h3 className="text-white font-bold uppercase tracking-widest text-xs flex items-center gap-2 mb-6">
-                  <Smartphone className="w-4 h-4 text-[#8B5CF6]" /> Pautas en Meta
-                </h3>
-                {/* Gráficas de redes sociales aquí... */}
-                <div className="space-y-6 pt-4">
-                  <div className="flex justify-between items-center">
-                    <div className="flex items-center gap-2 text-zinc-300 text-xs font-bold uppercase"><FaInstagram /> Instagram</div>
-                    <span className="text-white font-mono text-xs">4,520 clics</span>
-                  </div>
-                  <div className="w-full h-1 bg-zinc-800 rounded-full overflow-hidden">
-                    <div className="h-full bg-fuchsia-500 w-[70%]"></div>
-                  </div>
-                </div>
               </div>
             </div>
           </div>
