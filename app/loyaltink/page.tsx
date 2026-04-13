@@ -693,7 +693,7 @@ export default function LoyaltinkBrigade() {
             <Link href="/loyaltink/artista/nai" className="flex flex-col items-center text-center group cursor-pointer relative">
               <div className="w-56 md:w-64 aspect-[9/16] rounded-2xl overflow-hidden border-4 border-[#222] shadow-[0_0_40px_rgba(139,92,246,0.2)] mb-8 bg-zinc-900 transition-all group-hover:scale-105 group-hover:border-[#8B5CF6] relative">
                  <video 
-                   src="/loyaltink/artista_nai_efecto.mp4" 
+                   src="/loyaltink/artista_nai2_efecto2.mp4" 
                    autoPlay 
                    loop 
                    muted 

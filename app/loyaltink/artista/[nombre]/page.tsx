@@ -34,7 +34,7 @@ const artistasDB = {
     titulo: 'Artista Fine Line y Botánico',
     tags: 'Fine Line • Botánico • Red Ink',
     bio: 'Originaria de Tierra del Fuego, Argentina. Mi trabajo se define por la extrema delicadeza y precisión. Me enfoco en el Fine Line, creando composiciones florales, piezas ilustrativas con sombras suaves y dominando la tendencia del Red Ink para diseños minimalistas y elegantes.',
-    imagen: '/loyaltink/perfil_nai.png',
+    imagen: '/loyaltink/bio_nai.jpg',
     ig: 'https://www.instagram.com/tattoonaink?igsh=ODV3ZTFxM2F0eDdx'
   },
   boris: {
