@@ -42,7 +42,7 @@ const artistasDB = {
     titulo: 'Especialista en Micro-Realismo y Color Pop',
     tags: 'Micro-Realismo • Fotorrealismo • Color Pop',
     bio: 'Originario de Argentina. Con mas de 13 años de Experiencia y con +35 reconocimientos en el mundo del arte y del tatuaje, tatuador versátil en diferentes estilos, como NeoTraidicional, oriental y Black and Grey. Boris es un especialista en llevar el fotorrealismo a escalas reducidas (micro-realismo). Su técnica destaca por la precisión casi fotográfica en retratos humanos y animales, logrando expresiones vívidas y texturas hiperrealistas. Es el único en el estudio que domina el uso de colores vibrantes y de alto contraste (Color Pop) para dar vida a figuras de la cultura pop y deportes con acabados impecables.',
-    imagen: '/loyaltink/perfil_boris.png',
+    imagen: '/loyaltink/bio_boris.jpg',
     ig: 'https://www.instagram.com/borisbortix?igsh=MTR6MTF0dDI1dmp1Yg=='
   }
 };
