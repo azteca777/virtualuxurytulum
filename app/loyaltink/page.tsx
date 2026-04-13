@@ -743,9 +743,9 @@ export default function LoyaltinkBrigade() {
             </span>
             <h2 className="text-4xl md:text-6xl font-black text-[#8B5CF6] uppercase tracking-tighter mb-6 leading-none">
               {idioma === 'es' ? (
-                <>DONDE LA<br/>TRADICIÓN<br/>SE ENCUENTRA CON EL<br/>MAÑANA</>
+                <>NUESTRO PORTAFOLIO<br/>POR ESTILOS</>
               ) : (
-                <>WHERE<br/>TRADITION<br/>MEETS<br/>TOMORROW</>
+                <>OUR PORTFOLIO<br/>BY STYLES</>
               )}
             </h2>
             <p className="text-zinc-400 mb-20 max-w-xl mx-auto">
