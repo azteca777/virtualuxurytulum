@@ -256,12 +256,12 @@ export default function LoyaltinkBrigade() {
       {/* NAVEGACIÓN */}
       <nav className="fixed w-full z-50 bg-white/5 backdrop-blur-lg border-b border-white/10 flex justify-between items-center px-4 py-3 shadow-[0_0_30px_rgba(255,255,255,0.05)]">
         <div className="flex items-center gap-3">
-          <div className="w-20 h-20 bg-[#8B5CF6] flex items-center justify-center overflow-hidden border-2 border-white/20 rounded-full shadow-[0_0_20px_rgba(139,92,246,0.2)]">
+          <div className="w-12 h-12 md:w-20 md:h-20 flex-shrink-0 bg-[#8B5CF6] flex items-center justify-center overflow-hidden border-2 border-white/20 rounded-full shadow-[0_0_20px_rgba(139,92,246,0.2)]">
              <img src="/loyaltink/logo_loyaltink.jpeg" alt="Loyaltink" className="w-full h-full object-cover" />
           </div>
           <div className="flex flex-col">
-            <span className="text-3xl font-extrabold text-white leading-tight uppercase tracking-[-0.1em]" style={{ fontFeatureSettings: '"kern" 0' }}>LOYALTINK BRIGADE</span>
-            <span className="text-xs text-zinc-500 tracking-[0.2em] uppercase">Future Ink. Ancient Soul.</span>
+            <span className="text-lg md:text-3xl font-extrabold text-white leading-tight uppercase tracking-[-0.1em]" style={{ fontFeatureSettings: '"kern" 0' }}>LOYALTINK BRIGADE</span>
+            <span className="text-[10px] md:text-xs text-zinc-500 tracking-[0.2em] uppercase">Future Ink. Ancient Soul.</span>
           </div>
         </div>
         <div className="flex items-center gap-4 md:gap-6">
@@ -530,12 +530,16 @@ export default function LoyaltinkBrigade() {
                 </div>
                 
                 <div className="flex-1 flex justify-center items-center mb-6 md:mb-8">
-                  <div className="w-36 h-36 md:w-48 md:h-48 rounded-full border border-[#333] bg-[#222] flex flex-col items-center justify-center shadow-lg relative">
+                  {/* Aumentamos el círculo a w-44 h-44 en móviles y agregamos px-4 text-center */}
+                  <div className="w-44 h-44 md:w-48 md:h-48 rounded-full border border-[#333] bg-[#222] flex flex-col items-center justify-center shadow-lg relative px-4 text-center">
                      <div className={`absolute inset-0 rounded-full blur-xl opacity-20 ${calcTab === 'cost' ? 'bg-[#06b6d4]' : 'bg-[#8B5CF6]'}`}></div>
-                     <span className={`font-black text-white relative z-10 ${moneda === 'MXN' && calcTab === 'cost' ? 'text-xl md:text-2xl' : 'text-2xl md:text-3xl'}`}>
+                     
+                     {/* Ajustamos el tamaño del texto dinámicamente para que MXN no desborde */}
+                     <span className={`font-black text-white relative z-10 leading-tight ${moneda === 'MXN' && calcTab === 'cost' ? 'text-lg sm:text-xl md:text-2xl' : 'text-2xl md:text-3xl'}`}>
                        {calcTab === 'cost' ? getEstimatedCost() : getEstimatedTime()}
                      </span>
-                     <span className="text-[10px] md:text-xs text-zinc-500 mt-0 md:mt-1 relative z-10">
+                     
+                     <span className="text-[10px] md:text-xs text-zinc-500 mt-1 md:mt-2 relative z-10">
                        {calcTab === 'cost' ? moneda : (idioma === 'es' ? 'Aprox' : 'Approx')}
                      </span>
                   </div>
@@ -622,7 +626,7 @@ export default function LoyaltinkBrigade() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-16 md:gap-x-12 md:gap-y-24">
             
-            {/* ARTISTA 1: CHULOSKI (AHORA CON VIDEO EN BUCLE) */}
+            {/* ARTISTA 1: CHULOSKI */}
             <Link href="/loyaltink/artista/chuloski" className="flex flex-col items-center text-center group cursor-pointer relative">
               <div className="w-56 md:w-64 aspect-[9/16] rounded-2xl overflow-hidden border-4 border-[#222] shadow-[0_0_40px_rgba(139,92,246,0.2)] mb-8 bg-zinc-900 transition-all group-hover:scale-105 group-hover:border-[#8B5CF6] relative">
                  <video 
@@ -643,7 +647,7 @@ export default function LoyaltinkBrigade() {
               </span>
             </Link>
 
-            {/* ARTISTA 2: RAFA (AHORA CON VIDEO EN BUCLE) */}
+            {/* ARTISTA 2: RAFA */}
             <Link href="/loyaltink/artista/rafa" className="flex flex-col items-center text-center group cursor-pointer relative">
               <div className="w-56 md:w-64 aspect-[9/16] rounded-2xl overflow-hidden border-4 border-[#222] shadow-[0_0_40px_rgba(139,92,246,0.2)] mb-8 bg-zinc-900 transition-all group-hover:scale-105 group-hover:border-[#8B5CF6] relative">
                  <video 
@@ -665,9 +669,18 @@ export default function LoyaltinkBrigade() {
             </Link>
 
             {/* ARTISTA 3: PRANA */}
-            <Link href="/loyaltink/artista/prana" className="flex flex-col items-center text-center group cursor-pointer">
-              <div className="w-48 h-48 rounded-full overflow-hidden border-4 border-[#222] shadow-[0_0_30px_rgba(139,92,246,0.15)] mb-8 bg-zinc-800 transition-all group-hover:scale-105 group-hover:border-[#8B5CF6]">
-                 <img src="/loyaltink/perfil_prana.png" alt="Lautaro Bordesse" className="w-full h-full object-cover" />
+            <Link href="/loyaltink/artista/prana" className="flex flex-col items-center text-center group cursor-pointer relative">
+              <div className="w-56 md:w-64 aspect-[9/16] rounded-2xl overflow-hidden border-4 border-[#222] shadow-[0_0_40px_rgba(139,92,246,0.2)] mb-8 bg-zinc-900 transition-all group-hover:scale-105 group-hover:border-[#8B5CF6] relative">
+                 <video 
+                   src="/loyaltink/artista_prana2_efecto.mp4" 
+                   autoPlay 
+                   loop 
+                   muted 
+                   playsInline 
+                   className="w-full h-full object-cover opacity-90 group-hover:opacity-100 transition-opacity"
+                 />
+                 <div className="absolute inset-0 shadow-[inset_0_0_30px_rgba(0,0,0,0.5)] pointer-events-none"></div>
+                 <div className="absolute inset-0 bg-black/10 mix-blend-multiply pointer-events-none group-hover:bg-transparent transition-colors"></div>
               </div>
               <h3 className="text-2xl font-bold text-white uppercase tracking-wider mb-2 group-hover:text-[#8B5CF6] transition-colors">LAUTARO BORDESSE "PRANA"</h3>
               <p className="text-[#06b6d4] text-[10px] font-bold tracking-[0.2em] uppercase mb-6">REALISMO ÉPICO • ESTATUARIA • MITOLOGÍA</p>
@@ -676,9 +689,8 @@ export default function LoyaltinkBrigade() {
               </span>
             </Link>
 
-           {/* ARTISTA 4: NAI (VIDEO VERTICAL FULL RESOLUTION) */}
+           {/* ARTISTA 4: NAI */}
             <Link href="/loyaltink/artista/nai" className="flex flex-col items-center text-center group cursor-pointer relative">
-              {/* Ajustes clave: w-56 o md:w-64 (más ancha) y aspect-[9/16] (proporción exacta de video vertical) */}
               <div className="w-56 md:w-64 aspect-[9/16] rounded-2xl overflow-hidden border-4 border-[#222] shadow-[0_0_40px_rgba(139,92,246,0.2)] mb-8 bg-zinc-900 transition-all group-hover:scale-105 group-hover:border-[#8B5CF6] relative">
                  <video 
                    src="/loyaltink/artista_nai_efecto.mp4" 
@@ -686,10 +698,8 @@ export default function LoyaltinkBrigade() {
                    loop 
                    muted 
                    playsInline 
-                   // object-cover llenará el 9:16 sin distorsionar ni recortar
                    className="w-full h-full object-cover opacity-90 group-hover:opacity-100 transition-opacity"
                  />
-                 {/* Capa de sombra interior para darle profundidad */}
                  <div className="absolute inset-0 shadow-[inset_0_0_30px_rgba(0,0,0,0.5)] pointer-events-none"></div>
                  <div className="absolute inset-0 bg-black/10 mix-blend-multiply pointer-events-none group-hover:bg-transparent transition-colors"></div>
               </div>
@@ -701,9 +711,18 @@ export default function LoyaltinkBrigade() {
             </Link>
 
             {/* ARTISTA 5: BORIS */}
-            <Link href="/loyaltink/artista/boris" className="flex flex-col items-center text-center group cursor-pointer md:col-span-2 md:max-w-xl md:mx-auto">
-              <div className="w-48 h-48 rounded-full overflow-hidden border-4 border-[#222] shadow-[0_0_30px_rgba(139,92,246,0.15)] mb-8 bg-zinc-800 transition-all group-hover:scale-105 group-hover:border-[#8B5CF6]">
-                 <img src="/loyaltink/perfil_boris.png" alt="Boris Arga" className="w-full h-full object-cover" />
+            <Link href="/loyaltink/artista/boris" className="flex flex-col items-center text-center group cursor-pointer md:col-span-2 md:max-w-xl md:mx-auto relative">
+              <div className="w-56 md:w-64 aspect-[9/16] rounded-2xl overflow-hidden border-4 border-[#222] shadow-[0_0_40px_rgba(139,92,246,0.2)] mb-8 bg-zinc-900 transition-all group-hover:scale-105 group-hover:border-[#8B5CF6] relative">
+                 <video 
+                   src="/loyaltink/artista_boris_efecto.mp4" 
+                   autoPlay 
+                   loop 
+                   muted 
+                   playsInline 
+                   className="w-full h-full object-cover opacity-90 group-hover:opacity-100 transition-opacity"
+                 />
+                 <div className="absolute inset-0 shadow-[inset_0_0_30px_rgba(0,0,0,0.5)] pointer-events-none"></div>
+                 <div className="absolute inset-0 bg-black/10 mix-blend-multiply pointer-events-none group-hover:bg-transparent transition-colors"></div>
               </div>
               <h3 className="text-2xl font-bold text-white uppercase tracking-wider mb-2 group-hover:text-[#8B5CF6] transition-colors">BORIS ARGA "BORIS"</h3>
               <p className="text-[#06b6d4] text-[10px] font-bold tracking-[0.2em] uppercase mb-6">MICRO-REALISMO • FOTORREALISMO • COLOR POP</p>
