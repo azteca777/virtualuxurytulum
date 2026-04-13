@@ -6,10 +6,10 @@ import SensorTrafico from '../../components/SensorTrafico';
 // === DATOS DE LOS ARTISTAS ===
 const ARTISTAS = [
   { id: "chuloski", nombre: "Chuloski", estilo: "Blackwork / Neo-Japonés", img: "/loyaltink/perfil_chuloski.png", wa: "521234567890" },
-  { id: "rafa", nombre: "Rafa Moldess", estilo: "Black & Grey / Neo-Tribal", img: "/loyaltink/perfil_rafa.png", wa: "521234567890" },
-  { id: "prana", nombre: "Prana", estilo: "Realismo Épico / Mitología", img: "/loyaltink/perfil_prana.png", wa: "521234567890" },
-  { id: "nai", nombre: "Naiara", estilo: "Fine Line / Botánico / Red Ink", img: "/loyaltink/perfil_nai.png", wa: "521234567890" },
-  { id: "boris", nombre: "Boris Arga", estilo: "Micro-Realismo / Color Pop", img: "/loyaltink/perfil_boris.png", wa: "521234567890" }
+  { id: "rafa", nombre: "Rafa Moldess", estilo: "Black & Grey / Neo-Tribal", img: "/loyaltink/bio_rafa.jpg", wa: "521234567890" },
+  { id: "prana", nombre: "Prana", estilo: "Realismo Épico / Mitología", img: "/loyaltink/bio_prana.jpg", wa: "521234567890" },
+  { id: "nai", nombre: "Naiara", estilo: "Fine Line / Botánico / Red Ink", img: "/loyaltink/bio_nai.jpg", wa: "521234567890" },
+  { id: "boris", nombre: "Boris Arga", estilo: "Micro-Realismo / Color Pop", img: "/loyaltink/bio_boris.JPG", wa: "521234567890" }
 ];
 
 const NOMBRES_MESES = ["ENERO", "FEBRERO", "MARZO", "ABRIL", "MAYO", "JUNIO", "JULIO", "AGOSTO", "SEPTIEMBRE", "OCTUBRE", "NOVIEMBRE", "DICIEMBRE"];
