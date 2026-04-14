@@ -282,7 +282,7 @@ export default function LoyaltinkBrigade() {
         <div className="absolute inset-0 z-0">
             <div className="w-full h-full relative transition-opacity duration-1000">
               <video 
-                src="/loyaltink/hero_bg.mp4" 
+                src="https://grutgbujoy4xc00c.public.blob.vercel-storage.com/hero_bg.mp4" 
                 autoPlay 
                 muted 
                 playsInline
@@ -530,11 +530,9 @@ export default function LoyaltinkBrigade() {
                 </div>
                 
                 <div className="flex-1 flex justify-center items-center mb-6 md:mb-8">
-                  {/* Aumentamos el círculo a w-44 h-44 en móviles y agregamos px-4 text-center */}
                   <div className="w-44 h-44 md:w-48 md:h-48 rounded-full border border-[#333] bg-[#222] flex flex-col items-center justify-center shadow-lg relative px-4 text-center">
                      <div className={`absolute inset-0 rounded-full blur-xl opacity-20 ${calcTab === 'cost' ? 'bg-[#06b6d4]' : 'bg-[#8B5CF6]'}`}></div>
                      
-                     {/* Ajustamos el tamaño del texto dinámicamente para que MXN no desborde */}
                      <span className={`font-black text-white relative z-10 leading-tight ${moneda === 'MXN' && calcTab === 'cost' ? 'text-lg sm:text-xl md:text-2xl' : 'text-2xl md:text-3xl'}`}>
                        {calcTab === 'cost' ? getEstimatedCost() : getEstimatedTime()}
                      </span>
@@ -630,7 +628,7 @@ export default function LoyaltinkBrigade() {
             <Link href="/loyaltink/artista/chuloski" className="flex flex-col items-center text-center group cursor-pointer relative">
               <div className="w-56 md:w-64 aspect-[9/16] rounded-2xl overflow-hidden border-4 border-[#222] shadow-[0_0_40px_rgba(139,92,246,0.2)] mb-8 bg-zinc-900 transition-all group-hover:scale-105 group-hover:border-[#8B5CF6] relative">
                  <video 
-                   src="/loyaltink/artista_chulo_efecto.mp4" 
+                   src="https://grutgbujoy4xc00c.public.blob.vercel-storage.com/artista_chulo_efecto.mp4" 
                    autoPlay 
                    loop 
                    muted 
@@ -651,7 +649,7 @@ export default function LoyaltinkBrigade() {
             <Link href="/loyaltink/artista/rafa" className="flex flex-col items-center text-center group cursor-pointer relative">
               <div className="w-56 md:w-64 aspect-[9/16] rounded-2xl overflow-hidden border-4 border-[#222] shadow-[0_0_40px_rgba(139,92,246,0.2)] mb-8 bg-zinc-900 transition-all group-hover:scale-105 group-hover:border-[#8B5CF6] relative">
                  <video 
-                   src="/loyaltink/artista_rafa1_efecto.mp4" 
+                   src="https://grutgbujoy4xc00c.public.blob.vercel-storage.com/artista_rafa1_efecto.mp4" 
                    autoPlay 
                    loop 
                    muted 
@@ -672,7 +670,7 @@ export default function LoyaltinkBrigade() {
             <Link href="/loyaltink/artista/prana" className="flex flex-col items-center text-center group cursor-pointer relative">
               <div className="w-56 md:w-64 aspect-[9/16] rounded-2xl overflow-hidden border-4 border-[#222] shadow-[0_0_40px_rgba(139,92,246,0.2)] mb-8 bg-zinc-900 transition-all group-hover:scale-105 group-hover:border-[#8B5CF6] relative">
                  <video 
-                   src="/loyaltink/artista_prana2_efecto2.mp4" 
+                   src="https://grutgbujoy4xc00c.public.blob.vercel-storage.com/artista_prana2_efecto2.mp4" 
                    autoPlay 
                    loop 
                    muted 
@@ -693,7 +691,7 @@ export default function LoyaltinkBrigade() {
             <Link href="/loyaltink/artista/nai" className="flex flex-col items-center text-center group cursor-pointer relative">
               <div className="w-56 md:w-64 aspect-[9/16] rounded-2xl overflow-hidden border-4 border-[#222] shadow-[0_0_40px_rgba(139,92,246,0.2)] mb-8 bg-zinc-900 transition-all group-hover:scale-105 group-hover:border-[#8B5CF6] relative">
                  <video 
-                   src="/loyaltink/artista_nai2_efecto2.mp4" 
+                   src="https://grutgbujoy4xc00c.public.blob.vercel-storage.com/artista_nai2_efecto2.mp4" 
                    autoPlay 
                    loop 
                    muted 
@@ -714,7 +712,7 @@ export default function LoyaltinkBrigade() {
             <Link href="/loyaltink/artista/boris" className="flex flex-col items-center text-center group cursor-pointer md:col-span-2 md:max-w-xl md:mx-auto relative">
               <div className="w-56 md:w-64 aspect-[9/16] rounded-2xl overflow-hidden border-4 border-[#222] shadow-[0_0_40px_rgba(139,92,246,0.2)] mb-8 bg-zinc-900 transition-all group-hover:scale-105 group-hover:border-[#8B5CF6] relative">
                  <video 
-                   src="/loyaltink/artista_boris2_efecto.mp4" 
+                   src="https://grutgbujoy4xc00c.public.blob.vercel-storage.com/artista_boris2_efecto.mp4" 
                    autoPlay 
                    loop 
                    muted 
