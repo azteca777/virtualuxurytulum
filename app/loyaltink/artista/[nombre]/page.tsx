@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
+import { galeriaTatuajes } from '../../portafolioData'; // 👈 Se agrega la importación de la BD de fotos
 
 // BASE DE DATOS DE ARTISTAS BILINGÜE
 const artistasDB = {
@@ -91,6 +92,9 @@ export default function PerfilArtista() {
   const artistaSlug = pathname.split('/').pop() || ''; 
   const artistaData = artistasDB[artistaSlug as keyof typeof artistasDB];
 
+  // 👈 Filtramos las fotos de portafolioData.ts para que coincidan con el artista actual
+  const fotosDelArtista = galeriaTatuajes.filter(tatuaje => tatuaje.artista.toLowerCase() === artistaSlug.toLowerCase());
+
   if (!artistaData) {
     return (
       <div className="min-h-screen bg-[#0a0a0a] flex items-center justify-center text-white">
@@ -113,7 +117,7 @@ export default function PerfilArtista() {
   );
 
   return (
-    <div className="min-h-screen bg-[#0a0a0a] text-gray-200 selection:bg-[#8B5CF6] selection:text-white">
+    <div className="min-h-screen bg-[#0a0a0a] text-gray-200 selection:bg-[#8B5CF6] selection:text-white pb-20">
       
       {/* HEADER MINIMALISTA */}
       <nav className="w-full bg-[#0a0a0a] p-6 flex justify-between items-center border-b border-[#222]">
@@ -168,17 +172,10 @@ export default function PerfilArtista() {
             </p>
             
             <div className="flex flex-col sm:flex-row gap-4">
-              <a 
-                href={artistaData.ig}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-center px-8 py-3 border border-[#4f46e5] text-[#4f46e5] font-bold text-[10px] md:text-xs uppercase tracking-widest hover:bg-[#4f46e5] hover:text-white transition-colors"
-              >
-                {idioma === 'es' ? 'MI PORTAFOLIO (IG)' : 'MY PORTFOLIO (IG)'}
-              </a>
+              {/* Botón de IG eliminado, solo queda agendar sesión más prominente */}
               <Link 
                 href="/loyaltink/reserva"
-                className="text-center px-8 py-3 bg-[#4f46e5] text-white font-bold text-[10px] md:text-xs uppercase tracking-widest hover:bg-[#3730a3] transition-colors"
+                className="text-center px-10 py-4 bg-[#4f46e5] text-white font-bold text-[10px] md:text-xs uppercase tracking-widest hover:bg-[#3730a3] transition-colors shadow-[0_0_15px_rgba(79,70,229,0.3)]"
               >
                 {idioma === 'es' ? 'AGENDAR SESIÓN' : 'BOOK SESSION'}
               </Link>
@@ -186,6 +183,42 @@ export default function PerfilArtista() {
           </div>
 
         </div>
+
+        {/* 📸 SECCIÓN DEL PORTAFOLIO DEL ARTISTA */}
+        {fotosDelArtista.length > 0 && (
+          <div className="mt-32">
+            <div className="text-center mb-16 border-t border-[#222] pt-16">
+              <span className="text-[#06b6d4] text-[10px] font-bold tracking-[0.2em] uppercase mb-4 block">
+                {idioma === 'es' ? 'PORTAFOLIO' : 'PORTFOLIO'}
+              </span>
+              <h2 className="text-4xl font-black text-white uppercase tracking-tighter">
+                {idioma === 'es' ? 'DISEÑOS RECIENTES' : 'LATEST DESIGNS'}
+              </h2>
+            </div>
+            
+            {/* Grid tipo Masonry para las fotos */}
+            <div className="columns-1 sm:columns-2 md:columns-3 lg:columns-4 gap-6 space-y-6">
+              {fotosDelArtista.map((foto) => (
+                <div key={foto.id} className="break-inside-avoid rounded-xl overflow-hidden group border border-[#222] hover:border-[#8B5CF6] transition-colors relative cursor-pointer">
+                  <img 
+                    src={foto.url} 
+                    alt={`Tatuaje por ${foto.artista}`} 
+                    className="w-full h-auto object-cover transition-transform duration-700 group-hover:scale-105"
+                  />
+                  {/* Overlay con los estilos (Aparece en Hover) */}
+                  <div className="absolute inset-0 bg-black/80 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col items-center justify-center p-4 text-center">
+                    <p className="text-[#06b6d4] text-[10px] font-bold tracking-widest uppercase mb-2">
+                      {idioma === 'es' ? 'ESTILOS:' : 'STYLES:'}
+                    </p>
+                    <p className="text-white text-xs font-medium">
+                      {foto.estilos.join(' • ')}
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
 
       </main>
 

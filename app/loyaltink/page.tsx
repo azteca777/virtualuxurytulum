@@ -112,7 +112,7 @@ function RecorridoLoyaltink() {
 export default function LoyaltinkBrigade() {
   const [openFAQ, setOpenFAQ] = useState<number | null>(null);
   
-  // === ESTADOS DE GLOBALIZACIÓN (NUEVOS) ===
+  // === ESTADOS DE GLOBALIZACIÓN ===
   const [idioma, setIdioma] = useState("es");
   const [moneda, setMoneda] = useState("MXN");
 
@@ -120,6 +120,9 @@ export default function LoyaltinkBrigade() {
   const [mostrarMetaverso, setMostrarMetaverso] = useState(false);
   const [introMetaversoTerminada, setIntroMetaversoTerminada] = useState(false);
   const [mostrarFotos, setMostrarFotos] = useState(false);
+
+  // === ESTADO DEL MENÚ HAMBURGUESA ===
+  const [menuAbierto, setMenuAbierto] = useState(false);
 
   // === ESTADOS DE LA CALCULADORA PRO ===
   const [calcTab, setCalcTab] = useState("cost");
@@ -139,6 +142,12 @@ export default function LoyaltinkBrigade() {
 
   const toggleFAQ = (index: number) => {
     setOpenFAQ(openFAQ === index ? null : index);
+  };
+
+  // Función para manejar el scroll suave al hacer clic en el menú
+  const scrollToSection = (id: string) => {
+    setMenuAbierto(false);
+    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
   };
 
   // --- LÓGICA DE CÁLCULO DE COSTO MULTIMONEDA ---
@@ -202,7 +211,7 @@ export default function LoyaltinkBrigade() {
     <div className="min-h-screen bg-[#111111] text-gray-200 font-sans selection:bg-[#8B5CF6] selection:text-white overflow-x-hidden relative">
       <SensorTrafico marca="LOYALTINK" />
 
-      {/* 💬 BOTÓN FLOTANTE WHATSAPP (MANYCHAT) */}
+      {/* 💬 BOTÓN FLOTANTE WHATSAPP */}
       <a 
         href={`https://wa.me/${whatsappNumber}?text=${whatsappMessage}`}
         target="_blank"
@@ -253,7 +262,36 @@ export default function LoyaltinkBrigade() {
         </div>
       )}
 
-      {/* NAVEGACIÓN */}
+      {/* OVERLAY DEL MENÚ HAMBURGUESA */}
+      <div className={`fixed inset-0 z-[2000] bg-[#0a0a0a]/95 backdrop-blur-lg transition-all duration-500 flex flex-col justify-center items-center ${menuAbierto ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}>
+        <button onClick={() => setMenuAbierto(false)} className="absolute top-6 right-6 p-4 text-white hover:text-[#8B5CF6] transition-colors">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-10 h-10">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+        <div className="flex flex-col items-center gap-8 md:gap-12 text-xl md:text-4xl font-black uppercase tracking-widest text-center">
+          <button onClick={() => scrollToSection('calculadora')} className="text-white hover:text-[#8B5CF6] hover:scale-105 transition-all">
+            {idioma === 'es' ? 'Costo del Tatuaje' : 'Tattoo Cost'}
+          </button>
+          <button onClick={() => scrollToSection('artistas')} className="text-white hover:text-[#8B5CF6] hover:scale-105 transition-all">
+            {idioma === 'es' ? 'Los Artistas' : 'The Artists'}
+          </button>
+          <button onClick={() => scrollToSection('estilos')} className="text-white hover:text-[#8B5CF6] hover:scale-105 transition-all">
+            {idioma === 'es' ? 'Portafolios' : 'Portfolios'}
+          </button>
+          <button onClick={() => scrollToSection('reservar')} className="text-white hover:text-[#8B5CF6] hover:scale-105 transition-all">
+            {idioma === 'es' ? 'Reservar' : 'Book Session'}
+          </button>
+          <button onClick={() => { setMenuAbierto(false); setMostrarMetaverso(true); }} className="text-[#06b6d4] hover:text-white hover:scale-105 transition-all">
+            {idioma === 'es' ? 'Conoce el Estudio' : 'Explore the Studio'}
+          </button>
+          <button onClick={() => scrollToSection('contacto')} className="text-white hover:text-[#8B5CF6] hover:scale-105 transition-all">
+            {idioma === 'es' ? 'Dirección y Contacto' : 'Location & Contact'}
+          </button>
+        </div>
+      </div>
+
+      {/* NAVEGACIÓN (AHORA CON BOTÓN DE HAMBURGUESA) */}
       <nav className="fixed w-full z-50 bg-white/5 backdrop-blur-lg border-b border-white/10 flex justify-between items-center px-4 py-3 shadow-[0_0_30px_rgba(255,255,255,0.05)]">
         <div className="flex items-center gap-3">
           <div className="w-12 h-12 md:w-20 md:h-20 flex-shrink-0 bg-[#8B5CF6] flex items-center justify-center overflow-hidden border-2 border-white/20 rounded-full shadow-[0_0_20px_rgba(139,92,246,0.2)]">
@@ -266,11 +304,9 @@ export default function LoyaltinkBrigade() {
         </div>
         <div className="flex items-center gap-4 md:gap-6">
           <BotonIdioma />
-          <button onClick={() => window.location.href = '/boutiques'} className="hidden md:block text-[10px] font-semibold tracking-widest text-zinc-400 hover:text-white uppercase transition-colors">
-            ← {idioma === 'es' ? 'VOLVER' : 'BACK'}
-          </button>
-          <button className="text-white hover:text-[#8B5CF6] transition-colors">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-8 h-8">
+          {/* Botón de Menú Hamburguesa en lugar del botón Volver */}
+          <button onClick={() => setMenuAbierto(true)} className="text-white hover:text-[#8B5CF6] transition-colors cursor-pointer p-2">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-8 h-8 md:w-10 md:h-10">
               <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
             </svg>
           </button>
@@ -321,8 +357,8 @@ export default function LoyaltinkBrigade() {
         </div>
       </header>
 
-      {/* 🔥 CALCULADORA PRO TIPO SAAS 🔥 */}
-      <section className="py-12 md:py-24 px-4 bg-[#0a0a0a] border-t border-[#222]">
+      {/* 🔥 CALCULADORA PRO TIPO SAAS 🔥 (Añadido ID calculadora) */}
+      <section id="calculadora" className="py-12 md:py-24 px-4 bg-[#0a0a0a] border-t border-[#222]">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-8 md:mb-12">
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-black text-white uppercase tracking-tighter mb-2 md:mb-4">
@@ -605,8 +641,8 @@ export default function LoyaltinkBrigade() {
         </div>
       </section>
 
-      {/* MEET THE ARTISTS */}
-      <section className="py-24 px-6 bg-[#111111] border-t border-[#222]">
+      {/* MEET THE ARTISTS (Añadido ID artistas) */}
+      <section id="artistas" className="py-24 px-6 bg-[#111111] border-t border-[#222]">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-20">
             <span className="text-[#06b6d4] text-[10px] font-bold tracking-[0.2em] uppercase mb-4 block">
@@ -733,8 +769,8 @@ export default function LoyaltinkBrigade() {
         </div>
       </section>
 
-      {/* OUR STYLES */}
-      <section className="py-24 px-6 bg-[#0a0a0a] border-t border-[#222]">
+      {/* OUR STYLES (Añadido ID estilos) */}
+      <section id="estilos" className="py-24 px-6 bg-[#0a0a0a] border-t border-[#222]">
          <div className="max-w-5xl mx-auto text-center">
             <span className="text-[#06b6d4] text-[10px] font-bold tracking-[0.2em] uppercase mb-4 block">
               {idioma === 'es' ? 'NUESTROS ESTILOS' : 'OUR STYLES'}
@@ -754,20 +790,27 @@ export default function LoyaltinkBrigade() {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-left">
               {[
-                { title: idioma === 'es' ? 'FUSIÓN NEO-JAPONESA' : 'NEO-JAPANESE FUSION', desc: idioma === 'es' ? 'Sujetos tradicionales Irezumi reinventados con patrones de circuitos geométricos, efectos glitch y cambios de color holográficos.' : 'Traditional Irezumi subjects reimagined with geometric circuit patterns, glitch effects, and holographic color shifts.', icon: '☯' },
-                { title: idioma === 'es' ? 'BIOMECÁNICA' : 'BIOMECHANICAL', desc: idioma === 'es' ? 'Ilusiones de piel rasgada que revelan maquinaria, circuitos y anatomía alienígena debajo. Profundidad hiperdetallada y texturas metálicas.' : 'Ripped skin illusions revealing machinery, circuits, and alien anatomy beneath. Hyper-detailed depth and metallic textures.', icon: '👁' },
-                { title: idioma === 'es' ? 'REALISMO ÉPICO' : 'EPIC REALISM', desc: idioma === 'es' ? 'Composiciones monumentales en Black & Grey inspiradas en estatuaria clásica, mitología y figuras históricas con volumen tridimensional.' : 'Monumental Black & Grey compositions inspired by classical statuary, mythology, and historical figures with three-dimensional volume.', icon: '🏛' },
-                { title: idioma === 'es' ? 'REALISMO CYBERPUNK' : 'CYBERPUNK REALISM', desc: idioma === 'es' ? 'Retratos futuristas y paisajes urbanos renderizados con precisión fotorrealista y atmósfera iluminada por neón.' : 'Futuristic portraits and urban landscapes rendered with photorealistic precision and neon-lit atmosphere.', icon: '♦' },
-                { title: idioma === 'es' ? 'BLACKWORK' : 'BLACKWORK', desc: idioma === 'es' ? 'Contraste extremo y saturación profunda de tinta negra. Trabajos geométricos, tribales modernos y texturas sólidas.' : 'Extreme contrast and deep black ink saturation. Geometric works, modern tribals, and solid textures.', icon: '✒' },
-                { title: idioma === 'es' ? 'PROYECTOS A GRAN ESCALA' : 'LARGE SCALE PROJECTS', desc: idioma === 'es' ? 'Mangas completas, piezas de espalda y trajes de cuerpo. Épicas de múltiples sesiones que cuentan historias a través de la piel.' : 'Full sleeves, back pieces, and body suits. Multi-session epics that tell stories through the skin.', icon: '★' },
+                { slug: 'fusion-neo-japonesa', title: idioma === 'es' ? 'FUSIÓN NEO-JAPONESA' : 'NEO-JAPANESE FUSION', desc: idioma === 'es' ? 'Sujetos tradicionales Irezumi reinventados con patrones de circuitos geométricos, efectos glitch y cambios de color holográficos.' : 'Traditional Irezumi subjects reimagined with geometric circuit patterns, glitch effects, and holographic color shifts.', icon: '☯' },
+                { slug: 'biomecanica', title: idioma === 'es' ? 'BIOMECÁNICA' : 'BIOMECHANICAL', desc: idioma === 'es' ? 'Ilusiones de piel rasgada que revelan maquinaria, circuitos y anatomía alienígena debajo. Profundidad hiperdetallada y texturas metálicas.' : 'Ripped skin illusions revealing machinery, circuits, and alien anatomy beneath. Hyper-detailed depth and metallic textures.', icon: '👁' },
+                { slug: 'realismo-epico', title: idioma === 'es' ? 'REALISMO ÉPICO' : 'EPIC REALISM', desc: idioma === 'es' ? 'Composiciones monumentales en Black & Grey inspiradas en estatuaria clásica, mitología y figuras históricas con volumen tridimensional.' : 'Monumental Black & Grey compositions inspired by classical statuary, mythology, and historical figures with three-dimensional volume.', icon: '🏛' },
+                { slug: 'realismo-cyberpunk', title: idioma === 'es' ? 'REALISMO CYBERPUNK' : 'CYBERPUNK REALISM', desc: idioma === 'es' ? 'Retratos futuristas y paisajes urbanos renderizados con precisión fotorrealista y atmósfera iluminada por neón.' : 'Futuristic portraits and urban landscapes rendered with photorealistic precision and neon-lit atmosphere.', icon: '♦' },
+                { slug: 'blackwork', title: idioma === 'es' ? 'BLACKWORK' : 'BLACKWORK', desc: idioma === 'es' ? 'Contraste extremo y saturación profunda de tinta negra. Trabajos geométricos, tribales modernos y texturas sólidas.' : 'Extreme contrast and deep black ink saturation. Geometric works, modern tribals, and solid textures.', icon: '✒' },
+                { slug: 'proyectos-gran-escala', title: idioma === 'es' ? 'PROYECTOS A GRAN ESCALA' : 'LARGE SCALE PROJECTS', desc: idioma === 'es' ? 'Mangas completas, piezas de espalda y trajes de cuerpo. Épicas de múltiples sesiones que cuentan historias a través de la piel.' : 'Full sleeves, back pieces, and body suits. Multi-session epics that tell stories through the skin.', icon: '★' },
               ].map((style, idx) => (
-                <div key={idx} className="bg-[#111111] border border-[#222] p-8 hover:border-[#8B5CF6] transition-colors group">
-                  <div className="w-12 h-12 border border-[#333] flex items-center justify-center text-xl mb-6 text-white group-hover:text-[#8B5CF6] transition-colors">
-                    {style.icon}
+                <Link 
+                  key={idx} 
+                  href={`/loyaltink/estilos/${style.slug}`} 
+                  className="bg-[#111111] border border-[#222] p-8 hover:border-[#8B5CF6] transition-colors group cursor-pointer block"
+                >
+                  <div className="flex justify-between items-start mb-6">
+                    <div className="w-12 h-12 border border-[#333] flex items-center justify-center text-xl text-white group-hover:text-[#8B5CF6] transition-colors">
+                      {style.icon}
+                    </div>
+                    <span className="text-[#8B5CF6] opacity-0 group-hover:opacity-100 transition-opacity text-xl font-bold">➔</span>
                   </div>
-                  <h3 className="text-lg font-bold text-white uppercase tracking-wider mb-4">{style.title}</h3>
+                  <h3 className="text-lg font-bold text-white uppercase tracking-wider mb-4 group-hover:text-[#8B5CF6] transition-colors">{style.title}</h3>
                   <p className="text-zinc-500 text-sm leading-relaxed">{style.desc}</p>
-                </div>
+                </Link>
               ))}
             </div>
          </div>
@@ -805,8 +848,8 @@ export default function LoyaltinkBrigade() {
         </div>
       </section>
 
-      {/* CTA SECTION */}
-      <section className="py-24 px-6 bg-[#8B5CF6] text-center flex flex-col items-center">
+      {/* CTA SECTION (Añadido ID reservar) */}
+      <section id="reservar" className="py-24 px-6 bg-[#8B5CF6] text-center flex flex-col items-center">
          <h2 className="text-4xl md:text-5xl font-black text-white uppercase tracking-tighter mb-6">
            {idioma === 'es' ? '¿LISTO PARA SUBIR DE NIVEL?' : 'READY TO LEVEL UP?'}
          </h2>
@@ -823,31 +866,74 @@ export default function LoyaltinkBrigade() {
          </button>
       </section>
 
-      {/* FOOTER */}
-      <footer className="bg-[#0a0a0a] pt-20 pb-10 px-6 border-t border-[#222]">
+      {/* FOOTER (Añadido ID contacto y Mapa/Redes) */}
+      <footer id="contacto" className="bg-[#0a0a0a] pt-20 pb-10 px-6 border-t border-[#222]">
         <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
+          
           <div className="md:col-span-1">
             <span className="text-xl font-bold tracking-widest text-white block mb-4">LOYALTINK BRIGADE</span>
-            <p className="text-zinc-500 text-xs leading-relaxed">
+            <p className="text-zinc-500 text-xs leading-relaxed mb-6">
               {idioma === 'es' 
                 ? 'Tatuajes personalizados premium y arte corporal. Artistas de élite, estudio profesional, resultados excepcionales.' 
                 : 'Premium custom tattoos and body art. Elite artists, professional studio, exceptional results.'}
             </p>
+            
+            {/* REDES SOCIALES */}
+            <div className="flex gap-4">
+              <a href="#" className="w-10 h-10 rounded-full bg-[#111] border border-[#333] flex items-center justify-center text-zinc-400 hover:text-white hover:bg-[#8B5CF6] hover:border-[#8B5CF6] transition-all">
+                <span className="sr-only">Facebook</span>
+                <svg fill="currentColor" viewBox="0 0 24 24" className="w-4 h-4">
+                  <path fillRule="evenodd" d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" clipRule="evenodd" />
+                </svg>
+              </a>
+              <a href="#" className="w-10 h-10 rounded-full bg-[#111] border border-[#333] flex items-center justify-center text-zinc-400 hover:text-white hover:bg-[#8B5CF6] hover:border-[#8B5CF6] transition-all">
+                <span className="sr-only">Instagram</span>
+                <svg fill="currentColor" viewBox="0 0 24 24" className="w-4 h-4">
+                  <path fillRule="evenodd" d="M12.315 2c2.43 0 2.784.013 3.808.06 1.064.049 1.791.218 2.427.465a4.902 4.902 0 011.772 1.153 4.902 4.902 0 011.153 1.772c.247.636.416 1.363.465 2.427.048 1.067.06 1.407.06 4.123v.08c0 2.643-.012 2.987-.06 4.043-.049 1.064-.218 1.791-.465 2.427a4.902 4.902 0 01-1.153 1.772 4.902 4.902 0 01-1.772 1.153c-.636.247-1.363.416-2.427.465-1.067.048-1.407.06-4.123.06h-.08c-2.643 0-2.987-.012-4.043-.06-1.064-.049-1.791-.218-2.427-.465a4.902 4.902 0 01-1.772-1.153 4.902 4.902 0 01-1.153-1.772c-.247-.636-.416-1.363-.465-2.427-.047-1.024-.06-1.379-.06-3.808v-.63c0-2.43.013-2.784.06-3.808.049-1.064.218-1.791.465-2.427a4.902 4.902 0 011.153-1.772A4.902 4.902 0 015.45 2.525c.636-.247 1.363-.416 2.427-.465C8.901 2.013 9.256 2 11.685 2h.63zm-.081 1.802h-.468c-2.456 0-2.784.011-3.807.058-.975.045-1.504.207-1.857.344-.467.182-.8.398-1.15.748-.35.35-.566.683-.748 1.15-.137.353-.3.882-.344 1.857-.047 1.023-.058 1.351-.058 3.807v.468c0 2.456.011 2.784.058 3.807.045.975.207 1.504.344 1.857.182.466.399.8.748 1.15.35.35.683.566 1.15.748.353.137.882.3 1.857.344 1.054.048 1.37.058 4.041.058h.08c2.597 0 2.917-.01 3.96-.058.976-.045 1.505-.207 1.858-.344.466-.182.8-.398 1.15-.748.35-.35.566-.683.748-1.15.137-.353.3-.882.344-1.857.048-1.055.058-1.37.058-4.041v-.08c0-2.597-.01-2.917-.058-3.96-.045-.976-.207-1.505-.344-1.858a3.097 3.097 0 00-.748-1.15 3.098 3.098 0 00-1.15-.748c-.353-.137-.882-.3-1.857-.344-1.023-.047-1.351-.058-3.807-.058zM12 6.865a5.135 5.135 0 110 10.27 5.135 5.135 0 010-10.27zm0 1.802a3.333 3.333 0 100 6.666 3.333 3.333 0 000-6.666zm5.338-3.205a1.2 1.2 0 110 2.4 1.2 1.2 0 010-2.4z" clipRule="evenodd" />
+                </svg>
+              </a>
+              <a href="#" className="w-10 h-10 rounded-full bg-[#111] border border-[#333] flex items-center justify-center text-zinc-400 hover:text-white hover:bg-[#8B5CF6] hover:border-[#8B5CF6] transition-all">
+                <span className="sr-only">TikTok</span>
+                <svg fill="currentColor" viewBox="0 0 24 24" className="w-4 h-4">
+                  <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z"/>
+                </svg>
+              </a>
+              <a href="mailto:book@loyaltink.example" className="w-10 h-10 rounded-full bg-[#111] border border-[#333] flex items-center justify-center text-zinc-400 hover:text-white hover:bg-[#8B5CF6] hover:border-[#8B5CF6] transition-all">
+                <span className="sr-only">Email</span>
+                <svg fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
+                </svg>
+              </a>
+            </div>
+
           </div>
           
           <div>
             <h4 className="text-white font-bold uppercase tracking-widest text-xs mb-6">
               {idioma === 'es' ? 'CONTACTO' : 'CONTACT'}
             </h4>
-            <div className="text-zinc-500 text-xs space-y-2">
+            <div className="text-zinc-500 text-xs space-y-2 mb-6">
               <p>Plaza Paseo Cobá</p>
               <p>Avenida Aviación</p>
               <p>P. Coba Local 206</p>
               <p>77710 Playa del Carmen</p>
               <p>Quintana Roo</p>
               <p className="pt-4">+52(333) 3482 0746</p>
-              <p>book@loyaltink.example</p>
             </div>
+            
+            {/* MAPA DE GOOGLE MAPS */}
+            <div className="w-full h-32 rounded-lg overflow-hidden border border-[#333] shadow-lg">
+              <iframe 
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3733.245233215572!2d-87.078696!3d20.627702!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8f4e4325514f7b6d%3A0x6b6338b0063901b0!2sPlaza%20Paseo%20Coba!5e0!3m2!1ses!2smx!4v1700000000000!5m2!1ses!2smx" 
+                width="100%" 
+                height="100%" 
+                style={{ border: 0 }} 
+                allowFullScreen={false} 
+                loading="lazy" 
+                referrerPolicy="no-referrer-when-downgrade"
+              ></iframe>
+            </div>
+
           </div>
 
           <div>
@@ -871,8 +957,8 @@ export default function LoyaltinkBrigade() {
             </h4>
             <div className="text-zinc-500 text-xs space-y-3 flex flex-col items-start">
               <button className="hover:text-white transition-colors">{idioma === 'es' ? 'Sobre Nosotros' : 'About Us'}</button>
-              <button className="hover:text-white transition-colors">{idioma === 'es' ? 'Portafolio' : 'Portfolio'}</button>
-              <button className="hover:text-white transition-colors">{idioma === 'es' ? 'Servicios y Precios' : 'Services & Pricing'}</button>
+              <button onClick={() => scrollToSection('estilos')} className="hover:text-white transition-colors">{idioma === 'es' ? 'Portafolio' : 'Portfolio'}</button>
+              <button onClick={() => scrollToSection('calculadora')} className="hover:text-white transition-colors">{idioma === 'es' ? 'Servicios y Precios' : 'Services & Pricing'}</button>
               <button className="hover:text-white transition-colors">{idioma === 'es' ? 'Cuidados Posteriores' : 'Aftercare'}</button>
               <button className="hover:text-white transition-colors">{idioma === 'es' ? 'Políticas del Estudio' : 'Studio Policies'}</button>
               <button onClick={() => window.location.href = '/loyaltink/reserva'} className="hover:text-white transition-colors">{idioma === 'es' ? 'Agendar Consulta' : 'Book Consultation'}</button>
