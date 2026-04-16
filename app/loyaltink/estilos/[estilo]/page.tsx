@@ -8,7 +8,7 @@ import { galeriaTatuajes } from '../../portafolioData';
 // Mapeo simple para traducir o formatear el slug de la URL al nombre real del estilo
 const estilosMap: { [key: string]: { es: string, en: string, tagData: string } } = {
   'fusion-neo-japonesa': { es: 'Fusión Neo-Japonesa', en: 'Neo-Japanese Fusion', tagData: 'Fusión Neo-Japonesa' },
-  'biomecanica': { es: 'Biomecánica', en: 'Biomechanical', tagData: 'Biomecánica' },
+  'linea-fina-botanico': { es: 'Línea Fina y Botánico', en: 'Fine Line & Botanical', tagData: 'Línea Fina y Botánico' },
   'realismo-epico': { es: 'Realismo Épico', en: 'Epic Realism', tagData: 'Realismo Épico' },
   'realismo-cyberpunk': { es: 'Realismo Cyberpunk', en: 'Cyberpunk Realism', tagData: 'Realismo Cyberpunk' },
   'blackwork': { es: 'Blackwork', en: 'Blackwork', tagData: 'Blackwork' },
@@ -54,7 +54,8 @@ export default function GaleriaPorEstilo() {
       
       {/* HEADER MINIMALISTA */}
       <nav className="w-full bg-[#0a0a0a] p-6 flex justify-between items-center border-b border-[#222] sticky top-0 z-50">
-        <Link href="/loyaltink" className="text-zinc-400 hover:text-white transition-colors text-[10px] md:text-xs font-bold tracking-[0.2em] uppercase">
+        {/* 👇 AQUI ESTÁ EL CAMBIO MAGICO (#estilos) 👇 */}
+        <Link href="/loyaltink#estilos" className="text-zinc-400 hover:text-white transition-colors text-[10px] md:text-xs font-bold tracking-[0.2em] uppercase">
           ← {idioma === 'es' ? 'Volver a Loyaltink' : 'Back to Loyaltink'}
         </Link>
         <BotonIdioma />
@@ -89,7 +90,7 @@ export default function GaleriaPorEstilo() {
                 />
                 
                 {/* INFO DEL ARTISTA SOBRE LA FOTO */}
-                <div className="absolute bottom-0 left-0 w-full p-4 bg-gradient-to-t from-black/90 via-black/50 to-transparent">
+                <div className="absolute bottom-0 left-0 w-full p-4 bg-gradient-to-t from-black/90 via-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                   <p className="text-white text-xs font-bold uppercase tracking-wider">
                     {foto.artista}
                   </p>

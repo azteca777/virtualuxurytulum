@@ -1,8 +1,6 @@
-// portafolioData.ts
-
 export type EstiloTatuaje = 
   | 'Fusión Neo-Japonesa' 
-  | 'Biomecánica' 
+  | 'Línea Fina y Botánico' 
   | 'Realismo Épico' 
   | 'Realismo Cyberpunk' 
   | 'Blackwork' 
@@ -67,4 +65,21 @@ export const galeriaTatuajes: Tatuaje[] = [
   { id: 'b17', url: '/loyaltink/portafolio_boris/dise_boris17.jpg', artista: 'Boris', estilos: ['Realismo Épico'] },
   { id: 'b18', url: '/loyaltink/portafolio_boris/dise_boris18.jpg', artista: 'Boris', estilos: ['Realismo Épico'] },
   { id: 'b19', url: '/loyaltink/portafolio_boris/dise_boris19.jpg', artista: 'Boris', estilos: ['Realismo Cyberpunk'] },
+
+  // === PORTAFOLIO DE NAI ===
+  { id: 'n1', url: '/loyaltink/portafolio_nai/dise_nai1.jpg', artista: 'Nai', estilos: ['Proyectos a Gran Escala', 'Línea Fina y Botánico'] },
+  { id: 'n2', url: '/loyaltink/portafolio_nai/dise_nai2.jpg', artista: 'Nai', estilos: ['Blackwork', 'Línea Fina y Botánico'] },
+  { id: 'n3', url: '/loyaltink/portafolio_nai/dise_nai3.jpg', artista: 'Nai', estilos: ['Línea Fina y Botánico'] },
+  { id: 'n4', url: '/loyaltink/portafolio_nai/dise_nai4.jpg', artista: 'Nai', estilos: ['Proyectos a Gran Escala', 'Línea Fina y Botánico'] },
+  { id: 'n5', url: '/loyaltink/portafolio_nai/dise_nai5.jpg', artista: 'Nai', estilos: ['Línea Fina y Botánico'] },
+  { id: 'n6', url: '/loyaltink/portafolio_nai/dise_nai6.jpg', artista: 'Nai', estilos: ['Blackwork', 'Línea Fina y Botánico'] },
+  { id: 'n7', url: '/loyaltink/portafolio_nai/dise_nai7.jpg', artista: 'Nai', estilos: ['Línea Fina y Botánico'] },
+  { id: 'n8', url: '/loyaltink/portafolio_nai/dise_nai8.jpg', artista: 'Nai', estilos: ['Línea Fina y Botánico'] },
+  { id: 'n9', url: '/loyaltink/portafolio_nai/dise_nai9.jpg', artista: 'Nai', estilos: ['Línea Fina y Botánico'] },
+  { id: 'n10', url: '/loyaltink/portafolio_nai/dise_nai10.jpg', artista: 'Nai', estilos: ['Línea Fina y Botánico'] },
+  { id: 'n11', url: '/loyaltink/portafolio_nai/dise_nai11.jpg', artista: 'Nai', estilos: ['Línea Fina y Botánico'] },
+  { id: 'n12', url: '/loyaltink/portafolio_nai/dise_nai12.jpg', artista: 'Nai', estilos: ['Blackwork', 'Línea Fina y Botánico'] },
+  { id: 'n13', url: '/loyaltink/portafolio_nai/dise_nai13.jpg', artista: 'Nai', estilos: ['Proyectos a Gran Escala', 'Línea Fina y Botánico'] },
+  { id: 'n14', url: '/loyaltink/portafolio_nai/dise_nai14.jpg', artista: 'Nai', estilos: ['Proyectos a Gran Escala', 'Línea Fina y Botánico'] },
+  { id: 'n15', url: '/loyaltink/portafolio_nai/dise_nai15.jpg', artista: 'Nai', estilos: ['Línea Fina y Botánico'] },
 ];

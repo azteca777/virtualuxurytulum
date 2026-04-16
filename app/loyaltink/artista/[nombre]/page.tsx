@@ -42,14 +42,14 @@ const artistasDB = {
     imagen: '/loyaltink/bio_prana.jpg',
     ig: 'https://www.instagram.com/pranatattoo_?igsh=MThrMmdram02ZHkwNA==',
     es: {
-      titulo: 'Creador de Realismo Épico',
-      tags: 'Realismo Épico • Estatuaria • Mitología',
-      bio: 'Originario de Córdoba, Argentina. Mi objetivo es elevar el realismo Black & Grey a una escala monumental. Me especializo en composiciones épicas inspiradas en la mitología nórdica y grecorromana. Si buscas un tatuaje que parezca esculpido en piedra antigua, estás en el lugar correcto.'
+      titulo: 'Especialista en Black and Grey y Realismo',
+      tags: 'Black and Grey • Blackwork • Microrealismo • Realismo',
+      bio: 'Originario del interior de Córdoba, Argentina, me especializo en tatuajes estilo “Black and Grey”, creando diseños lo más auténticos posibles. Me fascina contar historias a través de la composición y la combinación de elementos y personajes. Disfruto especialmente tatuar conceptos vinculados con la espiritualidad, así como deidades y creencias de la sociedad. También trabajo estilos como blackwork, microrealismo y realismo “Black and Grey”, entre otros.'
     },
     en: {
-      titulo: 'Creator of Epic Realism',
-      tags: 'Epic Realism • Statuary • Mythology',
-      bio: 'Originally from Córdoba, Argentina. My goal is to elevate Black & Grey realism to a monumental scale. I specialize in epic compositions inspired by Nordic and Greco-Roman mythology. If you are looking for a tattoo that looks carved in ancient stone, you are in the right place.'
+      titulo: 'Black and Grey and Realism Specialist',
+      tags: 'Black and Grey • Blackwork • Micro-realism • Realism',
+      bio: 'Originally from the interior of Córdoba, Argentina, I specialize in "Black and Grey" style tattoos, creating designs that are as authentic as possible. I am fascinated by telling stories through composition and the combination of elements and characters. I especially enjoy tattooing concepts linked to spirituality, as well as societal deities and beliefs. I also work in styles such as blackwork, micro-realism, and "Black and Grey" realism, among others.'
     }
   },
   nai: {
