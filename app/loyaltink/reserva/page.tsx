@@ -10,7 +10,6 @@ const ARTISTAS = [
   { id: "prana", nombre: "Prana", estilo: "Realismo Épico / Mitología", img: "/loyaltink/bio_prana.jpg", wa: "521234567890" },
   { id: "nai", nombre: "Naiara", estilo: "Fine Line / Botánico / Red Ink", img: "/loyaltink/bio_nai.jpg", wa: "521234567890" },
   { id: "boris", nombre: "Boris Arga", estilo: "Micro-Realismo / Color Pop", img: "/loyaltink/bio_boris.JPG", wa: "521234567890" },
-  // 👇 AVELINO AÑADIDO A LA LISTA DE RESERVAS 👇
   { id: "avelino", nombre: "Avelino", estilo: "Black & Grey / Realismo / Blackwork", img: "/loyaltink/bio_avelino.jpeg", wa: "521234567890" }
 ];
 
@@ -76,7 +75,6 @@ export default function ReservaLoyaltink() {
   const consultarDisponibilidad = async (artistaId: string) => {
     setCargandoCalendario(true);
     try {
-      // Pedimos a Google solo los días del mes que estamos viendo
       const primerDiaIso = new Date(anioActual, mesActual, 1).toISOString();
       const ultimoDiaIso = new Date(anioActual, mesActual + 1, 0, 23, 59, 59).toISOString();
 
@@ -88,7 +86,6 @@ export default function ReservaLoyaltink() {
         data.fechasOcupadas.forEach((fechaIso: string) => {
            if(fechaIso) {
              const fechaObj = new Date(fechaIso);
-             // Solo tachar si el evento es del mes y año que estamos viendo
              if (fechaObj.getMonth() === mesActual && fechaObj.getFullYear() === anioActual) {
                 diasOcupadosSet.add(fechaObj.getDate());
              }
@@ -106,58 +103,52 @@ export default function ReservaLoyaltink() {
     if (paso === 3 && artistaSeleccionado) {
       consultarDisponibilidad(artistaSeleccionado.id);
     }
-  }, [paso, artistaSeleccionado, mesActual, anioActual]); // Se recarga si cambias de mes
+  }, [paso, artistaSeleccionado, mesActual, anioActual]);
 
-  // --- NUEVA LÓGICA: CREAR EVENTO CON DATOS COMPLETOS (GOOGLE + SUPABASE) ---
-  const confirmarReservaEnGoogle = async () => {
+  // --- LÓGICA REAL: CONEXIÓN CON TU API GOD MODE (MERCADO PAGO) ---
+  const procesarPagoMercadoPago = async () => {
     setProcesandoPago(true);
     
-    const mesFormateado = (mesActual + 1).toString().padStart(2, '0');
-    const diaFormateado = fecha ? fecha.toString().padStart(2, '0') : '01';
-    
-    const horaInicioStr = hora || "13:00";
-    const horaInicioNum = parseInt(horaInicioStr.split(":")[0]);
-    const horaFinStr = `${horaInicioNum + 4}:00`; 
-
-    const inicioIso = `${anioActual}-${mesFormateado}-${diaFormateado}T${horaInicioStr}:00-05:00`;
-    const finIso = `${anioActual}-${mesFormateado}-${diaFormateado}T${horaFinStr}:00-05:00`;
+    // 1. Convertimos el anticipo de USD a MXN (Asumiendo $18 MXN por dólar)
+    const TASA_MXN = 18;
+    const anticipoMXN = anticipo * TASA_MXN;
 
     try {
-      const res = await fetch('/api/calendar', {
+      // 2. Llamamos a tu API centralizada de Checkout
+      const res = await fetch('/api/checkout', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          artistaId: artistaSeleccionado.id,
-          nombreArtista: artistaSeleccionado.nombre,
-          nombreCliente,
-          telefonoCliente,
-          titulo: `TATUAJE - ${nombreCliente} - Cliente Web`,
-          descripcion: `Cliente: ${nombreCliente}\nWhatsApp: ${telefonoCliente}\n\nColor: ${colorType}\nTamaño: ${size}cm\nComplejidad: ${complexity}\nCosto Total Estimado: $${costoTotal} USD\nAnticipo pagado: $${anticipo} USD\nFalta por pagar en estudio: $${costoTotal - anticipo} USD`,
-          inicioIso,
-          finIso,
-          costoTotal,
-          anticipo
+          amount: anticipoMXN, // Tu API espera "amount"
+          serviceName: `Anticipo Cita Tatuaje - ${artistaSeleccionado.nombre}`, // Tu API espera "serviceName"
+          proveedor: 'mercadopago', // Le decimos a tu API qué pasarela usar
+          negocioSlug: 'loyaltink', // Tu API buscará MP_ACCESS_TOKEN_LOYALTINK
+          carrito: [
+            {
+              nombre: `Cita con ${artistaSeleccionado.nombre} (${fecha}/${mesActual + 1}/${anioActual} a las ${hora})`,
+              precio: anticipoMXN,
+              cantidad: 1,
+              detalles: `Cliente: ${nombreCliente} | WA: ${telefonoCliente} | Tamaño: ${size}cm | Color: ${colorType}`
+            }
+          ]
         })
       });
 
       const data = await res.json();
-      if(data.success) {
-        alert("¡Éxito! Tu reserva está confirmada. Te enviaremos un WhatsApp con los detalles.");
-        window.location.href = '/loyaltink'; 
+
+      // 3. Redirigimos al cliente a la pantalla segura de Mercado Pago
+      if (res.ok && data.url) {
+        window.location.href = data.url; 
       } else {
-        alert("El pago pasó, pero hubo un error agendando en el calendario.");
+        console.error("Error de la API:", data.error);
+        alert(`Hubo un error al generar el link de pago: ${data.error || 'Intenta de nuevo.'}`);
+        setProcesandoPago(false);
       }
     } catch (error) {
-      alert("Error de conexión al confirmar.");
+      console.error("Error de red:", error);
+      alert("Error de conexión con la pasarela de pago.");
+      setProcesandoPago(false);
     }
-    setProcesandoPago(false);
-  };
-
-  const simularPagoMercadoPago = () => {
-    setProcesandoPago(true);
-    setTimeout(() => {
-      confirmarReservaEnGoogle();
-    }, 1500);
   };
 
   return (
@@ -413,9 +404,9 @@ export default function ReservaLoyaltink() {
             </div>
 
             <div className="flex flex-col gap-4">
-              {/* BOTÓN DE MERCADO PAGO SIMULADO */}
+              {/* BOTÓN DE MERCADO PAGO REAL */}
               <button 
-                onClick={simularPagoMercadoPago} 
+                onClick={procesarPagoMercadoPago} 
                 disabled={procesandoPago || !nombreCliente || !telefonoCliente}
                 className="w-full bg-[#009EE3] disabled:bg-[#333] disabled:text-zinc-500 text-white py-4 rounded-lg font-bold flex items-center justify-center gap-3 hover:bg-[#0088cc] transition-colors shadow-lg"
               >
