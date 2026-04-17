@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
-import { galeriaTatuajes } from '../../portafolioData'; // 👈 Se agrega la importación de la BD de fotos
+import { galeriaTatuajes } from '../../portafolioData';
 
 // BASE DE DATOS DE ARTISTAS BILINGÜE
 const artistasDB = {
@@ -81,6 +81,21 @@ const artistasDB = {
       tags: 'Micro-Realism • Photorealism • Color Pop',
       bio: 'Originally from Argentina. With over 13 years of experience and 35+ awards in the art and tattoo world, a versatile tattoo artist in styles like Neo-Traditional, Oriental, and Black and Grey. Boris specializes in bringing photorealism to small scales (micro-realism). His technique stands out for almost photographic precision in human and animal portraits, achieving vivid expressions and hyper-realistic textures. He is the only one in the studio who masters the use of vibrant, high-contrast colors (Color Pop) to bring pop culture and sports figures to life with flawless finishes.'
     }
+  },
+  avelino: {
+    nombre: 'KEVIN BARRETO "AVELINO"',
+    imagen: '/loyaltink/bio_avelino.jpeg',
+    ig: '#',
+    es: {
+      titulo: 'Especialista en Black & Grey, Realismo y Blackwork',
+      tags: 'Black & Grey • Realismo • Blackwork',
+      bio: 'Soy Avelino, tatuador argentino de 25 años con 6 años de experiencia en el arte del tatuaje. Me especializo en estilos black and grey, realismo y blackwork, destacándome por mi versatilidad y la capacidad de adaptar cada diseño a la idea del cliente. Mi trabajo se caracteriza por sombras suaves y sólidas, combinadas con altos contrastes que aportan profundidad y fuerza a cada pieza. Cuento con más de 13 reconocimientos a lo largo de mi trayectoria, reflejo de mi compromiso con la calidad y la evolución constante.'
+    },
+    en: {
+      titulo: 'Black & Grey, Realism, and Blackwork Specialist',
+      tags: 'Black & Grey • Realism • Blackwork',
+      bio: 'I am Avelino, a 25-year-old Argentine tattoo artist with 6 years of experience in tattoo art. I specialize in black and grey, realism, and blackwork styles, standing out for my versatility and ability to adapt each design to the client\'s idea. My work is characterized by smooth and solid shadows, combined with high contrast that brings depth and strength to each piece. I have over 13 awards throughout my career, reflecting my commitment to quality and constant evolution.'
+    }
   }
 };
 
@@ -92,7 +107,7 @@ export default function PerfilArtista() {
   const artistaSlug = pathname.split('/').pop() || ''; 
   const artistaData = artistasDB[artistaSlug as keyof typeof artistasDB];
 
-  // 👈 Filtramos las fotos de portafolioData.ts para que coincidan con el artista actual
+  // Filtramos las fotos de portafolioData.ts para que coincidan con el artista actual
   const fotosDelArtista = galeriaTatuajes.filter(tatuaje => tatuaje.artista.toLowerCase() === artistaSlug.toLowerCase());
 
   if (!artistaData) {
@@ -172,7 +187,6 @@ export default function PerfilArtista() {
             </p>
             
             <div className="flex flex-col sm:flex-row gap-4">
-              {/* Botón de IG eliminado, solo queda agendar sesión más prominente */}
               <Link 
                 href="/loyaltink/reserva"
                 className="text-center px-10 py-4 bg-[#4f46e5] text-white font-bold text-[10px] md:text-xs uppercase tracking-widest hover:bg-[#3730a3] transition-colors shadow-[0_0_15px_rgba(79,70,229,0.3)]"

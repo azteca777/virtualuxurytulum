@@ -82,4 +82,12 @@ export const galeriaTatuajes: Tatuaje[] = [
   { id: 'n13', url: '/loyaltink/portafolio_nai/dise_nai13.jpg', artista: 'Nai', estilos: ['Proyectos a Gran Escala', 'Línea Fina y Botánico'] },
   { id: 'n14', url: '/loyaltink/portafolio_nai/dise_nai14.jpg', artista: 'Nai', estilos: ['Proyectos a Gran Escala', 'Línea Fina y Botánico'] },
   { id: 'n15', url: '/loyaltink/portafolio_nai/dise_nai15.jpg', artista: 'Nai', estilos: ['Línea Fina y Botánico'] },
+
+  // === PORTAFOLIO DE AVELINO ===
+  { id: 'a1', url: '/loyaltink/portafolio_avelino/dise_avelino1.jpeg', artista: 'Avelino', estilos: ['Blackwork', 'Realismo Épico'] },
+  { id: 'a2', url: '/loyaltink/portafolio_avelino/dise_avelino2.jpeg', artista: 'Avelino', estilos: ['Realismo Épico', 'Proyectos a Gran Escala'] },
+  { id: 'a3', url: '/loyaltink/portafolio_avelino/dise_avelino3.jpeg', artista: 'Avelino', estilos: ['Realismo Épico'] },
+  { id: 'a4', url: '/loyaltink/portafolio_avelino/dise_avelino4.jpeg', artista: 'Avelino', estilos: ['Proyectos a Gran Escala', 'Realismo Épico'] },
+  { id: 'a5', url: '/loyaltink/portafolio_avelino/dise_avelino5.jpeg', artista: 'Avelino', estilos: ['Realismo Épico'] },
+  { id: 'a6', url: '/loyaltink/portafolio_avelino/dise_avelino6.jpeg', artista: 'Avelino', estilos: ['Proyectos a Gran Escala', 'Blackwork'] },
 ];

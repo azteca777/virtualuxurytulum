@@ -9,7 +9,9 @@ const ARTISTAS = [
   { id: "rafa", nombre: "Rafa Moldess", estilo: "Black & Grey / Neo-Tribal", img: "/loyaltink/bio_rafa.jpg", wa: "521234567890" },
   { id: "prana", nombre: "Prana", estilo: "Realismo Épico / Mitología", img: "/loyaltink/bio_prana.jpg", wa: "521234567890" },
   { id: "nai", nombre: "Naiara", estilo: "Fine Line / Botánico / Red Ink", img: "/loyaltink/bio_nai.jpg", wa: "521234567890" },
-  { id: "boris", nombre: "Boris Arga", estilo: "Micro-Realismo / Color Pop", img: "/loyaltink/bio_boris.JPG", wa: "521234567890" }
+  { id: "boris", nombre: "Boris Arga", estilo: "Micro-Realismo / Color Pop", img: "/loyaltink/bio_boris.JPG", wa: "521234567890" },
+  // 👇 AVELINO AÑADIDO A LA LISTA DE RESERVAS 👇
+  { id: "avelino", nombre: "Avelino", estilo: "Black & Grey / Realismo / Blackwork", img: "/loyaltink/bio_avelino.jpeg", wa: "521234567890" }
 ];
 
 const NOMBRES_MESES = ["ENERO", "FEBRERO", "MARZO", "ABRIL", "MAYO", "JUNIO", "JULIO", "AGOSTO", "SEPTIEMBRE", "OCTUBRE", "NOVIEMBRE", "DICIEMBRE"];

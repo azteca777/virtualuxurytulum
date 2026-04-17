@@ -366,11 +366,12 @@ export default function LoyaltinkBrigade() {
               />
               
               <div className={`absolute inset-0 w-full h-full flex transition-opacity duration-1000 ${mostrarFotos ? 'opacity-100' : 'opacity-0'}`}>
-                 <img src="/loyaltink/chuloski.jpeg" alt="Chuloski" className="w-1/5 h-full object-cover border-r border-zinc-800" />
-                 <img src="/loyaltink/rafa.jpeg" alt="Rafa" className="w-1/5 h-full object-cover border-r border-zinc-800" />
-                 <img src="/loyaltink/prana.jpeg" alt="Plana" className="w-1/5 h-full object-cover border-r border-zinc-800" />
-                 <img src="/loyaltink/nai.jpeg" alt="Nai" className="w-1/5 h-full object-cover border-r border-zinc-800" />
-                 <img src="/loyaltink/boris.jpeg" alt="Boris" className="w-1/5 h-full object-cover" />
+                <img src="/loyaltink/chuloski.jpeg" alt="Chuloski" className="w-1/6 h-full object-cover border-r border-zinc-800" />
+                <img src="/loyaltink/rafa.jpeg" alt="Rafa" className="w-1/6 h-full object-cover border-r border-zinc-800" />
+                <img src="/loyaltink/prana.jpeg" alt="Prana" className="w-1/6 h-full object-cover border-r border-zinc-800" />
+                <img src="/loyaltink/nai.jpeg" alt="Nai" className="w-1/6 h-full object-cover border-r border-zinc-800" />
+                <img src="/loyaltink/boris.jpeg" alt="Boris" className="w-1/6 h-full object-cover border-r border-zinc-800" />
+                <img src="/loyaltink/bio_avelino.jpeg" alt="Avelino" className="w-1/6 h-full object-cover" />
               </div>
             </div>
         </div>
@@ -698,11 +699,11 @@ export default function LoyaltinkBrigade() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-16 md:gap-x-12 md:gap-y-24">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12 md:gap-x-8 md:gap-y-16">
             
             {/* ARTISTA 1: CHULOSKI */}
             <Link href="/loyaltink/artista/chuloski" className="flex flex-col items-center text-center group cursor-pointer relative">
-              <div className="w-56 md:w-64 aspect-[9/16] rounded-2xl overflow-hidden border-4 border-[#222] shadow-[0_0_40px_rgba(139,92,246,0.2)] mb-8 bg-zinc-900 transition-all group-hover:scale-105 group-hover:border-[#8B5CF6] relative">
+              <div className="w-full aspect-[9/16] max-w-[280px] rounded-2xl overflow-hidden border-4 border-[#222] shadow-[0_0_40px_rgba(139,92,246,0.2)] mb-8 bg-zinc-900 transition-all group-hover:scale-105 group-hover:border-[#8B5CF6] relative">
                  <video 
                    src="https://grutgbujoy4xc00c.public.blob.vercel-storage.com/artista_chulo_efecto.mp4" 
                    autoPlay 
@@ -714,8 +715,8 @@ export default function LoyaltinkBrigade() {
                  <div className="absolute inset-0 shadow-[inset_0_0_30px_rgba(0,0,0,0.5)] pointer-events-none"></div>
                  <div className="absolute inset-0 bg-black/10 mix-blend-multiply pointer-events-none group-hover:bg-transparent transition-colors"></div>
               </div>
-              <h3 className="text-2xl font-bold text-white uppercase tracking-wider mb-2 group-hover:text-[#8B5CF6] transition-colors">JOEL SKREPNIK "CHULOSKI"</h3>
-              <p className="text-[#06b6d4] text-[10px] font-bold tracking-[0.2em] uppercase mb-6">BLACKWORK • NEO-JAPONÉS • TRADICIONAL</p>
+              <h3 className="text-xl font-bold text-white uppercase tracking-wider mb-2 group-hover:text-[#8B5CF6] transition-colors">JOEL SKREPNIK "CHULOSKI"</h3>
+              <p className="text-[#06b6d4] text-[9px] font-bold tracking-[0.2em] uppercase mb-6">BLACKWORK • NEO-JAPONÉS • TRADICIONAL</p>
               <span className="w-10 h-10 border border-[#333] rounded-full flex items-center justify-center text-[#8B5CF6] group-hover:bg-[#8B5CF6] group-hover:text-white transition-colors">
                 ➔
               </span>
@@ -723,7 +724,7 @@ export default function LoyaltinkBrigade() {
 
             {/* ARTISTA 2: RAFA */}
             <Link href="/loyaltink/artista/rafa" className="flex flex-col items-center text-center group cursor-pointer relative">
-              <div className="w-56 md:w-64 aspect-[9/16] rounded-2xl overflow-hidden border-4 border-[#222] shadow-[0_0_40px_rgba(139,92,246,0.2)] mb-8 bg-zinc-900 transition-all group-hover:scale-105 group-hover:border-[#8B5CF6] relative">
+              <div className="w-full aspect-[9/16] max-w-[280px] rounded-2xl overflow-hidden border-4 border-[#222] shadow-[0_0_40px_rgba(139,92,246,0.2)] mb-8 bg-zinc-900 transition-all group-hover:scale-105 group-hover:border-[#8B5CF6] relative">
                  <video 
                    src="https://grutgbujoy4xc00c.public.blob.vercel-storage.com/artista_rafa1_efecto.mp4" 
                    autoPlay 
@@ -735,8 +736,8 @@ export default function LoyaltinkBrigade() {
                  <div className="absolute inset-0 shadow-[inset_0_0_30px_rgba(0,0,0,0.5)] pointer-events-none"></div>
                  <div className="absolute inset-0 bg-black/10 mix-blend-multiply pointer-events-none group-hover:bg-transparent transition-colors"></div>
               </div>
-              <h3 className="text-2xl font-bold text-white uppercase tracking-wider mb-2 group-hover:text-[#8B5CF6] transition-colors">RAFA MOLDESS "RAFA"</h3>
-              <p className="text-[#06b6d4] text-[10px] font-bold tracking-[0.2em] uppercase mb-6">BLACK & GREY • REALISMO • NEO-TRIBAL</p>
+              <h3 className="text-xl font-bold text-white uppercase tracking-wider mb-2 group-hover:text-[#8B5CF6] transition-colors">RAFA MOLDESS "RAFA"</h3>
+              <p className="text-[#06b6d4] text-[9px] font-bold tracking-[0.2em] uppercase mb-6">BLACK & GREY • REALISMO • NEO-TRIBAL</p>
               <span className="w-10 h-10 border border-[#333] rounded-full flex items-center justify-center text-[#8B5CF6] group-hover:bg-[#8B5CF6] group-hover:text-white transition-colors">
                 ➔
               </span>
@@ -744,7 +745,7 @@ export default function LoyaltinkBrigade() {
 
             {/* ARTISTA 3: PRANA */}
             <Link href="/loyaltink/artista/prana" className="flex flex-col items-center text-center group cursor-pointer relative">
-              <div className="w-56 md:w-64 aspect-[9/16] rounded-2xl overflow-hidden border-4 border-[#222] shadow-[0_0_40px_rgba(139,92,246,0.2)] mb-8 bg-zinc-900 transition-all group-hover:scale-105 group-hover:border-[#8B5CF6] relative">
+              <div className="w-full aspect-[9/16] max-w-[280px] rounded-2xl overflow-hidden border-4 border-[#222] shadow-[0_0_40px_rgba(139,92,246,0.2)] mb-8 bg-zinc-900 transition-all group-hover:scale-105 group-hover:border-[#8B5CF6] relative">
                  <video 
                    src="https://grutgbujoy4xc00c.public.blob.vercel-storage.com/artista_prana2_efecto2.mp4" 
                    autoPlay 
@@ -756,8 +757,8 @@ export default function LoyaltinkBrigade() {
                  <div className="absolute inset-0 shadow-[inset_0_0_30px_rgba(0,0,0,0.5)] pointer-events-none"></div>
                  <div className="absolute inset-0 bg-black/10 mix-blend-multiply pointer-events-none group-hover:bg-transparent transition-colors"></div>
               </div>
-              <h3 className="text-2xl font-bold text-white uppercase tracking-wider mb-2 group-hover:text-[#8B5CF6] transition-colors">LAUTARO BORDESSE "PRANA"</h3>
-              <p className="text-[#06b6d4] text-[10px] font-bold tracking-[0.2em] uppercase mb-6">REALISMO ÉPICO • ESTATUARIA • MITOLOGÍA</p>
+              <h3 className="text-xl font-bold text-white uppercase tracking-wider mb-2 group-hover:text-[#8B5CF6] transition-colors">LAUTARO BORDESSE "PRANA"</h3>
+              <p className="text-[#06b6d4] text-[9px] font-bold tracking-[0.2em] uppercase mb-6">REALISMO ÉPICO • ESTATUARIA • MITOLOGÍA</p>
               <span className="w-10 h-10 border border-[#333] rounded-full flex items-center justify-center text-[#8B5CF6] group-hover:bg-[#8B5CF6] group-hover:text-white transition-colors">
                 ➔
               </span>
@@ -765,7 +766,7 @@ export default function LoyaltinkBrigade() {
 
            {/* ARTISTA 4: NAI */}
             <Link href="/loyaltink/artista/nai" className="flex flex-col items-center text-center group cursor-pointer relative">
-              <div className="w-56 md:w-64 aspect-[9/16] rounded-2xl overflow-hidden border-4 border-[#222] shadow-[0_0_40px_rgba(139,92,246,0.2)] mb-8 bg-zinc-900 transition-all group-hover:scale-105 group-hover:border-[#8B5CF6] relative">
+              <div className="w-full aspect-[9/16] max-w-[280px] rounded-2xl overflow-hidden border-4 border-[#222] shadow-[0_0_40px_rgba(139,92,246,0.2)] mb-8 bg-zinc-900 transition-all group-hover:scale-105 group-hover:border-[#8B5CF6] relative">
                  <video 
                    src="https://grutgbujoy4xc00c.public.blob.vercel-storage.com/artista_nai2_efecto2.mp4" 
                    autoPlay 
@@ -777,16 +778,16 @@ export default function LoyaltinkBrigade() {
                  <div className="absolute inset-0 shadow-[inset_0_0_30px_rgba(0,0,0,0.5)] pointer-events-none"></div>
                  <div className="absolute inset-0 bg-black/10 mix-blend-multiply pointer-events-none group-hover:bg-transparent transition-colors"></div>
               </div>
-              <h3 className="text-2xl font-bold text-white uppercase tracking-wider mb-2 group-hover:text-[#8B5CF6] transition-colors">NAIARA "NAI"</h3>
-              <p className="text-[#06b6d4] text-[10px] font-bold tracking-[0.2em] uppercase mb-6">FINE LINE • BOTÁNICO • RED INK</p>
+              <h3 className="text-xl font-bold text-white uppercase tracking-wider mb-2 group-hover:text-[#8B5CF6] transition-colors">NAIARA "NAI"</h3>
+              <p className="text-[#06b6d4] text-[9px] font-bold tracking-[0.2em] uppercase mb-6">FINE LINE • BOTÁNICO • RED INK</p>
               <span className="w-10 h-10 border border-[#333] rounded-full flex items-center justify-center text-[#8B5CF6] group-hover:bg-[#8B5CF6] group-hover:text-white transition-colors">
                 ➔
               </span>
             </Link>
 
             {/* ARTISTA 5: BORIS */}
-            <Link href="/loyaltink/artista/boris" className="flex flex-col items-center text-center group cursor-pointer md:col-span-2 md:max-w-xl md:mx-auto relative">
-              <div className="w-56 md:w-64 aspect-[9/16] rounded-2xl overflow-hidden border-4 border-[#222] shadow-[0_0_40px_rgba(139,92,246,0.2)] mb-8 bg-zinc-900 transition-all group-hover:scale-105 group-hover:border-[#8B5CF6] relative">
+            <Link href="/loyaltink/artista/boris" className="flex flex-col items-center text-center group cursor-pointer relative">
+              <div className="w-full aspect-[9/16] max-w-[280px] rounded-2xl overflow-hidden border-4 border-[#222] shadow-[0_0_40px_rgba(139,92,246,0.2)] mb-8 bg-zinc-900 transition-all group-hover:scale-105 group-hover:border-[#8B5CF6] relative">
                  <video 
                    src="https://grutgbujoy4xc00c.public.blob.vercel-storage.com/artista_boris2_efecto.mp4" 
                    autoPlay 
@@ -798,8 +799,29 @@ export default function LoyaltinkBrigade() {
                  <div className="absolute inset-0 shadow-[inset_0_0_30px_rgba(0,0,0,0.5)] pointer-events-none"></div>
                  <div className="absolute inset-0 bg-black/10 mix-blend-multiply pointer-events-none group-hover:bg-transparent transition-colors"></div>
               </div>
-              <h3 className="text-2xl font-bold text-white uppercase tracking-wider mb-2 group-hover:text-[#8B5CF6] transition-colors">BORIS ARGA "BORIS"</h3>
-              <p className="text-[#06b6d4] text-[10px] font-bold tracking-[0.2em] uppercase mb-6">MICRO-REALISMO • FOTORREALISMO • COLOR POP</p>
+              <h3 className="text-xl font-bold text-white uppercase tracking-wider mb-2 group-hover:text-[#8B5CF6] transition-colors">BORIS ARGA "BORIS"</h3>
+              <p className="text-[#06b6d4] text-[9px] font-bold tracking-[0.2em] uppercase mb-6">MICRO-REALISMO • FOTORREALISMO • COLOR POP</p>
+              <span className="w-10 h-10 border border-[#333] rounded-full flex items-center justify-center text-[#8B5CF6] group-hover:bg-[#8B5CF6] group-hover:text-white transition-colors">
+                ➔
+              </span>
+            </Link>
+
+            {/* ARTISTA 6: AVELINO */}
+            <Link href="/loyaltink/artista/avelino" className="flex flex-col items-center text-center group cursor-pointer relative">
+              <div className="w-full aspect-[9/16] max-w-[280px] rounded-2xl overflow-hidden border-4 border-[#222] shadow-[0_0_40px_rgba(139,92,246,0.2)] mb-8 bg-zinc-900 transition-all group-hover:scale-105 group-hover:border-[#8B5CF6] relative">
+                 <video 
+                   src="https://grutgbujoy4xc00c.public.blob.vercel-storage.com/artista_avelino_efecto.mp4" 
+                   autoPlay 
+                   loop 
+                   muted 
+                   playsInline 
+                   className="w-full h-full object-cover opacity-90 group-hover:opacity-100 transition-opacity"
+                 />
+                 <div className="absolute inset-0 shadow-[inset_0_0_30px_rgba(0,0,0,0.5)] pointer-events-none"></div>
+                 <div className="absolute inset-0 bg-black/10 mix-blend-multiply pointer-events-none group-hover:bg-transparent transition-colors"></div>
+              </div>
+              <h3 className="text-xl font-bold text-white uppercase tracking-wider mb-2 group-hover:text-[#8B5CF6] transition-colors">KEVIN BARRETO "AVELINO"</h3>
+              <p className="text-[#06b6d4] text-[9px] font-bold tracking-[0.2em] uppercase mb-6">BLACK & GREY • REALISMO • BLACKWORK</p>
               <span className="w-10 h-10 border border-[#333] rounded-full flex items-center justify-center text-[#8B5CF6] group-hover:bg-[#8B5CF6] group-hover:text-white transition-colors">
                 ➔
               </span>
