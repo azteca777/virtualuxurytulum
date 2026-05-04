@@ -90,15 +90,13 @@ export default function BenditaPage() {
 
           {/* PANTALLA 3D PROMOCIONAL */}
           {/* Centrada perfectamente en móvil (top-1/2 y -translate-y-1/2) y a la izquierda en PC */}
-          <div 
-            className="absolute z-30 pointer-events-auto top-1/2 md:top-[12%] left-1/2 transform -translate-x-1/2 -translate-y-1/2 md:translate-y-0 md:translate-x-0 md:left-[32%]"
-          >
+          <div className="absolute z-30 pointer-events-auto top-[35%] md:top-[12%] left-[45%] md:left-[32%] transform -translate-x-1/2 md:translate-x-0">
             <div 
               style={{ transform: 'perspective(1000px) rotateY(15deg) rotateX(5deg) scale(1.0)' }}
               className="transition-transform duration-500 hover:![transform:perspective(1000px)_rotateY(0deg)_rotateX(0deg)_scale(1.1)] shadow-2xl shadow-black/80 rounded-md"
             >
               <div className="p-2 md:p-3 rounded-md" style={{ backgroundColor: '#5c4033', boxShadow: 'inset 0 0 15px rgba(0,0,0,0.8), 0 0 5px rgba(0,0,0,0.5)' }}>
-                <div className="w-[130px] h-[230px] sm:w-[160px] sm:h-[280px] md:w-[280px] md:h-[480px] bg-black overflow-hidden relative">
+                <div className="w-[280px] h-[460px] sm:w-[160px] sm:h-[280px] md:w-[280px] md:h-[480px] bg-black overflow-hidden relative">
                   <video
                     autoPlay
                     loop
