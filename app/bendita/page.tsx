@@ -90,7 +90,7 @@ export default function BenditaPage() {
 
           {/* PANTALLA 3D PROMOCIONAL */}
           {/* Centrada perfectamente en móvil (top-1/2 y -translate-y-1/2) y a la izquierda en PC */}
-          <div className="absolute z-30 pointer-events-auto top-[30%] md:top-[12%] left-[45%] md:left-[32%] transform -translate-x-1/2 md:translate-x-0">
+          <div className="absolute z-30 pointer-events-auto top-[27%] md:top-[12%] left-[45%] md:left-[32%] transform -translate-x-1/2 md:translate-x-0">
             <div 
               style={{ transform: 'perspective(1000px) rotateY(15deg) rotateX(5deg) scale(1.0)' }}
               className="transition-transform duration-500 hover:![transform:perspective(1000px)_rotateY(0deg)_rotateX(0deg)_scale(1.1)] shadow-2xl shadow-black/80 rounded-md"
