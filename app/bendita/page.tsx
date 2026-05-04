@@ -27,7 +27,7 @@ export default function BenditaPage() {
       <div className="relative w-full z-40 mb-[100vh] bg-transparent">
         
         {/* ========================================= */}
-        {/* SECCIÓN 1: HERO (Efecto Cortina hacia abajo) */}
+        {/* SECCIÓN 1: HERO (Optimizada para Celulares) */}
         {/* ========================================= */}
         <section className="sticky top-0 w-full h-screen overflow-hidden bg-[#EBE7DE] z-10">
           
@@ -67,7 +67,8 @@ export default function BenditaPage() {
           </nav>
 
           {/* ZONA SUPERIOR HERO */}
-          <div className="absolute top-0 left-0 w-full h-[45%] md:h-[35%] z-10 pt-[70px] md:pt-[80px]">
+          {/* AQUÍ EL CAMBIO: h-full en móvil para que cubra todo, y h-[35%] en PC */}
+          <div className="absolute top-0 left-0 w-full h-full md:h-[35%] z-10 pt-[70px] md:pt-[80px]">
             <div 
               className="w-full h-full bg-cover bg-center bg-no-repeat shadow-lg shadow-black/20"
               style={{ backgroundImage: "url('/bendita/fachada.jpeg')" }}
@@ -75,34 +76,28 @@ export default function BenditaPage() {
           </div>
 
           {/* ZONA INFERIOR HERO */}
-          <div className="absolute top-[45%] md:top-[35%] left-0 w-full h-[55%] md:h-[65%] z-0 flex flex-col items-center justify-center md:justify-start bg-[#1a1a1a]">
-            
-            {/* FACHADA 2: Oculta en celulares */}
+          {/* AQUÍ EL CAMBIO: hidden en móvil, pero visible como flex en PC (md:flex) */}
+          <div className="hidden md:flex absolute top-[35%] left-0 w-full h-[65%] z-0 flex-col items-center justify-start bg-[#1a1a1a]">
             <div 
-              className="hidden md:block w-full flex-grow bg-contain bg-center bg-no-repeat"
+              className="w-full flex-grow bg-contain bg-center bg-no-repeat"
               style={{ backgroundImage: "url('/bendita/fachada2.jpeg')" }}
             />
-            
-            {/* FACHADA 3: Oculta en celulares (hidden), visible en PC (md:block) */}
             <div 
-              className="hidden md:block w-full h-[200px] bg-cover bg-center bg-no-repeat"
+              className="w-full h-[200px] bg-cover bg-center bg-no-repeat"
               style={{ backgroundImage: "url('/bendita/fachada3.jpeg')" }}
             />
           </div>
 
           {/* PANTALLA 3D PROMOCIONAL */}
+          {/* Centrada perfectamente en móvil (top-1/2 y -translate-y-1/2) y a la izquierda en PC */}
           <div 
-            className="absolute z-30 pointer-events-auto top-[25%] md:top-[12%] left-1/2 transform -translate-x-1/2 md:translate-x-0 md:left-[32%]"
+            className="absolute z-30 pointer-events-auto top-1/2 md:top-[12%] left-1/2 transform -translate-x-1/2 -translate-y-1/2 md:translate-y-0 md:translate-x-0 md:left-[32%]"
           >
             <div 
               style={{ transform: 'perspective(1000px) rotateY(15deg) rotateX(5deg) scale(1.0)' }}
               className="transition-transform duration-500 hover:![transform:perspective(1000px)_rotateY(0deg)_rotateX(0deg)_scale(1.1)] shadow-2xl shadow-black/80 rounded-md"
             >
               <div className="p-2 md:p-3 rounded-md" style={{ backgroundColor: '#5c4033', boxShadow: 'inset 0 0 15px rgba(0,0,0,0.8), 0 0 5px rgba(0,0,0,0.5)' }}>
-                {/* 
-                  AQUÍ ES DONDE CONTROLAS EL TAMAÑO DE LA PANTALLA 3D
-                  w-[130px] h-[230px] son las medidas para celulares.
-                */}
                 <div className="w-[130px] h-[230px] sm:w-[160px] sm:h-[280px] md:w-[280px] md:h-[480px] bg-black overflow-hidden relative">
                   <video
                     autoPlay
