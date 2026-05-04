@@ -1,57 +1,7 @@
 import React from 'react';
+import Link from 'next/link';
 
 export default function BenditaPage() {
-  
-  // AQUÍ ESTÁN TODOS LOS PARTIDOS DEL MUNDIAL EXTRAÍDOS DE TUS IMÁGENES
-  const mundialMatches = [
-    // 11 Junio
-    { date: '11 JUN | 1:00 PM', team1: 'México', flag1: '🇲🇽', team2: 'Sudáfrica', flag2: '🇿🇦' },
-    { date: '11 JUN | 8:00 PM', team1: 'Corea Sur', flag1: '🇰🇷', team2: 'Rep. Checa', flag2: '🇨🇿' },
-    // 12 Junio
-    { date: '12 JUN | 1:00 PM', team1: 'Canadá', flag1: '🇨🇦', team2: 'Bosnia H.', flag2: '🇧🇦' },
-    { date: '12 JUN | 7:00 PM', team1: 'EE. UU.', flag1: '🇺🇸', team2: 'Paraguay', flag2: '🇵🇾' },
-    // 13 Junio
-    { date: '13 JUN | 1:00 PM', team1: 'Catar', flag1: '🇶🇦', team2: 'Suiza', flag2: '🇨🇭' },
-    { date: '13 JUN | 4:00 PM', team1: 'Brasil', flag1: '🇧🇷', team2: 'Marruecos', flag2: '🇲🇦' },
-    { date: '13 JUN | 7:00 PM', team1: 'Haití', flag1: '🇭🇹', team2: 'Escocia', flag2: '🏴󠁧󠁢󠁳󠁣󠁴󠁿' },
-    { date: '13 JUN | 10:00 PM', team1: 'Australia', flag1: '🇦🇺', team2: 'Turquía', flag2: '🇹🇷' },
-    // 14 Junio
-    { date: '14 JUN | 11:00 AM', team1: 'Alemania', flag1: '🇩🇪', team2: 'Curazao', flag2: '🇨🇼' },
-    { date: '14 JUN | 2:00 PM', team1: 'Países Bajos', flag1: '🇳🇱', team2: 'Japón', flag2: '🇯🇵' },
-    { date: '14 JUN | 5:00 PM', team1: 'Costa Marfil', flag1: '🇨🇮', team2: 'Ecuador', flag2: '🇪🇨' },
-    { date: '14 JUN | 8:00 PM', team1: 'Suecia', flag1: '🇸🇪', team2: 'Túnez', flag2: '🇹🇳' },
-    // 15 Junio
-    { date: '15 JUN | 10:00 AM', team1: 'España', flag1: '🇪🇸', team2: 'Cabo Verde', flag2: '🇨🇻' },
-    { date: '15 JUN | 1:00 PM', team1: 'Bélgica', flag1: '🇧🇪', team2: 'Egipto', flag2: '🇪🇬' },
-    { date: '15 JUN | 4:00 PM', team1: 'A. Saudita', flag1: '🇸🇦', team2: 'Uruguay', flag2: '🇺🇾' },
-    { date: '15 JUN | 7:00 PM', team1: 'Irán', flag1: '🇮🇷', team2: 'N. Zelanda', flag2: '🇳🇿' },
-    // 16 Junio
-    { date: '16 JUN | 1:00 PM', team1: 'Francia', flag1: '🇫🇷', team2: 'Senegal', flag2: '🇸🇳' },
-    { date: '16 JUN | 4:00 PM', team1: 'Irak', flag1: '🇮🇶', team2: 'Noruega', flag2: '🇳🇴' },
-    { date: '16 JUN | 7:00 PM', team1: 'Argentina', flag1: '🇦🇷', team2: 'Argelia', flag2: '🇩🇿' },
-    { date: '16 JUN | 10:00 PM', team1: 'Austria', flag1: '🇦🇹', team2: 'Jordania', flag2: '🇯🇴' },
-    // 17 Junio
-    { date: '17 JUN | 11:00 AM', team1: 'Portugal', flag1: '🇵🇹', team2: 'RD Congo', flag2: '🇨🇩' },
-    { date: '17 JUN | 2:00 PM', team1: 'Inglaterra', flag1: '🏴󠁧󠁢󠁥󠁮󠁧󠁿', team2: 'Croacia', flag2: '🇭🇷' },
-    { date: '17 JUN | 5:00 PM', team1: 'Ghana', flag1: '🇬🇭', team2: 'Panamá', flag2: '🇵🇦' },
-    { date: '17 JUN | 8:00 PM', team1: 'Uzbekistán', flag1: '🇺🇿', team2: 'Colombia', flag2: '🇨🇴' },
-    // 18 Junio
-    { date: '18 JUN | 10:00 AM', team1: 'Rep. Checa', flag1: '🇨🇿', team2: 'Sudáfrica', flag2: '🇿🇦' },
-    { date: '18 JUN | 1:00 PM', team1: 'Suiza', flag1: '🇨🇭', team2: 'Bosnia H.', flag2: '🇧🇦' },
-    { date: '18 JUN | 4:00 PM', team1: 'Canadá', flag1: '🇨🇦', team2: 'Catar', flag2: '🇶🇦' },
-    { date: '18 JUN | 7:00 PM', team1: 'México', flag1: '🇲🇽', team2: 'Corea Sur', flag2: '🇰🇷' },
-    // 19 Junio
-    { date: '19 JUN | 1:00 PM', team1: 'EE. UU.', flag1: '🇺🇸', team2: 'Australia', flag2: '🇦🇺' },
-    { date: '19 JUN | 4:00 PM', team1: 'Escocia', flag1: '🏴󠁧󠁢󠁳󠁣󠁴󠁿', team2: 'Marruecos', flag2: '🇲🇦' },
-    { date: '19 JUN | 6:30 PM', team1: 'Brasil', flag1: '🇧🇷', team2: 'Haití', flag2: '🇭🇹' },
-    { date: '19 JUN | 9:00 PM', team1: 'Turquía', flag1: '🇹🇷', team2: 'Paraguay', flag2: '🇵🇾' },
-    // 20 Junio
-    { date: '20 JUN | 11:00 AM', team1: 'Países Bajos', flag1: '🇳🇱', team2: 'Suecia', flag2: '🇸🇪' },
-    { date: '20 JUN | 2:00 PM', team1: 'Alemania', flag1: '🇩🇪', team2: 'Costa Marfil', flag2: '🇨🇮' },
-    { date: '20 JUN | 6:00 PM', team1: 'Ecuador', flag1: '🇪🇨', team2: 'Curazao', flag2: '🇨🇼' },
-    { date: '20 JUN | 10:00 PM', team1: 'Túnez', flag1: '🇹🇳', team2: 'Japón', flag2: '🇯🇵' }
-  ];
-
   return (
     
     <main className="relative w-full min-h-screen bg-[#1a1a1a]">
@@ -279,65 +229,64 @@ export default function BenditaPage() {
       </section>
 
       {/* ========================================= */}
-      {/* SECCIÓN 5: CALENDARIO MUNDIAL 2026 (Grid 2 Columnas siempre) */}
+      {/* SECCIÓN 5: BANNER LINK HACIA EL MUNDIAL   */}
       {/* ========================================= */}
-      <section className="relative z-40 w-full bg-[#EBE7DE] py-16 md:py-24 px-2 md:px-8 flex flex-col items-center border-t border-[#1a1a1a]/10">
+      <section className="relative z-40 w-full flex flex-col items-center pointer-events-auto bg-black border-t border-[#1a1a1a]/10">
         
-        <div className="w-full max-w-6xl flex flex-col items-center">
+        {/* Contenedor Edge-to-Edge - Se aumentó la altura para dar espacio a la pantalla y al botón */}
+        <div className="relative w-full h-[500px] md:h-[700px] overflow-hidden bg-black">
           
-          <h2 className="text-xl md:text-4xl font-serif tracking-[0.15em] text-[#1a1a1a] mb-1 md:mb-2 uppercase text-center font-bold italic">
-            Calendario
-          </h2>
-          <h2 className="text-2xl md:text-5xl font-sans tracking-[0.1em] text-[#1a1a1a] mb-8 md:mb-12 uppercase text-center font-black">
-            Mundial 2026
-          </h2>
-
-          {/* GRID DE 2 COLUMNAS PARA MÓVIL Y PC */}
-          <div className="w-full grid grid-cols-2 gap-2 md:gap-4 pointer-events-auto">
-            {mundialMatches.map((match, idx) => (
-              <div key={idx} className="flex flex-col md:flex-row items-center w-full bg-[#001021] text-white rounded overflow-hidden shadow-lg border border-white/5">
-                
-                {/* FECHA Y HORA (Fondo Amarillo) */}
-                <div className="w-full md:w-[140px] bg-[#ffd500] text-[#1a1a1a] font-bold text-[8px] sm:text-[10px] md:text-xs tracking-wider py-1.5 md:py-4 px-1 md:px-4 flex justify-center md:justify-center items-center text-center">
-                  {match.date}
+          <img 
+            src="/bendita/pantalla_mundial.jpeg" 
+            alt="Mundial 2026 en Bendita Agüita" 
+            className="absolute inset-0 w-full h-full object-cover opacity-60" 
+          />
+          
+          {/* Capa superpuesta libre (sin centrado automático) */}
+          <div className="absolute inset-0 pointer-events-none">
+            
+             {/* PANTALLA 3D (Posicionamiento Manual) */}
+            {/* AQUÍ MUEVES: top, bottom, left, right */}
+            <div 
+              className="absolute top-[10%] left-[5%] md:top-[13%] md:left-[30%] pointer-events-auto"
+              style={{ transform: 'perspective(1000px) rotateY(-8deg) rotateX(5deg) scale(1.0)' }}
+            >
+              <div className="transition-transform duration-500 hover:![transform:perspective(1000px)_rotateY(0deg)_rotateX(0deg)_scale(1.0)] shadow-[0_20px_50px_rgba(0,0,0,0.8)] rounded-lg">
+                <div className="w-[280px] h-[160px] sm:w-[280px] sm:h-[130px] md:w-[410px] md:h-[220px] bg-black overflow-hidden relative rounded-lg border border-white/10">
+                  <video autoPlay loop muted playsInline className="absolute inset-0 w-full h-full object-cover">
+                    <source src="/bendita/video_mundial.mp4" type="video/mp4" />
+                    Tu navegador no soporta el formato de video.
+                  </video>
                 </div>
-                
-                {/* EQUIPOS Y VS */}
-                <div className="flex flex-1 w-full items-center justify-between px-1 md:px-4 py-2 md:py-0">
-                  
-                  {/* Equipo 1: En móvil apila la bandera sobre el nombre, en PC lado a lado */}
-                  <div className="flex-1 flex flex-col md:flex-row items-center justify-center md:justify-end gap-0.5 md:gap-3 overflow-hidden">
-                    <span className="hidden md:block text-sm font-medium tracking-wide text-right whitespace-nowrap">{match.team1}</span>
-                    <span className="text-lg sm:text-xl md:text-2xl leading-none">{match.flag1}</span>
-                    <span className="md:hidden text-[7px] sm:text-[9px] font-medium tracking-wide text-center leading-tight truncate w-full px-0.5">{match.team1}</span>
-                  </div>
-                  
-                  {/* VS (Fondo Cyan) */}
-                  <div className="mx-1 md:mx-2 bg-[#00b4d8] text-white text-[7px] md:text-[9px] font-black px-1.5 md:px-2 py-0.5 md:py-1 rounded-sm shadow-inner shrink-0">
-                    VS
-                  </div>
-                  
-                  {/* Equipo 2: Igual que Equipo 1 */}
-                  <div className="flex-1 flex flex-col md:flex-row items-center justify-center md:justify-start gap-0.5 md:gap-3 overflow-hidden">
-                    <span className="text-lg sm:text-xl md:text-2xl leading-none">{match.flag2}</span>
-                    <span className="hidden md:block text-sm font-medium tracking-wide text-left whitespace-nowrap">{match.team2}</span>
-                    <span className="md:hidden text-[7px] sm:text-[9px] font-medium tracking-wide text-center leading-tight truncate w-full px-0.5">{match.team2}</span>
-                  </div>
-
-                </div>
-                
-                {/* BOTÓN RESERVAR */}
-                <div className="w-full md:w-auto px-2 pb-2 md:pb-0 md:py-2 md:pr-4 flex justify-center">
-                  <button className="w-full md:w-auto bg-[#EBE7DE] text-[#1a1a1a] font-bold text-[8px] md:text-[10px] tracking-[0.15em] uppercase py-1.5 md:py-2 px-2 md:px-4 hover:bg-white transition-colors rounded-sm shadow-md whitespace-nowrap">
-                    Reservar
-                  </button>
-                </div>
-
               </div>
-            ))}
+            </div>
+
+            {/* CONTENEDOR AGRUPADO: ESFERA Y BOTÓN DORADO */}
+            {/* Al ponerlos juntos en un flex-col, aseguramos que la esfera SIEMPRE esté arriba del botón */}
+            <div className="absolute bottom-[10%] left-1/2 transform -translate-x-1/2 flex flex-col items-center gap-4 md:gap-6 pointer-events-auto">
+              
+              {/* ESFERA MUNDIAL CIRCULAR */}
+              <div className="w-[80px] h-[80px] md:w-[120px] md:h-[120px] rounded-full overflow-hidden border-2 border-white/20 shadow-[0_0_25px_rgba(0,0,0,0.8)] relative transition-transform duration-500 hover:scale-110">
+                <video autoPlay loop muted playsInline className="absolute inset-0 w-full h-full object-cover">
+                  <source src="/bendita/esfera_mundial.mp4" type="video/mp4" />
+                  Tu navegador no soporta el formato de video.
+                </video>
+              </div>
+
+              {/* BOTÓN DORADO */}
+              <Link 
+                href="/bendita/mundial" 
+                className="bg-[#EBE7DE] text-[#1a1a1a] uppercase font-bold tracking-[0.2em] text-xs md:text-sm px-8 py-4 md:px-12 md:py-5 transition-all duration-300 hover:scale-110 hover:bg-[#D4AF37] hover:text-[#1a1a1a] shadow-xl shadow-black/40 text-center cursor-pointer"
+              >
+                Reserva para el mundial
+              </Link>
+              
+            </div>
+
           </div>
 
         </div>
+
       </section>
 
     </main>
