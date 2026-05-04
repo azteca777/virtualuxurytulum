@@ -51,8 +51,6 @@ export default function BenditaPage() {
             className="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-4 py-4 md:px-8 lg:px-12 pointer-events-auto bg-contain md:bg-cover bg-center bg-no-repeat shadow-md border-b border-[#1a1a1a]/20 transition-all duration-300"
             style={{ backgroundImage: "url('/bendita/fachada3.jpeg')" }}
           >
-            {/* Se eliminó el filtro y la capa superpuesta para que la imagen se vea 100% clara */}
-
             <div className="hidden md:flex gap-2 relative z-10">
               <button className="bg-[#1a1a1a] text-[#EBE7DE] border border-[#1a1a1a] text-[10px] md:text-xs tracking-[0.2em] px-6 py-3 hover:bg-[#333] transition-colors">
                 RESERVA AHORA
@@ -62,7 +60,14 @@ export default function BenditaPage() {
               </button>
             </div>
             
-           
+            <div className="flex flex-col items-center justify-center text-center mx-auto md:mx-0 relative z-10">
+              <h1 className="text-3xl md:text-4xl font-serif tracking-[0.15em] text-[#1a1a1a] drop-shadow-md">
+                BENDITA AGÜITA
+              </h1>
+              <p className="text-[8px] md:text-[10px] tracking-[0.3em] mt-1 text-[#1a1a1a]/90 font-bold uppercase drop-shadow-sm">
+                Alta Gastronomía
+              </p>
+            </div>
             
             <div className="flex items-center gap-4 md:gap-6 text-[#1a1a1a] relative z-10">
               <div className="text-xs tracking-widest hidden lg:block font-bold drop-shadow-sm">
@@ -179,12 +184,28 @@ export default function BenditaPage() {
             <h2 className="text-xs md:text-sm tracking-[0.25em] uppercase mb-8 text-center font-medium">
               MEJOR EXPERIENCIA GASTRONÓMICA EN MÉRIDA - BENDITA AGÜITA
             </h2>
-            <p className="text-center text-xs md:text-sm font-light leading-relaxed md:leading-loose mb-12 text-[#333]">
+            <p className="text-center text-xs md:text-sm font-light leading-relaxed md:leading-loose mb-8 text-[#333]">
               En Bendita Agüita, los comensales son transportados a un mundo donde la tradición se encuentra con la sofisticación moderna. Con un diseño que honra la naturaleza y el minimalismo, este espacio ofrece una experiencia culinaria relajante y lujosa. Disfruta de sabores auténticos y una atmósfera única, perfecta para una cena memorable en uno de los mejores restaurantes de Mérida.
             </p>
             
-            <button className="bg-black text-[#EBE7DE] uppercase tracking-[0.2em] text-xs px-12 py-4 hover:bg-[#333] transition-colors">
-              Reserva Ahora
+            {/* NUEVO BOTÓN: RESERVA AHORA */}
+            <button className="group flex items-center cursor-pointer transition-transform duration-300 hover:scale-105 z-20">
+              <div className="flex items-center bg-[#1a1a1a] rounded-full p-1.5 shadow-[0_10px_20px_rgba(0,0,0,0.2)]">
+                {/* Ícono */}
+                <div className="w-12 h-12 md:w-14 md:h-14 rounded-full bg-[#001021] flex items-center justify-center z-10 border-2 border-[#1a1a1a] shadow-inner relative">
+                  <svg className="w-5 h-5 md:w-6 md:h-6 text-[#EBE7DE]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                  </svg>
+                </div>
+                {/* Cinta de Texto */}
+                <div
+                  className="bg-[#EBE7DE] text-[#001021] text-[10px] md:text-xs font-black tracking-[0.2em] uppercase py-4 pr-6 md:pr-10 pl-10 md:pl-12 -ml-6 rounded-r-full relative"
+                  style={{ clipPath: 'polygon(15px 0, 100% 0, 100% 100%, 15px 100%, 0 50%)' }}
+                >
+                  <div className="absolute inset-[3px] border border-[#001021]/30 rounded-r-full" style={{ clipPath: 'polygon(12px 0, 100% 0, 100% 100%, 12px 100%, 0 50%)' }}></div>
+                  <span className="relative z-10 block mt-[1px]">Reserva Ahora</span>
+                </div>
+              </div>
             </button>
             
           </div>
@@ -220,10 +241,28 @@ export default function BenditaPage() {
         </video>
 
         {/* CONTENEDOR DEL BOTÓN */}
-        <div className="relative z-10 w-full flex flex-col items-center text-white mt-10 drop-shadow-md pointer-events-auto px-4">
-          <button className="bg-[#EBE7DE] text-[#1a1a1a] uppercase font-bold tracking-[0.2em] text-sm md:text-base px-12 py-4 md:px-20 md:py-6 hover:bg-white transition-colors shadow-xl shadow-black/40 w-full max-w-[300px] md:w-auto text-center">
-            Ver Menú
+        <div className="relative z-10 w-full flex flex-col items-center text-white mt-8 drop-shadow-md pointer-events-auto px-4">
+          
+          {/* NUEVO BOTÓN: VER MENÚ */}
+          <button className="group flex items-center cursor-pointer transition-transform duration-300 hover:scale-105">
+            <div className="flex items-center bg-[#1a1a1a] rounded-full p-1.5 shadow-[0_15px_30px_rgba(0,0,0,0.8)]">
+              {/* Ícono */}
+              <div className="w-12 h-12 md:w-14 md:h-14 rounded-full bg-[#001021] flex items-center justify-center z-10 border-2 border-[#1a1a1a] shadow-inner relative">
+                <svg className="w-5 h-5 md:w-6 md:h-6 text-[#EBE7DE]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                </svg>
+              </div>
+              {/* Cinta de Texto */}
+              <div
+                className="bg-[#EBE7DE] text-[#001021] text-[10px] md:text-xs font-black tracking-[0.2em] uppercase py-4 pr-8 md:pr-12 pl-10 md:pl-12 -ml-6 rounded-r-full relative"
+                style={{ clipPath: 'polygon(15px 0, 100% 0, 100% 100%, 15px 100%, 0 50%)' }}
+              >
+                <div className="absolute inset-[3px] border border-[#001021]/30 rounded-r-full" style={{ clipPath: 'polygon(12px 0, 100% 0, 100% 100%, 12px 100%, 0 50%)' }}></div>
+                <span className="relative z-10 block mt-[1px]">Ver Menú</span>
+              </div>
+            </div>
           </button>
+
         </div>
 
       </section>
@@ -261,8 +300,7 @@ export default function BenditaPage() {
               </div>
             </div>
 
-            {/* CONTENEDOR AGRUPADO: ESFERA Y BOTÓN DORADO */}
-            {/* Al ponerlos juntos en un flex-col, aseguramos que la esfera SIEMPRE esté arriba del botón */}
+            {/* CONTENEDOR AGRUPADO: ESFERA Y BOTÓN MUNDIAL */}
             <div className="absolute bottom-[10%] left-1/2 transform -translate-x-1/2 flex flex-col items-center gap-4 md:gap-6 pointer-events-auto">
               
               {/* ESFERA MUNDIAL CIRCULAR */}
@@ -273,12 +311,24 @@ export default function BenditaPage() {
                 </video>
               </div>
 
-              {/* BOTÓN DORADO */}
-              <Link 
-                href="/bendita/mundial" 
-                className="bg-[#EBE7DE] text-[#1a1a1a] uppercase font-bold tracking-[0.2em] text-xs md:text-sm px-8 py-4 md:px-12 md:py-5 transition-all duration-300 hover:scale-110 hover:bg-[#D4AF37] hover:text-[#1a1a1a] shadow-xl shadow-black/40 text-center cursor-pointer"
-              >
-                Reserva para el mundial
+              {/* NUEVO BOTÓN: RESERVA MUNDIAL (Con hover interactivo de colores) */}
+              <Link href="/bendita/mundial" className="group flex items-center cursor-pointer transition-transform duration-300 hover:scale-105">
+                <div className="flex items-center bg-[#1a1a1a] rounded-full p-1.5 shadow-[0_15px_30px_rgba(0,0,0,0.8)]">
+                  {/* Ícono Balón/Mundo */}
+                  <div className="w-12 h-12 md:w-14 md:h-14 rounded-full bg-[#001021] flex items-center justify-center z-10 border-2 border-[#1a1a1a] shadow-inner relative transition-colors duration-300 group-hover:bg-[#EBE7DE]">
+                    <svg className="w-5 h-5 md:w-6 md:h-6 text-[#EBE7DE] group-hover:text-[#001021] transition-colors duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                  </div>
+                  {/* Cinta de Texto interactiva */}
+                  <div
+                    className="bg-[#EBE7DE] text-[#001021] text-[9px] md:text-xs font-black tracking-[0.2em] uppercase py-4 pr-6 md:pr-10 pl-10 md:pl-12 -ml-6 rounded-r-full relative transition-colors duration-300 group-hover:bg-[#001021] group-hover:text-[#EBE7DE]"
+                    style={{ clipPath: 'polygon(15px 0, 100% 0, 100% 100%, 15px 100%, 0 50%)' }}
+                  >
+                    <div className="absolute inset-[3px] border border-[#001021]/30 group-hover:border-[#EBE7DE]/30 transition-colors duration-300 rounded-r-full" style={{ clipPath: 'polygon(12px 0, 100% 0, 100% 100%, 12px 100%, 0 50%)' }}></div>
+                    <span className="relative z-10 block mt-[1px]">Reserva para el mundial</span>
+                  </div>
+                </div>
               </Link>
               
             </div>
