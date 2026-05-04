@@ -29,7 +29,7 @@ export default function BenditaPage() {
       <div className="relative w-full z-40 mb-[100vh] bg-transparent">
         
         {/* ========================================= */}
-        {/* SECCIÓN 1: HERO (Efecto Cortina hacia abajo) */}
+        {/* SECCIÓN 1: HERO (Efecto Cortina hacia abajo) RESPONSIVO */}
         {/* ========================================= */}
         <section className="sticky top-0 w-full h-screen overflow-hidden bg-[#EBE7DE] z-10">
           
@@ -68,36 +68,37 @@ export default function BenditaPage() {
             </div>
           </nav>
 
-          {/* ZONA SUPERIOR HERO */}
-          <div className="absolute top-0 left-0 w-full h-[35%] z-10 pt-[80px]">
+          {/* ZONA SUPERIOR HERO (Altura ajustada para móvil) */}
+          <div className="absolute top-0 left-0 w-full h-[45%] md:h-[35%] z-10 pt-[70px] md:pt-[80px]">
             <div 
               className="w-full h-full bg-cover bg-center bg-no-repeat shadow-lg shadow-black/20"
               style={{ backgroundImage: "url('/bendita/fachada.jpeg')" }}
             />
           </div>
 
-          {/* ZONA INFERIOR HERO */}
-          <div className="absolute top-[35%] left-0 w-full h-[65%] z-0 flex flex-col items-center justify-start bg-[#1a1a1a]">
+          {/* ZONA INFERIOR HERO (Altura y fondos ajustados para móvil) */}
+          <div className="absolute top-[45%] md:top-[35%] left-0 w-full h-[55%] md:h-[65%] z-0 flex flex-col items-center justify-start bg-[#1a1a1a]">
             <div 
-              className="w-full flex-grow bg-contain bg-center bg-no-repeat"
+              className="w-full flex-grow bg-cover md:bg-contain bg-center bg-no-repeat"
               style={{ backgroundImage: "url('/bendita/fachada2.jpeg')" }}
             />
             <div 
-              className="w-full h-[200px] bg-cover bg-center bg-no-repeat"
+              className="w-full h-[120px] md:h-[200px] bg-cover bg-center bg-no-repeat"
               style={{ backgroundImage: "url('/bendita/fachada3.jpeg')" }}
             />
           </div>
 
-          {/* PANTALLA 3D PROMOCIONAL (Ajustada para centrarse en celular y desplazarse en PC) */}
+          {/* PANTALLA 3D PROMOCIONAL (Top y Scale ajustados para celular) */}
           <div 
-            className="absolute z-30 pointer-events-auto top-[15%] md:top-[12%] left-1/2 transform -translate-x-1/2 md:translate-x-0 md:left-[32%]"
+            className="absolute z-30 pointer-events-auto top-[22%] md:top-[12%] left-1/2 transform -translate-x-1/2 md:translate-x-0 md:left-[32%] scale-90 md:scale-100"
           >
             <div 
               style={{ transform: 'perspective(1000px) rotateY(15deg) rotateX(5deg) scale(1.0)' }}
               className="transition-transform duration-500 hover:![transform:perspective(1000px)_rotateY(0deg)_rotateX(0deg)_scale(1.1)] shadow-2xl shadow-black/80 rounded-md"
             >
               <div className="p-3 rounded-md" style={{ backgroundColor: '#5c4033', boxShadow: 'inset 0 0 15px rgba(0,0,0,0.8), 0 0 5px rgba(0,0,0,0.5)' }}>
-                <div className="w-[200px] h-[350px] md:w-[280px] md:h-[480px] bg-black overflow-hidden relative">
+                {/* Marco de video ajustado a proporciones de celular */}
+                <div className="w-[180px] h-[320px] md:w-[280px] md:h-[480px] bg-black overflow-hidden relative">
                   <video
                     autoPlay
                     loop
