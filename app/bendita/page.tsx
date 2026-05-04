@@ -7,7 +7,6 @@ export default function BenditaPage() {
       
       {/* ========================================= */}
       {/* CAPA FONDO FIJO: SECCIÓN 3 (Video Cortina) */}
-      {/* Siempre está pegada al fondo esperando a ser revelada por la Sección 2 */}
       {/* ========================================= */}
       <section className="fixed bottom-0 left-0 w-full h-screen z-0 bg-black flex items-center justify-center">
         <video
@@ -24,7 +23,6 @@ export default function BenditaPage() {
 
       {/* ========================================= */}
       {/* CONTENEDOR DE SCROLL (Zonas que tapan el video) */}
-      {/* mb-[100vh] crea el espacio vacío exacto del tamaño de la pantalla al final */}
       {/* ========================================= */}
       <div className="relative w-full z-40 mb-[100vh] bg-transparent">
         
@@ -77,18 +75,17 @@ export default function BenditaPage() {
           </div>
 
           {/* ZONA INFERIOR HERO */}
-          {/* Añadimos justify-center en móvil y md:justify-start en PC */}
           <div className="absolute top-[45%] md:top-[35%] left-0 w-full h-[55%] md:h-[65%] z-0 flex flex-col items-center justify-center md:justify-start bg-[#1a1a1a]">
             
-            {/* FACHADA 2: Oculta en celulares (hidden), visible en tablets/PC (md:block) */}
+            {/* FACHADA 2: Oculta en celulares */}
             <div 
               className="hidden md:block w-full flex-grow bg-contain bg-center bg-no-repeat"
               style={{ backgroundImage: "url('/bendita/fachada2.jpeg')" }}
             />
             
-            {/* FACHADA 3: bg-contain y más chica en celular, normal en PC */}
+            {/* FACHADA 3: Oculta en celulares (hidden), visible en PC (md:block) */}
             <div 
-              className="w-[80%] md:w-full h-[100px] md:h-[200px] bg-contain md:bg-cover bg-center bg-no-repeat"
+              className="hidden md:block w-full h-[200px] bg-cover bg-center bg-no-repeat"
               style={{ backgroundImage: "url('/bendita/fachada3.jpeg')" }}
             />
           </div>
@@ -102,6 +99,10 @@ export default function BenditaPage() {
               className="transition-transform duration-500 hover:![transform:perspective(1000px)_rotateY(0deg)_rotateX(0deg)_scale(1.1)] shadow-2xl shadow-black/80 rounded-md"
             >
               <div className="p-2 md:p-3 rounded-md" style={{ backgroundColor: '#5c4033', boxShadow: 'inset 0 0 15px rgba(0,0,0,0.8), 0 0 5px rgba(0,0,0,0.5)' }}>
+                {/* 
+                  AQUÍ ES DONDE CONTROLAS EL TAMAÑO DE LA PANTALLA 3D
+                  w-[130px] h-[230px] son las medidas para celulares.
+                */}
                 <div className="w-[130px] h-[230px] sm:w-[160px] sm:h-[280px] md:w-[280px] md:h-[480px] bg-black overflow-hidden relative">
                   <video
                     autoPlay
