@@ -7,15 +7,16 @@ export default function BenditaPage() {
       
       {/* ========================================= */}
       {/* CAPA FONDO FIJO: SECCIÓN 3 (Video Cortina) */}
-      {/* Siempre está pegada al fondo esperando a ser revelada por la Sección 2 */}
       {/* ========================================= */}
-      <section className="fixed bottom-0 left-0 w-full h-screen z-0">
+      {/* Añadí bg-black para que cuando el video se adapte en móvil, los bordes se vean negros como en el cine */}
+      <section className="fixed bottom-0 left-0 w-full h-screen z-0 bg-black flex items-center justify-center">
         <video
           autoPlay
           loop
           muted
           playsInline
-          className="absolute inset-0 w-full h-full object-cover opacity-90"
+          
+          className="w-full h-full object-contain md:object-cover opacity-90"
         >
           <source src="/bendita/video_bendita1.mp4" type="video/mp4" />
           Tu navegador no soporta el formato de video.
@@ -24,16 +25,15 @@ export default function BenditaPage() {
 
       {/* ========================================= */}
       {/* CONTENEDOR DE SCROLL (Zonas que tapan el video) */}
-      {/* mb-[100vh] crea el espacio vacío exacto del tamaño de la pantalla al final */}
       {/* ========================================= */}
       <div className="relative w-full z-40 mb-[100vh] bg-transparent">
         
         {/* ========================================= */}
-        {/* SECCIÓN 1: HERO (Efecto Cortina hacia abajo) RESPONSIVO */}
+        {/* SECCIÓN 1: HERO (Efecto Cortina hacia abajo) */}
         {/* ========================================= */}
         <section className="sticky top-0 w-full h-screen overflow-hidden bg-[#EBE7DE] z-10">
           
-          {/* NAVEGACIÓN SUPERIOR (Fija y adaptada) */}
+          {/* NAVEGACIÓN SUPERIOR */}
           <nav className="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-4 py-4 md:px-8 lg:px-12 pointer-events-auto bg-[#EBE7DE]/90 backdrop-blur-md border-b border-[#1a1a1a]/10 transition-all duration-300">
             <div className="hidden md:flex gap-2">
               <button className="bg-[#1a1a1a] text-[#EBE7DE] border border-[#1a1a1a] text-[10px] md:text-xs tracking-[0.2em] px-6 py-3 hover:bg-[#333] transition-colors">
@@ -68,7 +68,7 @@ export default function BenditaPage() {
             </div>
           </nav>
 
-          {/* ZONA SUPERIOR HERO (Altura ajustada para móvil) */}
+          {/* ZONA SUPERIOR HERO */}
           <div className="absolute top-0 left-0 w-full h-[45%] md:h-[35%] z-10 pt-[70px] md:pt-[80px]">
             <div 
               className="w-full h-full bg-cover bg-center bg-no-repeat shadow-lg shadow-black/20"
@@ -76,7 +76,7 @@ export default function BenditaPage() {
             />
           </div>
 
-          {/* ZONA INFERIOR HERO (Altura y fondos ajustados para móvil) */}
+          {/* ZONA INFERIOR HERO */}
           <div className="absolute top-[45%] md:top-[35%] left-0 w-full h-[55%] md:h-[65%] z-0 flex flex-col items-center justify-start bg-[#1a1a1a]">
             <div 
               className="w-full flex-grow bg-cover md:bg-contain bg-center bg-no-repeat"
@@ -88,17 +88,18 @@ export default function BenditaPage() {
             />
           </div>
 
-          {/* PANTALLA 3D PROMOCIONAL (Top y Scale ajustados para celular) */}
+          {/* PANTALLA 3D PROMOCIONAL */}
+          {/* Lo bajé un poco más en celulares (top-[25%]) y ajusté la posición */}
           <div 
-            className="absolute z-30 pointer-events-auto top-[22%] md:top-[12%] left-1/2 transform -translate-x-1/2 md:translate-x-0 md:left-[32%] scale-90 md:scale-100"
+            className="absolute z-30 pointer-events-auto top-[25%] md:top-[12%] left-1/2 transform -translate-x-1/2 md:translate-x-0 md:left-[32%]"
           >
             <div 
               style={{ transform: 'perspective(1000px) rotateY(15deg) rotateX(5deg) scale(1.0)' }}
               className="transition-transform duration-500 hover:![transform:perspective(1000px)_rotateY(0deg)_rotateX(0deg)_scale(1.1)] shadow-2xl shadow-black/80 rounded-md"
             >
-              <div className="p-3 rounded-md" style={{ backgroundColor: '#5c4033', boxShadow: 'inset 0 0 15px rgba(0,0,0,0.8), 0 0 5px rgba(0,0,0,0.5)' }}>
-                {/* Marco de video ajustado a proporciones de celular */}
-                <div className="w-[180px] h-[320px] md:w-[280px] md:h-[480px] bg-black overflow-hidden relative">
+              <div className="p-2 md:p-3 rounded-md" style={{ backgroundColor: '#5c4033', boxShadow: 'inset 0 0 15px rgba(0,0,0,0.8), 0 0 5px rgba(0,0,0,0.5)' }}>
+                {/* AQUÍ LA MAGIA 2: Medidas mucho más pequeñas en celular (w-130px h-230px) y normales en PC */}
+                <div className="w-[130px] h-[230px] sm:w-[160px] sm:h-[280px] md:w-[280px] md:h-[480px] bg-black overflow-hidden relative">
                   <video
                     autoPlay
                     loop
