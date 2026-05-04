@@ -7,15 +7,14 @@ export default function BenditaPage() {
       
       {/* ========================================= */}
       {/* CAPA FONDO FIJO: SECCIÓN 3 (Video Cortina) */}
+      {/* Siempre está pegada al fondo esperando a ser revelada por la Sección 2 */}
       {/* ========================================= */}
-      {/* Añadí bg-black para que cuando el video se adapte en móvil, los bordes se vean negros como en el cine */}
       <section className="fixed bottom-0 left-0 w-full h-screen z-0 bg-black flex items-center justify-center">
         <video
           autoPlay
           loop
           muted
           playsInline
-          
           className="w-full h-full object-contain md:object-cover opacity-90"
         >
           <source src="/bendita/video_bendita1.mp4" type="video/mp4" />
@@ -25,6 +24,7 @@ export default function BenditaPage() {
 
       {/* ========================================= */}
       {/* CONTENEDOR DE SCROLL (Zonas que tapan el video) */}
+      {/* mb-[100vh] crea el espacio vacío exacto del tamaño de la pantalla al final */}
       {/* ========================================= */}
       <div className="relative w-full z-40 mb-[100vh] bg-transparent">
         
@@ -77,19 +77,23 @@ export default function BenditaPage() {
           </div>
 
           {/* ZONA INFERIOR HERO */}
-          <div className="absolute top-[45%] md:top-[35%] left-0 w-full h-[55%] md:h-[65%] z-0 flex flex-col items-center justify-start bg-[#1a1a1a]">
+          {/* Añadimos justify-center en móvil y md:justify-start en PC */}
+          <div className="absolute top-[45%] md:top-[35%] left-0 w-full h-[55%] md:h-[65%] z-0 flex flex-col items-center justify-center md:justify-start bg-[#1a1a1a]">
+            
+            {/* FACHADA 2: Oculta en celulares (hidden), visible en tablets/PC (md:block) */}
             <div 
-              className="w-full flex-grow bg-cover md:bg-contain bg-center bg-no-repeat"
+              className="hidden md:block w-full flex-grow bg-contain bg-center bg-no-repeat"
               style={{ backgroundImage: "url('/bendita/fachada2.jpeg')" }}
             />
+            
+            {/* FACHADA 3: bg-contain y más chica en celular, normal en PC */}
             <div 
-              className="w-full h-[120px] md:h-[200px] bg-cover bg-center bg-no-repeat"
+              className="w-[80%] md:w-full h-[100px] md:h-[200px] bg-contain md:bg-cover bg-center bg-no-repeat"
               style={{ backgroundImage: "url('/bendita/fachada3.jpeg')" }}
             />
           </div>
 
           {/* PANTALLA 3D PROMOCIONAL */}
-          {/* Lo bajé un poco más en celulares (top-[25%]) y ajusté la posición */}
           <div 
             className="absolute z-30 pointer-events-auto top-[25%] md:top-[12%] left-1/2 transform -translate-x-1/2 md:translate-x-0 md:left-[32%]"
           >
@@ -98,7 +102,6 @@ export default function BenditaPage() {
               className="transition-transform duration-500 hover:![transform:perspective(1000px)_rotateY(0deg)_rotateX(0deg)_scale(1.1)] shadow-2xl shadow-black/80 rounded-md"
             >
               <div className="p-2 md:p-3 rounded-md" style={{ backgroundColor: '#5c4033', boxShadow: 'inset 0 0 15px rgba(0,0,0,0.8), 0 0 5px rgba(0,0,0,0.5)' }}>
-                {/* AQUÍ LA MAGIA 2: Medidas mucho más pequeñas en celular (w-130px h-230px) y normales en PC */}
                 <div className="w-[130px] h-[230px] sm:w-[160px] sm:h-[280px] md:w-[280px] md:h-[480px] bg-black overflow-hidden relative">
                   <video
                     autoPlay
