@@ -252,7 +252,7 @@ export default function BenditaPage() {
               style={{ transform: 'perspective(1000px) rotateY(-8deg) rotateX(5deg) scale(1.0)' }}
             >
               <div className="transition-transform duration-500 hover:![transform:perspective(1000px)_rotateY(0deg)_rotateX(0deg)_scale(1.0)] shadow-[0_20px_50px_rgba(0,0,0,0.8)] rounded-lg">
-                <div className="w-[280px] h-[160px] sm:w-[280px] sm:h-[130px] md:w-[410px] md:h-[220px] bg-black overflow-hidden relative rounded-lg border border-white/10">
+                <div className="w-[285px] h-[165px] sm:w-[280px] sm:h-[130px] md:w-[410px] md:h-[220px] bg-black overflow-hidden relative rounded-lg border border-white/10">
                   <video autoPlay loop muted playsInline className="absolute inset-0 w-full h-full object-cover">
                     <source src="/bendita/video_mundial.mp4" type="video/mp4" />
                     Tu navegador no soporta el formato de video.
