@@ -46,37 +46,37 @@ export default function BenditaPage() {
         {/* ========================================= */}
         <section className="sticky top-0 w-full h-screen overflow-hidden bg-[#EBE7DE] z-10">
           
-          {/* NAVEGACIÓN SUPERIOR */}
-          <nav className="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-4 py-4 md:px-8 lg:px-12 pointer-events-auto bg-[#EBE7DE]/90 backdrop-blur-md border-b border-[#1a1a1a]/10 transition-all duration-300">
-            <div className="hidden md:flex gap-2">
+          {/* NAVEGACIÓN SUPERIOR CON FONDO DE IMAGEN */}
+          <nav 
+            className="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-4 py-4 md:px-8 lg:px-12 pointer-events-auto bg-contain md:bg-cover bg-center bg-no-repeat shadow-md border-b border-[#1a1a1a]/20 transition-all duration-300"
+            style={{ backgroundImage: "url('/bendita/fachada3.jpeg')" }}
+          >
+            {/* Se eliminó el filtro y la capa superpuesta para que la imagen se vea 100% clara */}
+
+            <div className="hidden md:flex gap-2 relative z-10">
               <button className="bg-[#1a1a1a] text-[#EBE7DE] border border-[#1a1a1a] text-[10px] md:text-xs tracking-[0.2em] px-6 py-3 hover:bg-[#333] transition-colors">
                 RESERVA AHORA
               </button>
-              <button className="bg-transparent text-[#1a1a1a] border border-[#1a1a1a] text-[10px] md:text-xs tracking-[0.2em] px-6 py-3 hover:bg-[#1a1a1a]/10 transition-colors">
+              <button className="bg-[#EBE7DE]/80 text-[#1a1a1a] border border-[#1a1a1a] text-[10px] md:text-xs tracking-[0.2em] px-6 py-3 hover:bg-white transition-colors">
                 VER EXPERIENCIAS
               </button>
             </div>
-            <div className="flex flex-col items-center justify-center text-center mx-auto md:mx-0">
-              <h1 className="text-3xl md:text-4xl font-serif tracking-[0.15em] text-[#1a1a1a]">
-                BENDITA AGÜITA
-              </h1>
-              <p className="text-[8px] md:text-[10px] tracking-[0.3em] mt-1 text-[#1a1a1a]/70 uppercase">
-                Alta Gastronomía
-              </p>
-            </div>
-            <div className="flex items-center gap-4 md:gap-6 text-[#1a1a1a]">
-              <div className="text-xs tracking-widest hidden lg:block font-light">
+            
+           
+            
+            <div className="flex items-center gap-4 md:gap-6 text-[#1a1a1a] relative z-10">
+              <div className="text-xs tracking-widest hidden lg:block font-bold drop-shadow-sm">
                 ES <span className="mx-1 font-thin opacity-50">|</span> EN
               </div>
-              <button className="w-10 h-10 border border-[#1a1a1a]/40 rounded-full flex items-center justify-center hover:bg-[#1a1a1a] hover:text-[#EBE7DE] transition-colors">
+              <button className="w-10 h-10 border border-[#1a1a1a]/60 bg-[#EBE7DE]/50 rounded-full flex items-center justify-center hover:bg-[#1a1a1a] hover:text-[#EBE7DE] transition-colors">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
                   <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
                 </svg>
               </button>
               <button className="flex flex-col gap-[5px] w-8 items-end hover:opacity-70 transition-opacity">
-                <span className="w-full h-[1.5px] bg-[#1a1a1a]"></span>
-                <span className="w-full h-[1.5px] bg-[#1a1a1a]"></span>
-                <span className="w-[70%] h-[1.5px] bg-[#1a1a1a]"></span>
+                <span className="w-full h-[2px] bg-[#1a1a1a]"></span>
+                <span className="w-full h-[2px] bg-[#1a1a1a]"></span>
+                <span className="w-[70%] h-[2px] bg-[#1a1a1a]"></span>
               </button>
             </div>
           </nav>
