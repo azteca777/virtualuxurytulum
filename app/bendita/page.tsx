@@ -8,7 +8,8 @@ export default function BenditaPage() {
       {/* ========================================= */}
       {/* CAPA FONDO FIJO: SECCIÓN 3 (Video Cortina) */}
       {/* ========================================= */}
-      <section className="fixed bottom-0 left-0 w-full h-screen z-0 bg-black flex items-center justify-center">
+      {/* CAMBIO AQUÍ: Se cambió bg-black a bg-[#EBE7DE] */}
+      <section className="fixed bottom-0 left-0 w-full h-screen z-0 bg-[#EBE7DE] flex items-center justify-center">
         <video
           autoPlay
           loop
