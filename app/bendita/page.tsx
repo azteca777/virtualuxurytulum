@@ -60,14 +60,6 @@ export default function BenditaPage() {
               </button>
             </div>
             
-            <div className="flex flex-col items-center justify-center text-center mx-auto md:mx-0 relative z-10">
-              <h1 className="text-3xl md:text-4xl font-serif tracking-[0.15em] text-[#1a1a1a] drop-shadow-md">
-                BENDITA AGÜITA
-              </h1>
-              <p className="text-[8px] md:text-[10px] tracking-[0.3em] mt-1 text-[#1a1a1a]/90 font-bold uppercase drop-shadow-sm">
-                Alta Gastronomía
-              </p>
-            </div>
             
             <div className="flex items-center gap-4 md:gap-6 text-[#1a1a1a] relative z-10">
               <div className="text-xs tracking-widest hidden lg:block font-bold drop-shadow-sm">
