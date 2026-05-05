@@ -3,6 +3,41 @@ import Link from 'next/link'; // IMPORTANTE PARA QUE FUNCIONE EL ENLACE
 
 export default function MundialPage() {
   
+  // Función mágica para convertir la fecha del calendario al enlace de OpenTable
+  const getOpenTableUrl = (dateStr: string) => {
+    try {
+      // 1. Separamos la fecha y la hora (Ej: "11 JUN" y "1:00 PM")
+      const [datePart, timePart] = dateStr.split(' | ');
+      const [day, monthName] = datePart.split(' ');
+      
+      // 2. Damos formato al día y mes
+      const formattedDay = day.padStart(2, '0');
+      const month = monthName.toUpperCase() === 'JUN' ? '06' : '07';
+
+      // 3. Convertimos la hora de AM/PM a formato 24 horas (Militar)
+      const [time, period] = timePart.split(' ');
+      
+      const [hoursString, minutes] = time.split(':');
+      let hours = parseInt(hoursString, 10);
+      
+      // Si dice "PM" y no son las 12, le sumamos 12 hrs. (Ej: 1:00 PM -> 13:00)
+      if (period === 'PM' && hours !== 12) hours += 12;
+      // Si dice "AM" y son las 12, son las 00:00 hrs.
+      if (period === 'AM' && hours === 12) hours = 0;
+      
+      const formattedHours = hours.toString().padStart(2, '0');
+
+      // 4. Construimos la fecha exacta que pide OpenTable (YYYY-MM-DDTHH:MM:00)
+      const isoDate = `2026-${month}-${formattedDay}T${formattedHours}:${minutes}:00`;
+      
+      // 5. Devolvemos el enlace limpio directo a tu restaurante p=2 (2 personas por defecto)
+      return `https://www.opentable.com.mx/r/bendita-aguita-merida?p=2&sd=${isoDate}`;
+    } catch (e) {
+      // Si algo falla, mandamos al enlace general
+      return "https://www.opentable.com.mx/r/bendita-aguita-merida";
+    }
+  };
+
   // CALENDARIO COMPLETO DEL MUNDIAL 2026 (Fase de Grupos)
   const mundialMatches = [
     // 11 Junio
@@ -170,11 +205,31 @@ export default function MundialPage() {
 
                 </div>
                 
-                {/* BOTÓN RESERVAR */}
+                {/* BOTÓN RESERVAR DIRECTO A OPENTABLE (Estilo Listón Compacto) */}
                 <div className="w-full md:w-auto px-2 pb-2 md:pb-0 md:py-2 md:pr-4 flex justify-center">
-                  <button className="w-full md:w-auto bg-[#EBE7DE] text-[#1a1a1a] font-bold text-[8px] md:text-[10px] tracking-[0.15em] uppercase py-1.5 md:py-2 px-2 md:px-4 hover:bg-[#D4AF37] transition-colors rounded-sm shadow-md whitespace-nowrap">
-                    Reservar
-                  </button>
+                  <a 
+                    href={getOpenTableUrl(match.date)} 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="group flex items-center cursor-pointer transition-transform duration-300 hover:scale-105"
+                  >
+                    <div className="flex items-center bg-[#1a1a1a] rounded-full p-1 shadow-[0_5px_10px_rgba(0,0,0,0.5)]">
+                      {/* Ícono de Calendario */}
+                      <div className="w-6 h-6 md:w-8 md:h-8 rounded-full bg-[#001021] flex items-center justify-center z-10 border border-[#1a1a1a] shadow-inner relative transition-colors duration-300 group-hover:bg-[#EBE7DE]">
+                        <svg className="w-3 h-3 md:w-4 md:h-4 text-[#EBE7DE] group-hover:text-[#001021] transition-colors duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                        </svg>
+                      </div>
+                      {/* Cinta de Texto */}
+                      <div
+                        className="bg-[#EBE7DE] text-[#001021] text-[7px] md:text-[9px] font-black tracking-[0.15em] uppercase py-1.5 md:py-2 pr-4 md:pr-6 pl-6 md:pl-8 -ml-4 rounded-r-full relative transition-colors duration-300 group-hover:bg-[#001021] group-hover:text-[#EBE7DE]"
+                        style={{ clipPath: 'polygon(10px 0, 100% 0, 100% 100%, 10px 100%, 0 50%)' }}
+                      >
+                        <div className="absolute inset-[1.5px] border border-[#001021]/30 group-hover:border-[#EBE7DE]/30 transition-colors duration-300 rounded-r-full" style={{ clipPath: 'polygon(8px 0, 100% 0, 100% 100%, 8px 100%, 0 50%)' }}></div>
+                        <span className="relative z-10 block mt-[1px] whitespace-nowrap">Reservar</span>
+                      </div>
+                    </div>
+                  </a>
                 </div>
 
               </div>
